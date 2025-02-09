@@ -1,19 +1,24 @@
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
-function PhotoMasonry({ photos }) {
+export default function PhotoMasonry({ photos }) {
   return (
-    <ResponsiveMasonry
-      columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}
-      gutterBreakpoints={{ 350: "12px", 750: "16px", 900: "24px" }}
-    >
-      {/* need fallback image for empty array */}
+    <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
       <Masonry>
-        {photos.map((photo, index) => (
-          <img key={index} src={photo.src.original} alt={photo.photographer} />
-        ))}
+        {photos.map((photo, index) => {
+          return (
+            <div key={index} style={{ position: "relative" }}>
+              <img src={photo.src.original} alt={photo.photographer} />
+              {/* <Image
+                src={photo.src.original}
+                alt={photo.photographer}
+                blurData={photo.src.original}
+                width={100}
+                height={200}
+              /> */}
+            </div>
+          );
+        })}
       </Masonry>
     </ResponsiveMasonry>
   );
 }
-
-export default PhotoMasonry;
