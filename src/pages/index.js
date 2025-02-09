@@ -1,3 +1,5 @@
+import SearchBar from "@/SearchBar/SearchBar";
+import Section from "@/Section/Section";
 import dynamic from "next/dynamic";
 // import PhotoMasonry from "@/Masonry/PhotoMasonry";
 import { createClient } from "pexels";
@@ -30,7 +32,13 @@ export async function getStaticProps() {
 export default function Home({ photos }) {
   return (
     <>
-      <DynamicPhotoMasonry photos={photos} />
+      {/* <section className="w-full"></section> */}
+      <Section>
+        <SearchBar />
+      </Section>
+      <Section>
+        <DynamicPhotoMasonry photos={photos} />
+      </Section>
     </>
   );
 }

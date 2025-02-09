@@ -8,13 +8,6 @@ export default function PhotoMasonry({ photos }) {
           return (
             <div key={index} style={{ position: "relative" }}>
               <img src={photo.src.original} alt={photo.photographer} />
-              {/* <Image
-                src={photo.src.original}
-                alt={photo.photographer}
-                blurData={photo.src.original}
-                width={100}
-                height={200}
-              /> */}
             </div>
           );
         })}
