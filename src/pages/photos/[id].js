@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { createClient } from "pexels";
 import { useState, useEffect } from "react";
 
-export default function Photo() {
+export default function ShowPhoto() {
   const router = useRouter();
   const { id } = router.query;
   const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
