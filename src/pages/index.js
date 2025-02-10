@@ -2,6 +2,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import dynamic from "next/dynamic";
 import { createClient } from "pexels";
+
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
