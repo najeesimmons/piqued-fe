@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: "images.pexels.com",
         pathname: "**", // Allows all images from this domain
       },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+        pathname: "**", // Allows all images from this domain
+      },
     ],
   },
 };
