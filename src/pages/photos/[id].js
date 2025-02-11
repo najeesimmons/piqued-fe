@@ -48,7 +48,11 @@ export default function ShowPhoto() {
           />
         </div>
         <div className="w-full md:w-1/2">
-          <Comments name={photo.photographer} url={photo.photographer_url} />
+          <Comments
+            name={photo.photographer}
+            pexelPhotogPageUrl={photo.photographer_url}
+            pexelShowPageUrl={photo.url}
+          />
         </div>
       </div>
     </Section>
