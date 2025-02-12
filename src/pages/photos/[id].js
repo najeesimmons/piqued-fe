@@ -28,7 +28,7 @@ export default function ShowPhoto() {
 
   return (
     <Section>
-      <div className="w-full md:max-h-[90vh] flex flex-col md:flex-row mt-4 mx-auto">
+      <div className="w-full md:max-h-[90vh] md:min-h[60vh] flex flex-col md:flex-row mt-4 mx-auto">
         <div
           className="flex items-center justify-center w-full md:w-1/2"
           style={{
