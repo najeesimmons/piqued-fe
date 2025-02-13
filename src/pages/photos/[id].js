@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Section from "@/components/Section/Section";
 import Comments from "@/components/Comments/Comments";
 
-export default function ShowPhoto() {
+export default function ShowPhoto({ pic }) {
   const router = useRouter();
   const { id } = router.query;
   const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
