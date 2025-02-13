@@ -1,8 +1,12 @@
+"use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import dynamic from "next/dynamic";
 import { createClient } from "pexels";
+import PhotoModal from "@/components/Modals/PhotoModal";
 
 require("dotenv").config();
 
@@ -33,6 +37,11 @@ export async function getStaticProps() {
 export default function Home({ initPhotos }) {
   const [photos, setPhotos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
+  const router = useRouter();
+  const { show } = router.query;
+
   const getSearchPhotos = async () => {
     console.log("in get search photos 👋🏾");
     const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
@@ -52,8 +61,19 @@ export default function Home({ initPhotos }) {
     setPhotos(initPhotos);
   }, [initPhotos]);
 
+  useEffect(() => {
+    console.log("show:", show);
+    if (show === "true") {
+      setShowModal(true);
+    } else {
+      setShowModal(false);
+    }
+  }, [show]);
+
   return (
     <>
+      <Link href="/?show=true">SUMMON THE MODAL</Link>
+
       <Section>
         <SearchBar
           getSearchPhotos={getSearchPhotos}
@@ -64,6 +84,7 @@ export default function Home({ initPhotos }) {
       <Section>
         <DynamicPhotoMasonry photos={photos} />
       </Section>
+      {showModal && <PhotoModal />}
     </>
   );
 }
