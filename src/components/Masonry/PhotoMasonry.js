@@ -6,7 +6,7 @@ export default function PhotoMasonry({ photos }) {
     <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
       <Masonry>
         {photos.map((photo, index) => {
-          const isPriority = index >= 0 && index <= 6; // Conditionally set priority for index 0-6 "above fold"
+          const isPriority = index >= 0 && index <= 6;
           return (
             <Photo
               key={index}
