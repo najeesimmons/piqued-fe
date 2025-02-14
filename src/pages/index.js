@@ -83,7 +83,7 @@ export default function Home({ initPhotos }) {
       <Section>
         <DynamicPhotoMasonry photos={photos} />
       </Section>
-      {showModal && <PhotoModal src={activePhoto} />}
+      {showModal && <PhotoModal photo={activePhoto} />}
     </>
   );
 }

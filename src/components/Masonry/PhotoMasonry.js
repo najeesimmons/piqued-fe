@@ -10,9 +10,10 @@ export default function PhotoMasonry({ photos }) {
           return (
             <Photo
               key={index}
-              src={photo.src.original}
-              alt={photo.alt}
-              id={photo.id}
+              photo={photo}
+              // src={photo.src.original}
+              // alt={photo.alt}
+              // id={photo.id}
               priority={isPriority ? true : undefined}
             />
           );
