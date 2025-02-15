@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import dynamic from "next/dynamic";
-import { createClient } from "pexels";
 import PhotoModal from "@/components/Modals/PhotoModal";
 import { usePhoto } from "@/context/PhotoContext";
+import { fetchPexels } from "../../utils.js/api";
 
 require("dotenv").config();
 
@@ -18,23 +18,18 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
-  try {
-    const response = await client.photos.curated({ per_page: 80 });
+  const response = await fetchPexels("curated");
+  if (response) {
     return {
       props: { initPhotos: response.photos },
       revalidate: 3600,
     };
-  } catch (error) {
-    console.log("ERROR: getStaticProps... nobody can see this 👀");
-    return {
-      props: { initPhotos: [] },
-      revalidate: 3600,
-    };
   }
+  return { props: { initPhotos: [] }, revalidate: 3600 };
 }
 
 export default function Home({ initPhotos }) {
+  const [isError, setIsError] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -44,16 +39,12 @@ export default function Home({ initPhotos }) {
   const { show } = router.query;
 
   const getSearchPhotos = async () => {
-    console.log("in get search photos 👋🏾");
-    const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
     try {
-      const query = searchTerm;
-      const response = await client.photos.search({ query, per_page: 20 });
-      console.log("we've got photos 🚀:", response.photos[0]);
+      const response = await fetchPexels("search", { query: searchTerm });
       setPhotos(response.photos);
     } catch (error) {
-      console.log(error.message);
-      console.log("no photos 👎🏾");
+      console.log("your search failed...👎🏾");
+      setIsError(true);
     }
   };
 

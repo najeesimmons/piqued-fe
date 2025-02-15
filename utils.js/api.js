@@ -8,6 +8,7 @@ export async function fetchPexels(endpoint, params) {
     switch (endpoint) {
       case "curated":
         response = await client.photos.curated({ per_page: 80 });
+        break;
       case "search":
         response = await client.photos.search({
           query: params.query,
