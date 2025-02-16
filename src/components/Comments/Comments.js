@@ -2,12 +2,7 @@ import { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
 
-export default function Comments({
-  name,
-  url,
-  pexelPhotogPageUrl,
-  pexelShowPageUrl,
-}) {
+export default function Comments({ photo }) {
   const [isOpen, setIsOpen] = useState(false);
   const comments = [
     "great",
@@ -34,9 +29,9 @@ export default function Comments({
         {isOpen ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
       </div>
       <PhotogCredit
-        name={name}
-        pexelPhotogPageUrl={pexelPhotogPageUrl}
-        pexelShowPageUrl={pexelShowPageUrl}
+        name={photo.photographer}
+        pexelPhotogPageUrl={photo.photographer_url}
+        pexelShowPageUrl="https://www.pexels.com"
       />
 
       {/* Scrollable Comments List */}
