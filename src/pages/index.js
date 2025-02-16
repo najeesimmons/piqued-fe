@@ -32,7 +32,6 @@ export default function Home({ initPhotos }) {
   const [isError, setIsError] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const { activePhoto } = usePhoto();
 
   const router = useRouter();
@@ -74,7 +73,7 @@ export default function Home({ initPhotos }) {
       <Section>
         <DynamicPhotoMasonry photos={photos} />
       </Section>
-      {showModal && <PhotoModal photo={activePhoto} />}
+      {show === "true" && <PhotoModal photo={activePhoto} />}
     </>
   );
 }
