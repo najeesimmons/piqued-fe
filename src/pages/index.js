@@ -46,6 +46,10 @@ export default function Home({ initPhotos }) {
   };
 
   useEffect(() => {
+    console.log("home rerendered 🏠");
+  }, []);
+
+  useEffect(() => {
     if (!initPhotos) return;
     setPhotos(initPhotos);
   }, [initPhotos]);
