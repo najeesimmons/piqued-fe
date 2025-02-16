@@ -5,7 +5,6 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import dynamic from "next/dynamic";
 import PhotoModal from "@/components/Modals/PhotoModal";
-import { usePhoto } from "@/context/PhotoContext";
 import { fetchPexels } from "../../utils.js/api";
 
 require("dotenv").config();
@@ -32,7 +31,8 @@ export default function Home({ initPhotos }) {
   const [isError, setIsError] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { activePhoto } = usePhoto();
+  // const { activePhoto } = usePhoto();
+  const [photo, setPhoto] = useState();
 
   const router = useRouter();
   const { show } = router.query;
@@ -54,11 +54,6 @@ export default function Home({ initPhotos }) {
 
   useEffect(() => {
     console.log("show:", show);
-    if (show === "true") {
-      setShowModal(true);
-    } else {
-      setShowModal(false);
-    }
   }, [show]);
 
   return (
@@ -71,9 +66,9 @@ export default function Home({ initPhotos }) {
         />
       </Section>
       <Section>
-        <DynamicPhotoMasonry photos={photos} />
+        <DynamicPhotoMasonry photos={photos} setPhoto={setPhoto} />
       </Section>
-      {show === "true" && <PhotoModal photo={activePhoto} />}
+      {show === "true" && <PhotoModal photo={photo} setPhoto={setPhoto} />}
     </>
   );
 }

@@ -1,10 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { usePhoto } from "@/context/PhotoContext";
-// import { useRouter } from "next/router";
 
-function Photo({ photo, priority }) {
-  const { setActivePhoto } = usePhoto();
+function Photo({ photo, priority, setPhoto }) {
   return (
     <Link href={`/?show=true&id=${photo.id}`}>
       <Image
@@ -16,7 +13,7 @@ function Photo({ photo, priority }) {
         //   sizes will need to change if breakpoints change in Masonry
         sizes="(max-width: 350px) 100vw, (max-width: 750px) 50vw, 33.33vw"
         {...(priority && { priority })}
-        onClick={() => setActivePhoto(photo)}
+        onClick={() => setPhoto(photo)}
       />
     </Link>
   );

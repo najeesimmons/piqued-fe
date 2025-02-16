@@ -1,31 +1,30 @@
 "use client";
+import Comments from "../Comments/Comments";
 import { fetchPexels } from "../../../utils.js/api";
 import Image from "next/image";
 import Section from "../Section/Section";
 import { useEffect } from "react";
-import { usePhoto } from "@/context/PhotoContext";
 import { useRouter } from "next/router";
-import Comments from "../Comments/Comments";
 
-function PhotoModal({ photo }) {
-  const { setActivePhoto } = usePhoto();
+function PhotoModal({ photo, setPhoto }) {
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    if (photo == null || photo == undefined) {
+    if (photo) {
       console.log(photo);
+      return;
     } else {
       console.log("no photo in context...yet 🎆");
     }
-    if (photo) return;
     if (!id) return;
     async function getPhoto() {
+      console.log("doing an API call 📞");
       const response = await fetchPexels("show", { id });
-      setActivePhoto(response);
+      setPhoto(response);
     }
     getPhoto();
-  }, [id, photo, setActivePhoto]);
+  }, [id, photo, setPhoto]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -54,6 +53,7 @@ function PhotoModal({ photo }) {
               alt={photo.alt}
               width={photo.width}
               height={photo.height}
+              priority
               style={{
                 maxWidth: "100%",
                 maxHeight: "100%",
