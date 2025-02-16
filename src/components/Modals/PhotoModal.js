@@ -69,7 +69,7 @@ function PhotoModal({ photo, setPhoto }) {
             />
           </div>
           <div className="flex items-center justify-center w-full md:w-1/2 h-full">
-            <Comments />
+            <Comments photo={photo} />
           </div>
         </div>
       </div>
