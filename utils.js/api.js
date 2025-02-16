@@ -23,7 +23,8 @@ export async function fetchPexels(endpoint, params) {
     }
     return response;
   } catch (error) {
-    console.error("Problem fetching from Pexels:", error);
+    // TODO: handle error
+    console.error("Problem fetching from Pexels 🙅🏾‍♂️:", error);
     return null;
   }
 }
