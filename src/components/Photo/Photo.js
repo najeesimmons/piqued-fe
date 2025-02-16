@@ -5,10 +5,6 @@ import { usePhoto } from "@/context/PhotoContext";
 
 function Photo({ photo, priority }) {
   const { setActivePhoto } = usePhoto();
-  // const router = useRouter();
-  // const handleClick = () => {
-  //   router.push({ pathname: `/photos/${id}`, query: { id: id } });
-  // };
   return (
     <Link href={`/?show=true&id=${photo.id}`}>
       <Image
