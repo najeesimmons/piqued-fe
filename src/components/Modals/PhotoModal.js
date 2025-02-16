@@ -1,7 +1,6 @@
 "use client";
 import { fetchPexels } from "../../../utils.js/api";
 import Image from "next/image";
-import Link from "next/link";
 import Section from "../Section/Section";
 import { useEffect } from "react";
 import { usePhoto } from "@/context/PhotoContext";
@@ -14,13 +13,29 @@ function PhotoModal({ photo }) {
   const { id } = router.query;
 
   useEffect(() => {
-    if (!id || photo) return;
+    if (photo == null || photo == undefined) {
+      console.log(photo);
+    } else {
+      console.log("no photo in context...yet 🎆");
+    }
+    if (photo) return;
+    if (!id) return;
     async function getPhoto() {
       const response = await fetchPexels("show", { id });
       setActivePhoto(response);
     }
     getPhoto();
   }, [id, photo, setActivePhoto]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        router.replace("/", undefined, { shallow: true });
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [router]);
 
   if (!photo) return <p>Loading...</p>;
 
@@ -48,12 +63,6 @@ function PhotoModal({ photo }) {
           </div>
           <div className="flex items-center justify-center w-full md:w-1/2 h-full">
             <Comments />
-            {/* <Link
-              href="/"
-              className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            >
-              Close
-            </Link> */}
           </div>
         </div>
       </div>
