@@ -18,7 +18,7 @@ function PhotoModal({ photo, setPhoto }) {
   useEffect(() => {
     if (photo) return;
     async function getPhoto() {
-      console.log("doing an API call 📞");
+      console.log("...doing fetch from PhotoModal 🐶");
       const response = await fetchPexels("show", { id });
       setPhoto(response);
     }
