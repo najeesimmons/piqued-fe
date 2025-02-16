@@ -31,7 +31,6 @@ export default function Home({ initPhotos }) {
   const [isError, setIsError] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  // const { activePhoto } = usePhoto();
   const [photo, setPhoto] = useState();
 
   const router = useRouter();
@@ -42,7 +41,6 @@ export default function Home({ initPhotos }) {
       const response = await fetchPexels("search", { query: searchTerm });
       setPhotos(response.photos);
     } catch (error) {
-      console.log("your search failed...👎🏾");
       setIsError(true);
     }
   };
@@ -53,7 +51,8 @@ export default function Home({ initPhotos }) {
   }, [initPhotos]);
 
   useEffect(() => {
-    console.log("show:", show);
+    // TODO: delete console log
+    console.log("the modal should be open 🪟:", show);
   }, [show]);
 
   return (
