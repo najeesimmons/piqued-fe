@@ -11,9 +11,6 @@ export default function PhotoMasonry({ photos }) {
             <Photo
               key={index}
               photo={photo}
-              // src={photo.src.original}
-              // alt={photo.alt}
-              // id={photo.id}
               priority={isPriority ? true : undefined}
             />
           );
