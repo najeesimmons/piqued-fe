@@ -18,6 +18,7 @@ function PhotoModal({ photo, setPhoto }) {
   useEffect(() => {
     if (photo) return;
     async function getPhoto() {
+      // TODO: delete console log
       console.log("...doing fetch from PhotoModal 🐶");
       const response = await fetchPexels("show", { id });
       setPhoto(response);
