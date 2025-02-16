@@ -3,17 +3,30 @@ import Comments from "../Comments/Comments";
 import { fetchPexels } from "../../../utils.js/api";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
+import ReactDOM from "react-dom";
 import Section from "../Section/Section";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-function PhotoModal({ photo, setPhoto }) {
+function PhotoModal({ photo, setPhoto, show }) {
   const router = useRouter();
   const { id } = router.query;
 
   const handleClose = () => {
     router.replace("/", undefined, { shallow: true });
   };
+
+  useEffect(() => {
+    if (show === "true") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [show]);
 
   useEffect(() => {
     if (photo) return;
@@ -38,9 +51,9 @@ function PhotoModal({ photo, setPhoto }) {
 
   if (!photo) return <h1>Loading....</h1>;
 
-  return (
+  return ReactDOM.createPortal(
     <Section>
-      <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center">
+      <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
         <div className="flex p-4 w-[90vw] h-[90vh] shadow-lg bg-white">
           <button
             onClick={handleClose}
@@ -73,7 +86,8 @@ function PhotoModal({ photo, setPhoto }) {
           </div>
         </div>
       </div>
-    </Section>
+    </Section>,
+    document.getElementById("modal-root")
   );
 }
 

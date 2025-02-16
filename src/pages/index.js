@@ -69,7 +69,9 @@ export default function Home({ initPhotos }) {
       <Section>
         <DynamicPhotoMasonry photos={photos} setPhoto={setPhoto} />
       </Section>
-      {show === "true" && <PhotoModal photo={photo} setPhoto={setPhoto} />}
+      {show === "true" && (
+        <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
+      )}
     </>
   );
 }
