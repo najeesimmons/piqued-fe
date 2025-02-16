@@ -55,6 +55,8 @@ export default function Home({ initPhotos }) {
     console.log("the modal should be open 🪟:", show);
   }, [show]);
 
+  if (isError) return <h1>Error loading photos</h1>;
+
   return (
     <>
       <Section>
