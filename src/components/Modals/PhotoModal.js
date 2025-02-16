@@ -2,6 +2,7 @@
 import Comments from "../Comments/Comments";
 import { fetchPexels } from "../../../utils.js/api";
 import Image from "next/image";
+import { IoCloseSharp } from "react-icons/io5";
 import Section from "../Section/Section";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -10,14 +11,12 @@ function PhotoModal({ photo, setPhoto }) {
   const router = useRouter();
   const { id } = router.query;
 
+  const handleClose = () => {
+    router.replace("/", undefined, { shallow: true });
+  };
+
   useEffect(() => {
-    if (photo) {
-      console.log(photo);
-      return;
-    } else {
-      console.log("no photo in context...yet 🎆");
-    }
-    if (!id) return;
+    if (photo) return;
     async function getPhoto() {
       console.log("doing an API call 📞");
       const response = await fetchPexels("show", { id });
@@ -36,12 +35,19 @@ function PhotoModal({ photo, setPhoto }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [router]);
 
-  if (!photo) return <p>Loading...</p>;
+  if (!photo) return <h1>Loading....</h1>;
 
   return (
     <Section>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center">
         <div className="flex p-4 w-[90vw] h-[90vh] shadow-lg bg-white">
+          <button
+            onClick={handleClose}
+            className="absolute top-4 left-4 text-3xl"
+            aria-label="Close Modal"
+          >
+            <IoCloseSharp color="white" size={35} />
+          </button>
           <div
             className="flex items-center justify-center w-full md:w-1/2 h-full"
             style={{
