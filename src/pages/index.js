@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+import { fetchPexels } from "../../utils.js/api";
+import PhotoModal from "@/components/Modals/PhotoModal";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
-import dynamic from "next/dynamic";
-import PhotoModal from "@/components/Modals/PhotoModal";
-import { fetchPexels } from "../../utils.js/api";
-
+import { useRouter } from "next/router";
+import { useState, useEffect, useCallback } from "react";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
