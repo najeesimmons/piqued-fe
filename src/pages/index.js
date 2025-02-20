@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
@@ -38,18 +38,17 @@ export default function Home({ initPhotos, initNextPage }) {
   const router = useRouter();
   const { show } = router.query;
 
-  const getSearchPhotos = async () => {
+  const getSearchPhotos = useCallback(async () => {
     try {
       const response = await fetchPexels("search", { query: searchTerm });
       setPhotos(response.photos);
     } catch (error) {
       setIsError(true);
     }
-  };
+  }, [searchTerm]);
 
-  const getNextPhotos = async () => {
+  const getNextPhotos = useCallback(async () => {
     try {
-      console.log(`getting ${nextPage} of next photos ⏭`);
       const response = await fetchPexels("curated", { page: nextPage });
       setPhotos((prevPhotos) => [...prevPhotos, ...response.photos]);
       setNextPage((prevPage) => prevPage + 1);
@@ -57,7 +56,7 @@ export default function Home({ initPhotos, initNextPage }) {
     } catch (error) {
       setIsError(true);
     }
-  };
+  }, [nextPage]);
 
   useEffect(() => {
     console.log("home re-rendered 🏠");
