@@ -2,17 +2,24 @@ import { createClient } from "pexels";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
 
-export async function fetchPexels(endpoint, params) {
+export async function fetchPexels(endpoint, params = {}) {
+  const page = params.page || 1;
+
   try {
     let response;
     switch (endpoint) {
       case "curated":
-        response = await client.photos.curated({ per_page: 80 });
+        response = await client.photos.curated({
+          per_page: 80,
+          page,
+        });
+        console.log("🐶 just fetched page", page);
         break;
       case "search":
         response = await client.photos.search({
           query: params.query,
           per_page: 80,
+          page,
         });
         break;
       case "show":
@@ -23,7 +30,6 @@ export async function fetchPexels(endpoint, params) {
     }
     return response;
   } catch (error) {
-    // TODO: handle error
     console.error("Problem fetching from Pexels 🙅🏾‍♂️:", error);
     return null;
   }

@@ -20,18 +20,20 @@ export async function getStaticProps() {
   const response = await fetchPexels("curated");
   if (response) {
     return {
-      props: { initPhotos: response.photos },
+      props: { initPhotos: response.photos, initNextPage: response.page + 1 },
       revalidate: 3600,
     };
   }
   return { props: { initPhotos: [] }, revalidate: 3600 };
 }
 
-export default function Home({ initPhotos }) {
+export default function Home({ initPhotos, initNextPage }) {
+  const [hasMore, setHasMore] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [nextPage, setNextPage] = useState(initNextPage);
+  const [photo, setPhoto] = useState();
   const [photos, setPhotos] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [photo, setPhoto] = useState();
 
   const router = useRouter();
   const { show } = router.query;
@@ -45,12 +47,26 @@ export default function Home({ initPhotos }) {
     }
   };
 
+  const getNextPhotos = async () => {
+    try {
+      console.log(`getting ${nextPage} of next photos ⏭`);
+      const response = await fetchPexels("curated", { page: nextPage });
+      setPhotos((prevPhotos) => [...prevPhotos, ...response.photos]);
+      setNextPage((prevPage) => prevPage + 1);
+      setHasMore(!!response.next_page);
+    } catch (error) {
+      setIsError(true);
+    }
+  };
+
   useEffect(() => {
-    console.log("home rerendered 🏠");
+    console.log("home re-rendered 🏠");
   }, []);
 
   useEffect(() => {
-    if (!initPhotos) return;
+    if (!initPhotos) {
+      return;
+    }
     setPhotos(initPhotos);
   }, [initPhotos]);
 
@@ -71,7 +87,12 @@ export default function Home({ initPhotos }) {
         />
       </Section>
       <Section>
-        <DynamicPhotoMasonry photos={photos} setPhoto={setPhoto} />
+        <DynamicPhotoMasonry
+          getNextPhotos={getNextPhotos}
+          hasMore={hasMore}
+          photos={photos}
+          setPhoto={setPhoto}
+        />
       </Section>
       {show === "true" && (
         <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
