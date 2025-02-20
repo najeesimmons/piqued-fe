@@ -70,11 +70,6 @@ export default function Home({ initPhotos, initNextPage }) {
     setPhotos(initPhotos);
   }, [initPhotos]);
 
-  useEffect(() => {
-    // TODO: delete console log
-    console.log("the modal should be open 🪟:", show);
-  }, [show]);
-
   if (isError) return <h1>Error loading photos</h1>;
 
   return (
