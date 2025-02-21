@@ -1,6 +1,7 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Photo from "../Photo/Photo";
+import { useEffect } from "react";
 
 export default function PhotoMasonry({
   photos,
@@ -8,6 +9,10 @@ export default function PhotoMasonry({
   getNextPhotos,
   hasMore,
 }) {
+  useEffect(() => {
+    console.log("re-rendered PhotoMasonry 📸");
+  }, []);
+
   return (
     <InfiniteScroll
       dataLength={photos.length}
