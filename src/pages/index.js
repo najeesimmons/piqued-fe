@@ -39,9 +39,12 @@ export default function Home({ initPhotos, initNextPage }) {
   const { show } = router.query;
 
   const getSearchPhotos = useCallback(async () => {
+    setNextPage(1);
     try {
       const response = await fetchPexels("search", { query: searchTerm });
       setPhotos(response.photos);
+      setNextPage((prevPage) => prevPage + 1);
+      setHasMore(!!response.next_page);
       setFetchMode("search");
     } catch (error) {
       setIsError(true);
@@ -50,11 +53,9 @@ export default function Home({ initPhotos, initNextPage }) {
 
   const getNextPhotos = useCallback(async () => {
     try {
-      // const response = await fetchPexels("curated", { page: nextPage });
-      // need to say, if fetchMode is "search", also pass "query" to fetchPexels
       const response = await fetchPexels(fetchMode, {
-        page: nextPage,
-        ...(mode === "search" && { query: searchTerm }),
+        ...(nextPage && { page: nextPage }),
+        ...(fetchMode === "search" && { query: searchTerm }),
       });
       setPhotos((prevPhotos) => [...prevPhotos, ...response.photos]);
       setNextPage((prevPage) => prevPage + 1);
@@ -74,6 +75,10 @@ export default function Home({ initPhotos, initNextPage }) {
     }
     setPhotos(initPhotos);
   }, [initPhotos]);
+
+  useEffect(() => {
+    console.log(fetchMode);
+  }, [fetchMode]);
 
   if (isError) return <h1>Error loading photos</h1>;
 
