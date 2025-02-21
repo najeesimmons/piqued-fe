@@ -29,7 +29,7 @@ export async function getStaticProps() {
 export default function Home({ initPhotos, initNextPage }) {
   const [hasMore, setHasMore] = useState(true);
   const [isError, setIsError] = useState(false);
-  const [mode, setMode] = useState("curated");
+  const [fetchMode, setFetchMode] = useState("curated");
   const [nextPage, setNextPage] = useState(initNextPage);
   const [photo, setPhoto] = useState();
   const [photos, setPhotos] = useState([]);
@@ -42,6 +42,7 @@ export default function Home({ initPhotos, initNextPage }) {
     try {
       const response = await fetchPexels("search", { query: searchTerm });
       setPhotos(response.photos);
+      setFetchMode("search");
     } catch (error) {
       setIsError(true);
     }
@@ -50,14 +51,18 @@ export default function Home({ initPhotos, initNextPage }) {
   const getNextPhotos = useCallback(async () => {
     try {
       // const response = await fetchPexels("curated", { page: nextPage });
-      const response = await fetchPexels(mode, { page: nextPage });
+      // need to say, if fetchMode is "search", also pass "query" to fetchPexels
+      const response = await fetchPexels(fetchMode, {
+        page: nextPage,
+        ...(mode === "search" && { query: searchTerm }),
+      });
       setPhotos((prevPhotos) => [...prevPhotos, ...response.photos]);
       setNextPage((prevPage) => prevPage + 1);
       setHasMore(!!response.next_page);
     } catch (error) {
       setIsError(true);
     }
-  }, [nextPage, mode]);
+  }, [nextPage, fetchMode, searchTerm]);
 
   useEffect(() => {
     console.log("home re-rendered 🏠");
