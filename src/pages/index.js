@@ -19,17 +19,21 @@ export async function getStaticProps() {
   const response = await fetchPexels("curated");
   if (response) {
     return {
-      props: { initPhotos: response.photos, initNextPage: response.page + 1 },
+      props: {
+        initPhotos: response.photos,
+        initNextPage: response.page + 1,
+        initHasMore: !!response.next_page,
+      },
       revalidate: 3600,
     };
   }
   return { props: { initPhotos: [] }, revalidate: 3600 };
 }
 
-export default function Home({ initPhotos, initNextPage }) {
-  const [hasMore, setHasMore] = useState(true);
-  const [isError, setIsError] = useState(false);
+export default function Home({ initHasMore, initPhotos, initNextPage }) {
   const [fetchMode, setFetchMode] = useState("curated");
+  const [hasMore, setHasMore] = useState(initHasMore);
+  const [isError, setIsError] = useState(false);
   const [nextPage, setNextPage] = useState(initNextPage);
   const [photo, setPhoto] = useState();
   const [photos, setPhotos] = useState([]);
@@ -38,7 +42,7 @@ export default function Home({ initPhotos, initNextPage }) {
   const router = useRouter();
   const { show } = router.query;
 
-  const getSearchPhotos = useCallback(async () => {
+  const getFirstSearchPhotos = useCallback(async () => {
     setNextPage(1);
     try {
       const response = await fetchPexels("search", { query: searchTerm });
@@ -86,7 +90,7 @@ export default function Home({ initPhotos, initNextPage }) {
     <>
       <Section>
         <SearchBar
-          getSearchPhotos={getSearchPhotos}
+          getSearchPhotos={getFirstSearchPhotos}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
         />
