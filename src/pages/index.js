@@ -36,11 +36,11 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
   const [isError, setIsError] = useState(false);
   const [nextPage, setNextPage] = useState(initNextPage);
   const [photo, setPhoto] = useState();
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(initPhotos || []);
   const [searchTerm, setSearchTerm] = useState("");
 
   const router = useRouter();
-  const { show } = router.query;
+  const { show } = router.query || {};
 
   const getFirstSearchPhotos = useCallback(async () => {
     setNextPage(1);
@@ -72,13 +72,6 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
   useEffect(() => {
     console.log("home re-rendered 🏠");
   }, []);
-
-  useEffect(() => {
-    if (!initPhotos) {
-      return;
-    }
-    setPhotos(initPhotos);
-  }, [initPhotos]);
 
   useEffect(() => {
     console.log(fetchMode);
