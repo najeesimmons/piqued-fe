@@ -12,8 +12,7 @@ function PhotoModal({ photo, setPhoto, show }) {
   const router = useRouter();
   const { id } = router.query;
 
-  const handleClose = (e) => {
-    // e.preventDefault();
+  const handleClose = () => {
     router.replace("/", undefined, { shallow: true });
   };
 
