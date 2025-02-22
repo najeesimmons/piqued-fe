@@ -1,5 +1,4 @@
 "use client";
-// make client, use router
 import Image from "next/image";
 import { useRouter } from "next/router";
 // TODO: shallow routing from Link which caused soft navigation to home component
@@ -7,6 +6,12 @@ import { useRouter } from "next/router";
 
 function Photo({ photo, priority, setPhoto }) {
   const router = useRouter();
+  const openPhotoModal = () => {
+    const liveQuery = { ...router.query, show: "true", id: photo.id };
+    router.replace({ pathname: router.pathname, query: liveQuery }, undefined, {
+      shallow: true,
+    });
+  };
   return (
     // <Link href={`/?show=true&id=${photo.id}`}>
     <Image
@@ -20,7 +25,10 @@ function Photo({ photo, priority, setPhoto }) {
       {...(priority && { priority })}
       onClick={() => {
         setPhoto(photo);
-        router.push(`/?show=true&id=${photo.id}`, undefined, { shallow: true });
+        openPhotoModal();
+        // router.replace(`/?show=true&id=${photo.id}`, undefined, {
+        //   shallow: true,
+        // });
       }}
     />
     // </Link>

@@ -41,6 +41,7 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
 
   const router = useRouter();
   const { show } = router.query || {};
+  const { search } = router.query || {};
 
   const getFirstSearchPhotos = useCallback(async () => {
     setNextPage(1);
@@ -50,10 +51,11 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
       setNextPage((prevPage) => prevPage + 1);
       setHasMore(!!response.next_page);
       setFetchMode("search");
+      router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
     } catch (error) {
       setIsError(true);
     }
-  }, [searchTerm]);
+  }, [router, searchTerm]);
 
   const getNextPhotos = useCallback(async () => {
     try {

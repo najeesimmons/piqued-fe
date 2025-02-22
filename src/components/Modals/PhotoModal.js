@@ -5,16 +5,19 @@ import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
 import ReactDOM from "react-dom";
 import Section from "../Section/Section";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/router";
 
 function PhotoModal({ photo, setPhoto, show }) {
   const router = useRouter();
   const { id } = router.query;
 
-  const handleClose = () => {
-    router.replace("/", undefined, { shallow: true });
-  };
+  const handleClose = useCallback(() => {
+    const { id, show, ...restQuery } = router.query;
+    router.replace({ pathname: router.pathname, query: restQuery }, undefined, {
+      shallow: true,
+    });
+  }, [router]);
 
   useEffect(() => {
     if (show === "true") {
@@ -31,7 +34,6 @@ function PhotoModal({ photo, setPhoto, show }) {
   useEffect(() => {
     if (photo) return;
     async function getPhoto() {
-      // TODO: delete console log
       console.log("...doing fetch from PhotoModal 🐶");
       const response = await fetchPexels("show", { id });
       setPhoto(response);
@@ -42,12 +44,12 @@ function PhotoModal({ photo, setPhoto, show }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        router.replace("/", undefined, { shallow: true });
+        handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [router]);
+  }, [router, handleClose]);
 
   if (!photo) return <h1>Loading....</h1>;
 
