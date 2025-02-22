@@ -4,10 +4,10 @@ import Photo from "../Photo/Photo";
 import { useEffect } from "react";
 
 export default function PhotoMasonry({
+  hasMore,
+  getNextPhotos,
   photos,
   setPhoto,
-  getNextPhotos,
-  hasMore,
 }) {
   useEffect(() => {
     console.log("re-rendered PhotoMasonry 📸");
