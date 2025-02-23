@@ -56,7 +56,7 @@ function PhotoModal({ photo, setPhoto, show }) {
   return ReactDOM.createPortal(
     <Section>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
-        <div className="flex p-4 w-[90vw] h-[90vh] shadow-lg bg-white">
+        <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white">
           <button
             onClick={handleClose}
             className="absolute top-4 left-4 text-3xl"
