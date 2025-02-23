@@ -20,7 +20,7 @@ export default function Comments({ photo }) {
   ];
 
   return (
-    <div className="w-full h-[350px] md:h-full mx-auto flex flex-col border p-4">
+    <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
       <div
         className="flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
