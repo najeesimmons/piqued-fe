@@ -45,20 +45,21 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
 
   const getFirstSearchPhotos = useCallback(async () => {
     setNextPage(1);
-    try {
-      const response = await fetchPexels("search", { query: searchTerm });
+
+    const response = await fetchPexels("search", { query: searchTerm });
+    if (response) {
       setPhotos(response.photos);
       setNextPage((prevPage) => prevPage + 1);
       setHasMore(!!response.next_page);
       setFetchMode("search");
       router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
-    } catch (error) {
+    } else {
       setIsError(true);
     }
   }, [router, searchTerm]);
 
   const getNextPhotos = useCallback(async () => {
-    try {
+    if (response) {
       const response = await fetchPexels(fetchMode, {
         ...(nextPage && { page: nextPage }),
         ...(fetchMode === "search" && { query: searchTerm }),
@@ -66,7 +67,7 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
       setPhotos((prevPhotos) => [...prevPhotos, ...response.photos]);
       setNextPage((prevPage) => prevPage + 1);
       setHasMore(!!response.next_page);
-    } catch (error) {
+    } else {
       setIsError(true);
     }
   }, [nextPage, fetchMode, searchTerm]);
@@ -78,8 +79,6 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
   useEffect(() => {
     console.log(fetchMode);
   }, [fetchMode]);
-
-  if (isError) return <h1>Error loading photos</h1>;
 
   return (
     <>
