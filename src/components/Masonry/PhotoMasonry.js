@@ -1,3 +1,4 @@
+import { BeatLoader } from "react-spinners";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Photo from "../Photo/Photo";
@@ -18,7 +19,11 @@ export default function PhotoMasonry({
       dataLength={photos.length}
       endMessage={<p>No More!</p>}
       hasMore={hasMore}
-      loader={<h4>Loading</h4>}
+      loader={
+        <div className="w-full h-full flex justify-center items-center mt-32">
+          <BeatLoader loading={true} />
+        </div>
+      }
       next={getNextPhotos}
     >
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
