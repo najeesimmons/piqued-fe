@@ -37,13 +37,17 @@ function PhotoModal({ photo, setPhoto, show }) {
   useEffect(() => {
     if (photo) return;
     async function getPhoto() {
+      setIsLoading(true);
       console.log("...doing fetch from PhotoModal 🐶");
       const response = await fetchPexels("show", { id });
-      setPhoto(response);
+      if (response) {
+        setPhoto(response);
+      } else {
+        setIsError(true);
+      }
+      setIsLoading(false);
     }
-    setIsLoading(true);
     getPhoto();
-    setIsLoading(false);
   }, [id, photo, setPhoto]);
 
   useEffect(() => {
@@ -62,6 +66,8 @@ function PhotoModal({ photo, setPhoto, show }) {
         <Loader />
       </div>
     );
+
+  if (isError) return <h1>error 📣</h1>;
 
   return ReactDOM.createPortal(
     <Section>
