@@ -3,12 +3,15 @@ import Comments from "../Comments/Comments";
 import { fetchPexels } from "../../../utils.js/api";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
+import Loader from "../Loader/Loader";
 import ReactDOM from "react-dom";
 import Section from "../Section/Section";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 function PhotoModal({ photo, setPhoto, show }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const router = useRouter();
   const { id } = router.query;
 
@@ -38,7 +41,9 @@ function PhotoModal({ photo, setPhoto, show }) {
       const response = await fetchPexels("show", { id });
       setPhoto(response);
     }
+    setIsLoading(true);
     getPhoto();
+    setIsLoading(false);
   }, [id, photo, setPhoto]);
 
   useEffect(() => {
@@ -51,7 +56,12 @@ function PhotoModal({ photo, setPhoto, show }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [router, handleClose]);
 
-  if (!photo) return <h1>Loading....</h1>;
+  if (!photo || isLoading)
+    return (
+      <div className="w-full h-full flex justify-center items-center mt-32">
+        <Loader />
+      </div>
+    );
 
   return ReactDOM.createPortal(
     <Section>
@@ -70,18 +80,22 @@ function PhotoModal({ photo, setPhoto, show }) {
               backgroundColor: photo.avg_color,
             }}
           >
-            <Image
-              src={photo.src.original}
-              alt={photo.alt}
-              width={photo.width}
-              height={photo.height}
-              priority
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-            />
+            {!isLoading ? (
+              <Image
+                src={photo.src.original}
+                alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+                priority
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            ) : (
+              <Loader />
+            )}
           </div>
           <div className="flex items-center justify-center w-full md:w-1/2 h-full">
             <Comments photo={photo} />
