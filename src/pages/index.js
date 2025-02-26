@@ -59,11 +59,11 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
   }, [router, searchTerm]);
 
   const getNextPhotos = useCallback(async () => {
+    const response = await fetchPexels(fetchMode, {
+      ...(nextPage && { page: nextPage }),
+      ...(fetchMode === "search" && { query: searchTerm }),
+    });
     if (response) {
-      const response = await fetchPexels(fetchMode, {
-        ...(nextPage && { page: nextPage }),
-        ...(fetchMode === "search" && { query: searchTerm }),
-      });
       setPhotos((prevPhotos) => [...prevPhotos, ...response.photos]);
       setNextPage((prevPage) => prevPage + 1);
       setHasMore(!!response.next_page);
