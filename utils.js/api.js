@@ -2,6 +2,29 @@ import { createClient } from "pexels";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
 
+function handleApiError(response, endpoint) {
+  if (response.error) {
+    throw new Error(`Pexels API Error [${endpoint}]: ${response.error}`);
+  }
+
+  if (
+    (endpoint === "curated" || endpoint === "search") &&
+    (!response ||
+      !Array.isArray(response.photos) ||
+      response.photos.length === 0)
+  ) {
+    throw new Error(
+      `Pexels API Error [${endpoint}]: Invalid or empty photo list`
+    );
+  }
+
+  if (endpoint === "show" && (!response || !response.id)) {
+    throw new Error(
+      `Pexels API Error [${endpoint}]: Invalid response for photo ID`
+    );
+  }
+}
+
 export async function fetchPexels(endpoint, params = {}) {
   const page = params.page || 1;
 
@@ -29,9 +52,19 @@ export async function fetchPexels(endpoint, params = {}) {
       default:
         throw new Error(`Unsupported endpoint: ${endpoint}`);
     }
+
+    handleApiError(response, endpoint);
+
     return response;
   } catch (error) {
-    console.error("Problem fetching from Pexels 🙅🏾‍♂️:", error);
-    return null;
+    if (error.message) {
+      console.error(
+        `❌ Error occurred fetching data from Pexels: ${error.message}`
+      );
+    } else {
+      console.error(`❌ Unexpected error fetching from Pexels 🙅🏾‍♂️: ${error}`);
+    }
   }
+
+  return null;
 }
