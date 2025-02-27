@@ -93,6 +93,7 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
         <DynamicPhotoMasonry
           getNextPhotos={getNextPhotos}
           hasMore={hasMore}
+          isError={isError}
           photos={photos}
           setPhoto={setPhoto}
         />

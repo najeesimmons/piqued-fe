@@ -68,6 +68,8 @@ function PhotoModal({ photo, setPhoto, show }) {
     );
 
   if (isError) return <h1>error 📣</h1>;
+  //provide opportunity to attempt to refetch if error.
+  //when that is clicked, turn isError off
 
   return ReactDOM.createPortal(
     <Section>
