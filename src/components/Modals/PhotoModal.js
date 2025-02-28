@@ -48,9 +48,8 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   useEffect(() => {
     if (photo) return;
-
     getPhoto();
-  }, [id, getPhoto, photo, setPhoto]);
+  }, [id, getPhoto, photo]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -62,54 +61,64 @@ function PhotoModal({ photo, setPhoto, show }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleClose]);
 
-  if (!photo || isLoading)
-    return (
-      <div className="w-full h-full flex justify-center items-center mt-32">
-        <Loader />
-      </div>
-    );
-
-  if (isError) return <h1>error 📣</h1>;
-  //provide opportunity to attempt to refetch if error.
-  //when that is clicked, turn isError off
-
   return ReactDOM.createPortal(
     <Section>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
-        <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white">
+        <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white relative">
           <button
             onClick={handleClose}
-            className="absolute top-4 left-4 text-3xl"
+            className="absolute top-4 left-4 text-3xl z-[10000]"
             aria-label="Close Modal"
           >
             <IoCloseSharp color="white" size={35} />
           </button>
-          <div
-            className="flex items-center justify-center w-full md:w-1/2 h-full"
-            style={{
-              backgroundColor: photo.avg_color,
-            }}
-          >
-            {!isLoading ? (
-              <Image
-                src={photo.src.original}
-                alt={photo.alt}
-                width={photo.width}
-                height={photo.height}
-                priority
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  objectFit: "contain",
-                }}
-              />
-            ) : (
+
+          {isLoading || !photo ? (
+            <div className="w-full h-full flex justify-center items-center mt-32">
               <Loader />
-            )}
-          </div>
-          <div className="flex items-center justify-center w-full md:w-1/2 h-full">
-            <Comments photo={photo} />
-          </div>
+            </div>
+          ) : (
+            <>
+              <div
+                className="flex items-center justify-center w-full md:w-1/2 h-full"
+                style={{
+                  backgroundColor: isError ? "white" : photo.avg_color,
+                }}
+              >
+                {!isError ? (
+                  <Image
+                    src={photo.src.original}
+                    alt={photo.alt}
+                    width={photo.width}
+                    height={photo.height}
+                    priority
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+                ) : (
+                  <div className="flex flex-col p-4 w-[50vw] h-auto bg-white">
+                    <h1 className="mx-auto text-xl font-bold">Oops! 🙈</h1>
+                    <h2 className="mt-2">
+                      We ran into a little trouble loading your photo. Please
+                      click the button to try again.
+                    </h2>
+                    <button
+                      className="mt-4 mx-auto px-2 py-2 w-1/2 md:w-1/4 bg-red-500 text-white font-semibold border border-red-700 hover:bg-red-600 transition duration-200"
+                      onClick={getPhoto}
+                    >
+                      Retry
+                    </button>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center justify-center w-full md:w-1/2 h-full">
+                <Comments photo={photo} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Section>,
