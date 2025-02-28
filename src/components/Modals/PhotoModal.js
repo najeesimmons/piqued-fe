@@ -58,7 +58,7 @@ function PhotoModal({ photo, setPhoto, show }) {
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [router, handleClose]);
+  }, [handleClose]);
 
   if (!photo || isLoading)
     return (
