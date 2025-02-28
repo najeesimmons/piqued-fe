@@ -22,6 +22,18 @@ function PhotoModal({ photo, setPhoto, show }) {
     });
   }, [router]);
 
+  const getPhoto = useCallback(async () => {
+    setIsLoading(true);
+    console.log("...doing fetch from PhotoModal 🐶");
+    const response = await fetchPexels("show", { id });
+    if (response) {
+      setPhoto(response);
+    } else {
+      setIsError(true);
+    }
+    setIsLoading(false);
+  }, [id, setPhoto]);
+
   useEffect(() => {
     if (show === "true") {
       document.body.style.overflow = "hidden";
@@ -36,19 +48,9 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   useEffect(() => {
     if (photo) return;
-    async function getPhoto() {
-      setIsLoading(true);
-      console.log("...doing fetch from PhotoModal 🐶");
-      const response = await fetchPexels("show", { id });
-      if (response) {
-        setPhoto(response);
-      } else {
-        setIsError(true);
-      }
-      setIsLoading(false);
-    }
+
     getPhoto();
-  }, [id, photo, setPhoto]);
+  }, [id, getPhoto, photo, setPhoto]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
