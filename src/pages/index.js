@@ -3,6 +3,7 @@ import ErrorModal from "@/components/Modals/ErrorModal/ErrorModal";
 import dynamic from "next/dynamic";
 import { fetchPexels } from "../../utils.js/api";
 import PhotoModal from "@/components/Modals/PhotoModal";
+import Navigation from "@/components/Navigation/Navigation";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { useRouter } from "next/router";
@@ -83,6 +84,7 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
 
   return (
     <>
+      <Navigation />
       <Section>
         <SearchBar
           getSearchPhotos={getFirstSearchPhotos}
