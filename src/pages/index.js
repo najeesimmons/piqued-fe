@@ -34,7 +34,7 @@ export async function getStaticProps() {
 export default function Home({ initHasMore, initPhotos, initNextPage }) {
   const [fetchMode, setFetchMode] = useState("curated");
   const [hasMore, setHasMore] = useState(initHasMore);
-  const [isError, setIsError] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [nextPage, setNextPage] = useState(initNextPage);
   const [photo, setPhoto] = useState();
   const [photos, setPhotos] = useState(initPhotos || []);
