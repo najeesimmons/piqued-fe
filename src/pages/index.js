@@ -1,4 +1,5 @@
 "use client";
+import ErrorModal from "@/components/Modals/ErrorModal/ErrorModal";
 import dynamic from "next/dynamic";
 import { fetchPexels } from "../../utils.js/api";
 import PhotoModal from "@/components/Modals/PhotoModal";
@@ -33,7 +34,7 @@ export async function getStaticProps() {
 export default function Home({ initHasMore, initPhotos, initNextPage }) {
   const [fetchMode, setFetchMode] = useState("curated");
   const [hasMore, setHasMore] = useState(initHasMore);
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(true);
   const [nextPage, setNextPage] = useState(initNextPage);
   const [photo, setPhoto] = useState();
   const [photos, setPhotos] = useState(initPhotos || []);
@@ -101,6 +102,7 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
       {show === "true" && (
         <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
       )}
+      {isError && <ErrorModal setisError={setIsError} />}
     </>
   );
 }
