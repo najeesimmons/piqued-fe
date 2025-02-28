@@ -102,7 +102,7 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
       {show === "true" && (
         <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
       )}
-      {isError && <ErrorModal setisError={setIsError} />}
+      {isError && <ErrorModal isError={isError} setisError={setIsError} />}
     </>
   );
 }
