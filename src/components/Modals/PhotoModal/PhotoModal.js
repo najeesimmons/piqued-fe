@@ -1,11 +1,11 @@
 "use client";
-import Comments from "../Comments/Comments";
-import { fetchPexels } from "../../../utils.js/api";
+import Comments from "@/components/Comments/Comments";
+import { fetchPexels } from "../../../../utils.js/api";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
-import Loader from "../Loader/Loader";
+import Loader from "@/components/Loader/Loader";
 import ReactDOM from "react-dom";
-import Section from "../Section/Section";
+import Section from "@/components/Section/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
