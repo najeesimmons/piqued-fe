@@ -76,6 +76,12 @@ function Signup() {
               </p>
             </form>
           </div>
+          {error && <p className="mt-3 text-red-500 text-center">{error}</p>}
+          {success && (
+            <p className="mt-3 text-green-500 text-center">
+              Sign-up successful! Check your email.
+            </p>
+          )}
         </div>
       </Section>
     </>
