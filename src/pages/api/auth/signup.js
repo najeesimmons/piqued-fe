@@ -11,11 +11,13 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Email and Password are required" });
   }
 
-  const { user, error } = await supabase.auth.signup({ email, password });
+  const { user, error } = await supabase.auth.signUp({ email, password });
 
   if (error) {
+    console.log("...user create failed 🤦🏾‍♂️", error.message);
     return res.status(400).json({ error: error.message });
   }
 
+  console.log("user create succeded 🙆🏾‍♂️", user);
   return res.status(200).json({ user });
 }

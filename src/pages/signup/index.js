@@ -11,7 +11,7 @@ function Signup() {
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventdefault();
+    e.preventDefault();
     setError("");
     setSuccess(false);
 
@@ -61,14 +61,17 @@ function Signup() {
                 <label className="block">password</label>
                 <input
                   className="w-full h-8 border"
-                  onChange={(e) => setPassword(password)}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
                   value={password}
                   required
                   style={{ textIndent: "8px" }}
                 />
               </div>
-              <button className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full">
+              <button
+                className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
+                type="submit"
+              >
                 sign up
               </button>
               <p className="text-sm mt-2 text-center">
