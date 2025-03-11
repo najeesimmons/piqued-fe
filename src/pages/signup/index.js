@@ -1,9 +1,36 @@
 "use client";
+import { useState } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
 
 function Signup() {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventdefault();
+    setError("");
+    setSuccess(false);
+
+    const res = await fetch("api/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setError(data.error);
+      return;
+    }
+
+    setSuccess(true);
+  };
+
   return (
     <>
       <Navigation />
@@ -20,7 +47,10 @@ function Signup() {
                 <label className="block">email</label>
                 <input
                   className="w-full h-8 border"
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
+                  value={email}
+                  required
                   style={{ textIndent: "8px" }}
                 />
               </div>
@@ -28,7 +58,10 @@ function Signup() {
                 <label className="block">password</label>
                 <input
                   className="w-full h-8 border"
+                  onChange={(e) => setPassword(password)}
                   placeholder="password"
+                  value={password}
+                  required
                   style={{ textIndent: "8px" }}
                 />
               </div>
