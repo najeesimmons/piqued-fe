@@ -42,7 +42,10 @@ function Signup() {
           <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4">
             <h1 className="font-bold text-center text-2xl">piqued</h1>
             <h2 className="mt-1 text-center text-xl">create your account</h2>
-            <form className="mt-2 mx-auto space-y-2 w-3/4">
+            <form
+              className="mt-2 mx-auto space-y-2 w-3/4"
+              onSubmit={handleSubmit}
+            >
               <div className="text-sm">
                 <label className="block">email</label>
                 <input
