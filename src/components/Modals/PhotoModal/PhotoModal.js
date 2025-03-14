@@ -8,14 +8,14 @@ import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSession } from "@supabase/auth-helpers-react";
+import { useSession } from "@/context/SessionContext";
 
 function PhotoModal({ photo, setPhoto, show }) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const session = useSession();
+  const { session, user } = useSession();
 
   const handleClose = useCallback(() => {
     const { id, show, ...restQuery } = router.query;
@@ -65,6 +65,7 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   return ReactDOM.createPortal(
     <Section>
+      {session && <h1>{user}</h1>}
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
         <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white relative">
           <button
@@ -87,7 +88,6 @@ function PhotoModal({ photo, setPhoto, show }) {
                   backgroundColor: isError ? "white" : photo.avg_color,
                 }}
               >
-                {session && <h1>We have a session!</h1>}
                 {!isError ? (
                   <Image
                     src={photo.src.original}
