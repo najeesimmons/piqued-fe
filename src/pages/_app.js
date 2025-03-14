@@ -1,14 +1,10 @@
 import "@/styles/globals.css";
-import {
-  createBrowserSupabaseClient,
-  SessionContextProvider,
-} from "@supabase/auth-helpers-react";
+import { SessionProvider } from "@/context/SessionContext";
 
 export default function App({ Component, pageProps }) {
-  const supabase = createBrowserSupabaseClient();
   return (
-    <SessionContextProvider supabaseClient={supabase}>
+    <SessionProvider>
       <Component {...pageProps} />
-    </SessionContextProvider>
+    </SessionProvider>
   );
 }
