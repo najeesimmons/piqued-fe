@@ -1,10 +1,14 @@
 import "@/styles/globals.css";
-import { PhotoProvider } from "@/context/PhotoContext";
+import {
+  createBrowserSupabaseClient,
+  SessionContextProvider,
+} from "@supabase/auth-helpers-react";
 
 export default function App({ Component, pageProps }) {
+  const supabase = createBrowserSupabaseClient();
   return (
-    <PhotoProvider>
+    <SessionContextProvider supabaseClient={supabase}>
       <Component {...pageProps} />
-    </PhotoProvider>
+    </SessionContextProvider>
   );
 }
