@@ -1,5 +1,7 @@
 "use client";
+import { supabase } from "../../../lib/supabase";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
@@ -10,25 +12,26 @@ function Login() {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
 
+  const { setUser } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess(false);
 
-    const res = await fetch("api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error);
+    if (error) {
+      setError(error.message);
       return;
     }
 
+    setUser(data.user); // this updates context
     setSuccess(true);
+    console.log("Logged in as:", data.user);
   };
 
   return (

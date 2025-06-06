@@ -1,10 +1,10 @@
 import "@/styles/globals.css";
-import { SessionProvider } from "@/context/SessionContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function App({ Component, pageProps }) {
   return (
-    <SessionProvider>
+    <AuthProvider>
       <Component {...pageProps} />
-    </SessionProvider>
+    </AuthProvider>
   );
 }

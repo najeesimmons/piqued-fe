@@ -1,22 +1,22 @@
 "use client";
 import Link from "next/link";
+import { supabase } from "../../../lib/supabase";
+import { useAuth } from "@/context/AuthContext";
 
 function Navigation() {
+  const { user, setUser } = useAuth();
+
   const handleSignOut = async () => {
     try {
-      const response = await fetch("/api/auth/signout", {
-        method: "POST",
-      });
-
-      const result = await response.json();
-
-      if (response.ok) {
-        console.log("Sign-out successful:", result.message);
-      } else {
-        console.error("Sign-out failed:", result.error);
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error("Sign-out failed:", error.message);
+        return;
       }
+      setUser(null);
+      console.log("Sign-out successful");
     } catch (error) {
-      console.error("Error during sign-out request:", error);
+      console.error("Error during sign-out:", error);
     }
   };
 
@@ -26,15 +26,21 @@ function Navigation() {
         <Link href={"/"}>piqued</Link>
       </span>
       <ul className="flex flex-row gap-2">
-        <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
-          <Link href={"/login"}>log in</Link>
-        </li>
-        <li className="font-semibold">
-          <Link href={"/signup"}>sign up</Link>
-        </li>
-        <li className="font-semibold" onClick={handleSignOut}>
-          sign out
-        </li>
+        {!user && (
+          <>
+            <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
+              <Link href={"/login"}>log in</Link>
+            </li>
+            <li className="font-semibold">
+              <Link href={"/signup"}>sign up</Link>
+            </li>
+          </>
+        )}
+        {user && (
+          <li className="font-semibold" onClick={handleSignOut}>
+            sign out
+          </li>
+        )}
       </ul>
     </nav>
   );
