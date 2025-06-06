@@ -26,7 +26,7 @@ function Signup() {
       return;
     }
 
-    setUser(data.user); // this updates context
+    // setUser(data.user); don't set user here unless deactiveate email confirmation, user won't be signed in at successful sign up
     console.log("Logged in as:", data.user);
     setSuccess(true);
   };
@@ -85,7 +85,7 @@ function Signup() {
           {error && <p className="mt-3 text-red-500 text-center">{error}</p>}
           {success && (
             <p className="mt-3 text-green-500 text-center">
-              Sign-up successful! Check your email.
+              Sign-up successful! Confirm via email to activate...
             </p>
           )}
         </div>
