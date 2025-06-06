@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { supabase } from "../../../lib/supabase";
 import { useAuth } from "@/context/AuthContext";
+import { LiaMountainSolid } from "react-icons/lia";
 
 function Navigation() {
   const { user, setUser } = useAuth();
@@ -22,9 +23,11 @@ function Navigation() {
 
   return (
     <nav className="py-2 flex flex-row items-center justify-between font-semibold text-sm">
-      <span className="fond-semibold">
-        <Link href={"/"}>piqued</Link>
-      </span>
+      <Link href="/" className="flex items-center gap-1 font-semibold">
+        <LiaMountainSolid />
+        <span>piqued</span>
+      </Link>
+
       <ul className="flex flex-row gap-2">
         {!user && (
           <>
