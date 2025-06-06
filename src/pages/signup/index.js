@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
+import { supabase } from "../../../lib/supabase";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -15,19 +16,18 @@ function Signup() {
     setError("");
     setSuccess(false);
 
-    const res = await fetch("api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      setError(data.error);
+    if (error) {
+      setError(error.message);
       return;
     }
 
+    setUser(data.user); // this updates context
+    console.log("Logged in as:", data.user);
     setSuccess(true);
   };
 
