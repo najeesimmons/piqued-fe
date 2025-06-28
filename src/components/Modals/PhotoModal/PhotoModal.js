@@ -72,7 +72,6 @@ function PhotoModal({ photo, setPhoto, show }) {
             aria-label="Close Modal"
           >
             <IoCloseSharp color="white" size={35} />
-            <FaHeart color="white" size={20} />
           </button>
 
           {isLoading || !photo ? (
@@ -88,8 +87,13 @@ function PhotoModal({ photo, setPhoto, show }) {
                 }}
               >
                 {!isError ? (
-                  <>
-                    <FaHeart color="white" size={35} />
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <button
+                      className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-10"
+                      aria-label="Favorite"
+                    >
+                      <FaHeart color="white" size={20} />
+                    </button>
                     <Image
                       src={photo.src.original}
                       alt={photo.alt}
@@ -102,7 +106,7 @@ function PhotoModal({ photo, setPhoto, show }) {
                         objectFit: "contain",
                       }}
                     />
-                  </>
+                  </div>
                 ) : (
                   <div className="flex flex-col p-4 w-[50vw] h-auto bg-white">
                     <h1 className="mx-auto text-xl font-bold">Oops! 🙈</h1>
