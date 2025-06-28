@@ -1,5 +1,6 @@
 "use client";
 import Comments from "@/components/Comments/Comments";
+import { FaHeart } from "react-icons/fa";
 import { fetchPexels } from "../../../../utils.js/api";
 import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
@@ -71,6 +72,7 @@ function PhotoModal({ photo, setPhoto, show }) {
             aria-label="Close Modal"
           >
             <IoCloseSharp color="white" size={35} />
+            <FaHeart color="white" size={20} />
           </button>
 
           {isLoading || !photo ? (
@@ -86,18 +88,21 @@ function PhotoModal({ photo, setPhoto, show }) {
                 }}
               >
                 {!isError ? (
-                  <Image
-                    src={photo.src.original}
-                    alt={photo.alt}
-                    width={photo.width}
-                    height={photo.height}
-                    priority
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain",
-                    }}
-                  />
+                  <>
+                    <FaHeart color="white" size={35} />
+                    <Image
+                      src={photo.src.original}
+                      alt={photo.alt}
+                      width={photo.width}
+                      height={photo.height}
+                      priority
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </>
                 ) : (
                   <div className="flex flex-col p-4 w-[50vw] h-auto bg-white">
                     <h1 className="mx-auto text-xl font-bold">Oops! 🙈</h1>
