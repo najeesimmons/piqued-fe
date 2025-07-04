@@ -1,6 +1,7 @@
 "use client";
 import { supabase } from "../../../lib/supabase";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
@@ -13,6 +14,7 @@ function Login() {
   const [success, setSuccess] = useState(false);
 
   const { setUser } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,9 +31,10 @@ function Login() {
       return;
     }
 
-    setUser(data.user); // this updates context
+    setUser(data.user);
     setSuccess(true);
     console.log("Logged in as:", data.user);
+    router.push("/");
   };
 
   return (
