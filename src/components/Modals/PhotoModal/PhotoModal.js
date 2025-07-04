@@ -26,8 +26,8 @@ function PhotoModal({ photo, setPhoto, show }) {
   }, [router]);
 
   const handleFavorite = async ({ pexel_id, url }) => {
-    console.log("pexel_id:", pexel_id); // should NOT be undefined
-    console.log("url:", url); // should NOT be undefined
+    console.log("pexel_id:", pexel_id);
+    console.log("url:", url);
     const result = await addFavorite({ pexel_id, url });
 
     if (!result) {
@@ -120,7 +120,7 @@ function PhotoModal({ photo, setPhoto, show }) {
                       onClick={() =>
                         handleFavorite({
                           pexel_id: photo.id,
-                          pexel_url: photo.src.original,
+                          url: photo.src.original,
                         })
                       }
                     >
