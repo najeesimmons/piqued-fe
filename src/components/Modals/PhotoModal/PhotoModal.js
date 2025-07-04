@@ -26,14 +26,12 @@ function PhotoModal({ photo, setPhoto, show }) {
   }, [router]);
 
   const handleFavorite = async ({ pexel_id, url }) => {
-    console.log("pexel_id:", pexel_id);
-    console.log("url:", url);
-    const result = await addFavorite({ pexel_id, url });
+    const response = await addFavorite({ pexel_id, url });
 
-    if (!result) {
+    if (!response) {
       console.error("Failed to add favorite");
     } else {
-      console.log("Favorite added!", result);
+      console.log("Favorite added! ❤️", response);
     }
   };
 
