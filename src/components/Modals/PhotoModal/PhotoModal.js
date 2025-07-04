@@ -9,6 +9,8 @@ import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { addFavorite } from "../../../../lib/favorite";
+import { supabase } from "../../../../lib/supabase";
 
 function PhotoModal({ photo, setPhoto, show }) {
   const [isError, setIsError] = useState(false);
@@ -23,6 +25,18 @@ function PhotoModal({ photo, setPhoto, show }) {
     });
   }, [router]);
 
+  const handleFavorite = async ({ pexel_id, url }) => {
+    console.log("pexel_id:", pexel_id); // should NOT be undefined
+    console.log("url:", url); // should NOT be undefined
+    const result = await addFavorite({ pexel_id, url });
+
+    if (!result) {
+      console.error("Failed to add favorite");
+    } else {
+      console.log("Favorite added!", result);
+    }
+  };
+
   const getPhoto = useCallback(async () => {
     setIsLoading(true);
     console.log("...doing fetch from PhotoModal 🐶");
@@ -34,6 +48,18 @@ function PhotoModal({ photo, setPhoto, show }) {
     }
     setIsLoading(false);
   }, [id, setPhoto]);
+
+  useEffect(() => {
+    if (photo) {
+      console.log("📷 photo object:", photo);
+    }
+  }, [photo]);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      console.log("Current user:", data.user);
+    });
+  }, []);
 
   useEffect(() => {
     if (show === "true") {
@@ -91,6 +117,12 @@ function PhotoModal({ photo, setPhoto, show }) {
                     <button
                       className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-10"
                       aria-label="Favorite"
+                      onClick={() =>
+                        handleFavorite({
+                          pexel_id: photo.id,
+                          pexel_url: photo.src.original,
+                        })
+                      }
                     >
                       <FaHeart color="white" size={20} />
                     </button>
