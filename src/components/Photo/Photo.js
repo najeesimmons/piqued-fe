@@ -15,8 +15,8 @@ function Photo({ photo, priority, setPhoto }) {
   return (
     // <Link href={`/?show=true&id=${photo.id}`}>
     <Image
-      src={photo.src.original}
-      alt={photo.alt}
+      src={photo.src.original || photo.url}
+      alt={photo.alt || ""}
       width={0}
       height={0}
       className="w-full h-auto cursor-pointer"
