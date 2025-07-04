@@ -28,9 +28,8 @@ function PhotoModal({ photo, setPhoto, show }) {
   const handleFavorite = async ({ pexel_id, url }) => {
     const response = await addFavorite({ pexel_id, url });
 
-    if (!response) {
-      console.error("Failed to add favorite");
-    } else {
+    if (!response) return;
+    else {
       console.log("Favorite added! ❤️", response);
     }
   };
