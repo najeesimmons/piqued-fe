@@ -9,7 +9,7 @@ import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { addFavorite } from "../../../../lib/favorite";
+import { toggleFavorite } from "../../../../lib/favorite";
 import { supabase } from "../../../../lib/supabase";
 
 function PhotoModal({ photo, setPhoto, show }) {
@@ -26,7 +26,7 @@ function PhotoModal({ photo, setPhoto, show }) {
   }, [router]);
 
   const handleFavorite = async ({ pexel_id, url }) => {
-    const response = await addFavorite({ pexel_id, url });
+    const response = await toggleFavorite({ pexel_id, url });
 
     if (!response) return;
     else {
