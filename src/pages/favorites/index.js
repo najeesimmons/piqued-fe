@@ -33,14 +33,14 @@ function Favorites() {
 
   const getNextFavorites = async () => {
     const response = await getFavorites(startRange, endRange);
-    console.log("secnd reponse", response);
+    console.log("second reponse", response);
     setFavorites((prev) => [...prev, ...response]);
     setstartRange((prev) => prev + favorites.length);
     setEndRange((prev) => prev + limit);
-    if (favorites.length < limit) {
-      sethasMore(true);
-    } else {
+    if (response.length < limit) {
       sethasMore(false);
+    } else {
+      sethasMore(true);
     }
   };
 
