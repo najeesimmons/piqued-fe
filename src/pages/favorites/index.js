@@ -2,7 +2,9 @@
 import dynamic from "next/dynamic";
 import { getFavorites } from "../../../lib/favorite";
 import Navigation from "@/components/Navigation/Navigation";
+import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 const DynamicPhotoMasonry = dynamic(
   () => import("@/components/Masonry/PhotoMasonry"),
@@ -13,13 +15,16 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 function Favorites() {
-  const [, setPhoto] = useState();
+  const [photo, setPhoto] = useState();
   const [hasMore, setHasMore] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [start, setStart] = useState(0);
 
   const LIMIT = 7;
   const end = start + LIMIT - 1;
+
+  const router = useRouter();
+  const { show } = router.query || {};
 
   const getFirstFavorites = useCallback(async () => {
     const result = await getFavorites(0, LIMIT - 1); //0,6
@@ -56,6 +61,9 @@ function Favorites() {
         photos={favorites}
         setPhoto={setPhoto}
       />
+      {show === "true" && (
+        <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
+      )}
     </>
   );
 }
