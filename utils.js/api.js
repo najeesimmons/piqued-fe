@@ -54,7 +54,9 @@ export async function fetchPexels(endpoint, params = {}) {
     }
 
     handleApiError(response, endpoint);
+
     const { photos } = response;
+
     return {
       ...response,
       photos: photos.map((photo) => ({
