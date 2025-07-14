@@ -22,7 +22,7 @@ function PhotoView({ photo }) {
         <FaHeart color="white" size={20} />
       </button>
       <Image
-        src={photo.src.original || photo.url}
+        src={photo?.src?.original || photo?.url}
         alt={photo.alt}
         width={photo.width}
         height={photo.height}
