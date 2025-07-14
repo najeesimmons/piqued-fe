@@ -2,10 +2,14 @@
 import Link from "next/link";
 import { supabase } from "../../../lib/supabase";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/router";
 import { LiaMountainSolid } from "react-icons/lia";
 
 function Navigation() {
   const { user, setUser } = useAuth();
+
+  const router = useRouter();
+  const isFavoritesPage = router.asPath.includes("/favorites");
 
   const handleSignOut = async () => {
     try {
@@ -39,7 +43,7 @@ function Navigation() {
             </li>
           </>
         )}
-        {user && (
+        {user && !isFavoritesPage && (
           <>
             <li className="font-semibold">
               <Link href={"/favorites"}>favorites</Link>

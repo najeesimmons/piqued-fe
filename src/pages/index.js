@@ -19,13 +19,25 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  const response = await fetchPexels("curated");
+  const { photos, page, next_page } = await fetchPexels("curated");
   if (response) {
+    const transformedPhotos = photos.map((photo) => ({
+      pexel_id: photo.id,
+      width: photo.width,
+      height: photo.height,
+      url: photo.url,
+      photographer: photo.photographer,
+      photographer_url: photo.photographer_url,
+      photographer_id: photo.photographer_id,
+      avg_color: photo.avg_color,
+      src: photo.src,
+      alt: photo.alt,
+    }));
     return {
       props: {
-        initPhotos: response.photos,
-        initNextPage: response.page + 1,
-        initHasMore: !!response.next_page,
+        initPhotos: transformedPhotos,
+        initNextPage: page + 1,
+        initHasMore: !!next_page,
       },
       revalidate: 3600,
     };
