@@ -40,9 +40,14 @@ function Navigation() {
           </>
         )}
         {user && (
-          <li className="font-semibold" onClick={handleSignOut}>
-            sign out
-          </li>
+          <>
+            <li className="font-semibold">
+              <Link href={"/favorites"}>favorites</Link>
+            </li>
+            <li className="font-semibold" onClick={handleSignOut}>
+              sign out
+            </li>
+          </>
         )}
       </ul>
     </nav>
