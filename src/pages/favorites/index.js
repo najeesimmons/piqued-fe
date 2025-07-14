@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { getFavorites } from "../../../lib/favorite";
 import Navigation from "@/components/Navigation/Navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const DynamicPhotoMasonry = dynamic(
   () => import("@/components/Masonry/PhotoMasonry"),
@@ -21,26 +21,31 @@ function Favorites() {
   const LIMIT = 7;
   const end = start + LIMIT - 1;
 
-  const getFirstFavorites = async () => {
-    const { favorites, count } = await getFavorites(start, end); //0,6
+  const getFirstFavorites = useCallback(async () => {
+    const result = await getFavorites(0, LIMIT - 1); //0,6
+    if (!result) return;
+
+    const { favorites, count } = result;
     setFavorites(favorites);
-    setHasMore(end + 1 < count); // 7 < count
-    setStart(end + 1); // 7
-  };
+    setHasMore(LIMIT < count); // 7 < count
+    setStart(LIMIT); // 7
+  }, []);
 
-  const getNextFavorites = async () => {
+  const getNextFavorites = useCallback(async () => {
     const end = start + LIMIT - 1;
+    const result = await getFavorites(start, end);
+    if (!result) return;
 
-    const { favorites: nextFavorites, count } = await getFavorites(start, end);
+    const { favorites: nextFavorites, count } = result;
 
     setFavorites((prev) => [...prev, ...nextFavorites]);
     setStart(end + 1);
     setHasMore(end + 1 < count);
-  };
+  }, [start]);
 
   useEffect(() => {
     getFirstFavorites();
-  }, []);
+  }, [getFirstFavorites]);
 
   return (
     <>
