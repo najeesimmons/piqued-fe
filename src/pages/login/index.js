@@ -81,9 +81,12 @@ function Login() {
                 log in
               </button>
               <p className="text-sm mt-2 text-center">
-                Already have an account?{" "}
-                <Link className="hover:underline font-semibold" href={"/login"}>
-                  Log In.
+                New here?{" "}
+                <Link
+                  className="hover:underline font-semibold"
+                  href={"/signup"}
+                >
+                  Sign Up.
                 </Link>
               </p>
             </form>

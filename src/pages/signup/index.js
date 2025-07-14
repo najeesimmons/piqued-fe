@@ -77,7 +77,7 @@ function Signup() {
               <p className="text-sm mt-2 text-center">
                 Already have an account?{" "}
                 <Link className="hover:underline font-semibold" href={"/login"}>
-                  Sign In.
+                  Login.
                 </Link>
               </p>
             </form>
