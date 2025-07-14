@@ -24,8 +24,8 @@ function Favorites() {
   const getFirstFavorites = async () => {
     const { favorites, count } = await getFavorites(start, end); //0,6
     setFavorites(favorites);
-    setHasMore(end + 1 < count);
-    setStart(end + 1);
+    setHasMore(end + 1 < count); // 7 < count
+    setStart(end + 1); // 7
   };
 
   const getNextFavorites = async () => {
