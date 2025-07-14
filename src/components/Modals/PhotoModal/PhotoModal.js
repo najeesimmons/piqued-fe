@@ -1,8 +1,6 @@
 "use client";
 import Comments from "@/components/Comments/Comments";
-import { FaHeart } from "react-icons/fa";
 import { fetchPexels } from "../../../../utils.js/api";
-import Image from "next/image";
 import { IoCloseSharp } from "react-icons/io5";
 import Loader from "@/components/Loader/Loader";
 import ReactDOM from "react-dom";
@@ -11,6 +9,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { toggleFavorite } from "../../../../lib/favorite";
 import { supabase } from "../../../../lib/supabase";
+import ErrorView from "@/components/Views/ErrorView";
+import PhotoView from "@/components/Views/PhotoView";
 
 function PhotoModal({ photo, setPhoto, show }) {
   const [isError, setIsError] = useState(false);
@@ -48,6 +48,7 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   useEffect(() => {
     if (photo) {
+      console.log("we have a photo:");
       console.log("📷 photo object:", photo);
     }
   }, [photo]);
@@ -85,6 +86,32 @@ function PhotoModal({ photo, setPhoto, show }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleClose]);
 
+  let content;
+  const photoIsValid = !!photo?.original?.src || !!photo?.url;
+
+  if (isLoading) {
+    content = (
+      <div className="w-full h-full flex justify-center items-center mt-1">
+        <Loader />
+      </div>
+    );
+  } else if (isError) {
+    content = (
+      <div className="w-full h-full flex justify-center items-center mt-1">
+        <ErrorView retry={getPhoto} />
+      </div>
+    );
+  } else if (photoIsValid) {
+    content = (
+      <>
+        <PhotoView photo={photo} />
+        <div className="flex items-center justify-center w-full md:w-1/2 h-full">
+          <Comments photo={photo} />
+        </div>
+      </>
+    );
+  }
+
   return ReactDOM.createPortal(
     <Section>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
@@ -94,69 +121,9 @@ function PhotoModal({ photo, setPhoto, show }) {
             className="absolute top-4 left-4 text-3xl z-[10000]"
             aria-label="Close Modal"
           >
-            <IoCloseSharp color="white" size={35} />
+            <IoCloseSharp color="black" size={35} />
           </button>
-
-          {isLoading || !photo ? (
-            <div className="w-full h-full flex justify-center items-center mt-32">
-              <Loader />
-            </div>
-          ) : (
-            <>
-              <div
-                className="flex items-center justify-center w-full md:w-1/2 h-full"
-                style={{
-                  backgroundColor: isError ? "white" : photo.avg_color,
-                }}
-              >
-                {!isError ? (
-                  <div className="relative w-full h-full flex items-center justify-center">
-                    <button
-                      className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-10"
-                      aria-label="Favorite"
-                      onClick={() =>
-                        handleFavorite({
-                          pexel_id: photo.id,
-                          url: photo.src.original,
-                        })
-                      }
-                    >
-                      <FaHeart color="white" size={20} />
-                    </button>
-                    <Image
-                      src={photo.src.original}
-                      alt={photo.alt}
-                      width={photo.width}
-                      height={photo.height}
-                      priority
-                      style={{
-                        maxWidth: "100%",
-                        maxHeight: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col p-4 w-[50vw] h-auto bg-white">
-                    <h1 className="mx-auto text-xl font-bold">Oops! 🙈</h1>
-                    <h2 className="mt-2">
-                      We ran into a little trouble loading your photo. Please
-                      click the button to try again.
-                    </h2>
-                    <button
-                      className="mt-4 mx-auto px-2 py-2 w-1/2 md:w-1/4 bg-red-500 text-white font-semibold border border-red-700 hover:bg-red-600 transition duration-200"
-                      onClick={getPhoto}
-                    >
-                      Retry
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center justify-center w-full md:w-1/2 h-full">
-                <Comments photo={photo} />
-              </div>
-            </>
-          )}
+          {content}
         </div>
       </div>
     </Section>,

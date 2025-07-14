@@ -14,7 +14,7 @@ function Photo({ photo, priority, setPhoto }) {
   };
   return (
     <Image
-      src={photo?.src?.original || photo.url}
+      src={photo.src.original || photo.url}
       alt={photo.alt || ""}
       width={0}
       height={0}

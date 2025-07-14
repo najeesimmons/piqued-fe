@@ -28,11 +28,13 @@ export default function Comments({ photo }) {
         <span className="font-semibold">{comments.length} Comments</span>
         {isOpen ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
       </div>
-      <PhotogCredit
-        name={photo.photographer}
-        pexelPhotogPageUrl={photo.photographer_url}
-        pexelShowPageUrl="https://www.pexels.com"
-      />
+      {photo && (
+        <PhotogCredit
+          name={photo.photographer}
+          pexelPhotogPageUrl={photo.photographer_url}
+          pexelShowPageUrl="https://www.pexels.com"
+        />
+      )}
 
       {/* Scrollable Comments List */}
       {isOpen && (
