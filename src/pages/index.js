@@ -14,7 +14,7 @@ const DynamicPhotoMasonry = dynamic(
   () => import("@/components/Masonry/PhotoMasonry"),
   {
     ssr: false,
-    // can't use ssr b/c component relies on uses browser-only APIs (e.g., window, document etc.)
+    //component relies on uses browser-only APIs
   }
 );
 
