@@ -1,5 +1,4 @@
 "use client";
-import ErrorModal from "@/components/Modals/ErrorModal/ErrorModal";
 import dynamic from "next/dynamic";
 import { fetchPexels } from "../../utils.js/api";
 import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
@@ -19,23 +18,13 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  const { photos, page, next_page } = await fetchPexels("curated");
+  const response = await fetchPexels("curated");
+
   if (response) {
-    const transformedPhotos = photos.map((photo) => ({
-      pexel_id: photo.id,
-      width: photo.width,
-      height: photo.height,
-      url: photo.url,
-      photographer: photo.photographer,
-      photographer_url: photo.photographer_url,
-      photographer_id: photo.photographer_id,
-      avg_color: photo.avg_color,
-      src: photo.src,
-      alt: photo.alt,
-    }));
+    const { photos, page, next_page } = response;
     return {
       props: {
-        initPhotos: transformedPhotos,
+        initPhotos: photos,
         initNextPage: page + 1,
         initHasMore: !!next_page,
       },
@@ -63,9 +52,11 @@ export default function Home({ initHasMore, initPhotos, initNextPage }) {
 
     const response = await fetchPexels("search", { query: searchTerm });
     if (response) {
-      setPhotos(response.photos);
+      const { photos: firstSearchPhotos, next_page } = response;
+
+      setPhotos(firstSearchPhotos);
       setNextPage((prevPage) => prevPage + 1);
-      setHasMore(!!response.next_page);
+      setHasMore(!!next_page);
       setFetchMode("search");
       router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
     } else {

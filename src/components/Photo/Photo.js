@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 // TODO: shallow routing from Link which caused soft navigation to home component
-// import Link from "next/link";
 
 function Photo({ photo, priority, setPhoto }) {
   const router = useRouter();

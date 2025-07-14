@@ -25,8 +25,8 @@ function PhotoModal({ photo, setPhoto, show }) {
     });
   }, [router]);
 
-  const handleFavorite = async ({ pexel_id, url }) => {
-    const response = await toggleFavorite({ pexel_id, url });
+  const handleFavorite = async ({ photo }) => {
+    const response = await toggleFavorite({ photo });
 
     if (!response) return;
     else {
@@ -104,7 +104,7 @@ function PhotoModal({ photo, setPhoto, show }) {
   } else if (photoIsValid) {
     content = (
       <>
-        <PhotoView photo={photo} />
+        <PhotoView photo={photo} handleFavorite={handleFavorite} />
         <div className="flex items-center justify-center w-full md:w-1/2 h-full">
           <Comments photo={photo} />
         </div>

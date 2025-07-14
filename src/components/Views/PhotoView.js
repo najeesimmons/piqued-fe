@@ -2,9 +2,10 @@ import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 import { useEffect } from "react";
 
-function PhotoView({ photo }) {
+function PhotoView({ photo, handleFavorite }) {
   useEffect(() => {
     console.log("in photoView 🖼️");
+    console.log("photoObj:", photo);
   }, []);
 
   return (
@@ -14,15 +15,14 @@ function PhotoView({ photo }) {
         aria-label="Favorite"
         onClick={() =>
           handleFavorite({
-            pexel_id: photo.id,
-            url: photo.src.original || photo.url,
+            photo,
           })
         }
       >
         <FaHeart color="white" size={20} />
       </button>
       <Image
-        src={photo?.src?.original || photo?.url}
+        src={photo.url}
         alt={photo.alt}
         width={photo.width}
         height={photo.height}

@@ -54,8 +54,22 @@ export async function fetchPexels(endpoint, params = {}) {
     }
 
     handleApiError(response, endpoint);
-
-    return response;
+    const { photos } = response;
+    return {
+      ...response,
+      photos: photos.map((photo) => ({
+        pexel_id: photo.id,
+        width: photo.width,
+        height: photo.height,
+        url: photo.src.original,
+        photographer: photo.photographer,
+        photographer_url: photo.photographer_url,
+        photographer_id: photo.photographer_id,
+        avg_color: photo.avg_color,
+        src: photo.src,
+        alt: photo.alt,
+      })),
+    };
   } catch (error) {
     if (error.message) {
       console.error(
