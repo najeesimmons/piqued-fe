@@ -17,7 +17,6 @@ function Photo({ photo, priority, setPhoto }) {
       width={0}
       height={0}
       className="w-full h-auto cursor-pointer"
-      // TODO: sizes prop must change if breakpoints change in PhotoMasonry
       sizes="(max-width: 350px) 100vw, (max-width: 750px) 50vw, 33.33vw"
       {...(priority && { priority })}
       onClick={() => {

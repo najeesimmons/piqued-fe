@@ -8,7 +8,6 @@ import Section from "@/components/Section/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { toggleFavorite } from "../../../../lib/favorite";
-import { supabase } from "../../../../lib/supabase";
 import ErrorView from "@/components/Views/ErrorView";
 import PhotoView from "@/components/Views/PhotoView";
 
@@ -44,12 +43,6 @@ function PhotoModal({ photo, setPhoto, show }) {
     }
     setIsLoading(false);
   }, [id, setPhoto]);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      console.log("Current user:", data.user);
-    });
-  }, []);
 
   useEffect(() => {
     if (show === "true") {
