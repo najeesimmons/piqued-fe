@@ -55,11 +55,28 @@ export async function fetchPexels(endpoint, params = {}) {
 
     handleApiError(response, endpoint);
 
-    const { photos } = response;
+    if (endpoint === "search" || endpoint === "curated") {
+      const { photos } = response;
 
-    return {
-      ...response,
-      photos: photos.map((photo) => ({
+      return {
+        ...response,
+        photos: photos.map((photo) => ({
+          pexel_id: photo.id,
+          width: photo.width,
+          height: photo.height,
+          url: photo.src.original,
+          photographer: photo.photographer,
+          photographer_url: photo.photographer_url,
+          photographer_id: photo.photographer_id,
+          avg_color: photo.avg_color,
+          src: photo.src,
+          alt: photo.alt,
+        })),
+      };
+    } else {
+      const photo = response;
+
+      return {
         pexel_id: photo.id,
         width: photo.width,
         height: photo.height,
@@ -70,8 +87,8 @@ export async function fetchPexels(endpoint, params = {}) {
         avg_color: photo.avg_color,
         src: photo.src,
         alt: photo.alt,
-      })),
-    };
+      };
+    }
   } catch (error) {
     if (error.message) {
       console.error(
