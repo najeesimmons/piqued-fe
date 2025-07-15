@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 function Photo({ photo, priority, setPhoto }) {
   const router = useRouter();
   const openPhotoModal = () => {
-    const liveQuery = { ...router.query, show: "true", id: photo.pexel_id };
+    const liveQuery = { ...router.query, show: "true", id: photo.pexels_id };
     router.replace({ pathname: router.pathname, query: liveQuery }, undefined, {
       shallow: true,
     });

@@ -25,6 +25,21 @@ function handleApiError(response, endpoint) {
   }
 }
 
+function transformPhoto(photo) {
+  return {
+    pexels_id: photo.id,
+    width: photo.width,
+    height: photo.height,
+    url: photo.src.original,
+    photographer: photo.photographer,
+    photographer_url: photo.photographer_url,
+    photographer_id: photo.photographer_id,
+    avg_color: photo.avg_color,
+    src: photo.src,
+    alt: photo.alt,
+  };
+}
+
 export async function fetchPexels(endpoint, params = {}) {
   const page = params.page || 1;
 
@@ -36,7 +51,6 @@ export async function fetchPexels(endpoint, params = {}) {
           per_page: 40,
           page,
         });
-        console.log("🐶 just fetched CURATED page", page);
         break;
       case "search":
         response = await client.photos.search({
@@ -44,7 +58,6 @@ export async function fetchPexels(endpoint, params = {}) {
           per_page: 40,
           page,
         });
-        console.log("🐶 just fetched SEARCH page", page);
         break;
       case "show":
         response = await client.photos.show({ id: params.id });
@@ -60,34 +73,11 @@ export async function fetchPexels(endpoint, params = {}) {
 
       return {
         ...response,
-        photos: photos.map((photo) => ({
-          pexel_id: photo.id,
-          width: photo.width,
-          height: photo.height,
-          url: photo.src.original,
-          photographer: photo.photographer,
-          photographer_url: photo.photographer_url,
-          photographer_id: photo.photographer_id,
-          avg_color: photo.avg_color,
-          src: photo.src,
-          alt: photo.alt,
-        })),
+        photos: photos.map(transformPhoto),
       };
     } else {
       const photo = response;
-
-      return {
-        pexel_id: photo.id,
-        width: photo.width,
-        height: photo.height,
-        url: photo.src.original,
-        photographer: photo.photographer,
-        photographer_url: photo.photographer_url,
-        photographer_id: photo.photographer_id,
-        avg_color: photo.avg_color,
-        src: photo.src,
-        alt: photo.alt,
-      };
+      return transformPhoto(photo);
     }
   } catch (error) {
     if (error.message) {
