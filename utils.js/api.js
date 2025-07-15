@@ -77,7 +77,6 @@ export async function fetchPexels(endpoint, params = {}) {
         },
       };
     } else {
-      // const photo = response;
       return { data: { photo: transformPhoto(response) } };
     }
   } catch (error) {
