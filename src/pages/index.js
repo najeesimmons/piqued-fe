@@ -116,10 +116,10 @@ export default function Home({
       setPhotos(data.photos);
       setNextPage(2);
       setHasMore(!!data.next_page);
-      // setFetchMode("search");
       setIsEmpty(false);
       router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
     }
+    setIsLoading(false);
   }, [router, searchTerm]);
 
   const getNextPhotos = useCallback(async () => {

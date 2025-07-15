@@ -88,7 +88,6 @@ export async function fetchPexels(endpoint, params = {}) {
     } else {
       console.error(`❌ Unexpected error fetching from Pexels 🙅🏾‍♂️: ${error}`);
     }
+    return { error };
   }
-
-  return { error };
 }
