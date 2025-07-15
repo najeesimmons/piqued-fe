@@ -10,10 +10,6 @@ export default function PhotoMasonry({
   photos,
   setPhoto,
 }) {
-  useEffect(() => {
-    console.log("re-rendered PhotoMasonry 📸");
-  }, []);
-
   return (
     <>
       <InfiniteScroll
