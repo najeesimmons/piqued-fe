@@ -36,22 +36,14 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   const getPhoto = useCallback(async () => {
     setIsLoading(true);
-    console.log("...doing fetch from PhotoModal 🐶");
-    const response = await fetchPexels("show", { id });
-    if (response) {
-      setPhoto(response);
+    const fetchedPhoto = await fetchPexels("show", { id });
+    if (fetchedPhoto) {
+      setPhoto(fetchedPhoto);
     } else {
       setIsError(true);
     }
     setIsLoading(false);
   }, [id, setPhoto]);
-
-  useEffect(() => {
-    if (photo) {
-      console.log("we have a photo:");
-      console.log("📷 photo object:", photo);
-    }
-  }, [photo]);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
