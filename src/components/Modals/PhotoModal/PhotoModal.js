@@ -87,7 +87,7 @@ function PhotoModal({ photo, setPhoto, show }) {
   }, [handleClose]);
 
   let content;
-  const photoIsValid = !!photo?.original?.src || !!photo?.url;
+  const photoIsValid = !!photo?.url;
 
   if (isLoading) {
     content = (
