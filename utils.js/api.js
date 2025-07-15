@@ -68,16 +68,14 @@ export async function fetchPexels(endpoint, params = {}) {
 
     if (endpoint === "search" || endpoint === "curated") {
       const { photos } = response;
-
       return {
         data: {
           ...response,
           photos: photos.map(transformPhoto),
-          // photos: [],
         },
       };
     } else {
-      return { data: { photo: transformPhoto(response) } };
+      return { data: { ...response, photo: transformPhoto(response) } };
     }
   } catch (error) {
     if (error.message) {

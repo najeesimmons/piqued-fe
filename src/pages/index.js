@@ -3,7 +3,10 @@
 import dynamic from "next/dynamic";
 import { fetchPexels } from "../../utils.js/api";
 import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
+import Loader from "@/components/Loader/Loader";
 import Navigation from "@/components/Navigation/Navigation";
+import NoResultsView from "@/components/Views/NoResultsView";
+import ErrorView from "@/components/Views/ErrorView";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { useRouter } from "next/router";
@@ -40,6 +43,8 @@ export async function getStaticProps() {
     props.initPhotos = photos;
     props.initNextPage = page + 1;
     props.initHasMore = !!next_page;
+  } else {
+    props.initIsError = true;
   }
 
   return { props, revalidate: 3600 };
@@ -50,10 +55,11 @@ export default function Home({
   initPhotos,
   initNextPage,
   initIsError,
+  initIsEmpty,
 }) {
   const [fetchMode, setFetchMode] = useState("curated");
   const [hasMore, setHasMore] = useState(initHasMore);
-  const [isEmpty, setIsEmpty] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(initIsEmpty);
   const [isError, setIsError] = useState(initIsError);
   const [isLoading, setIsLoading] = useState(false);
   const [nextPage, setNextPage] = useState(initNextPage);
@@ -86,6 +92,7 @@ export default function Home({
       setNextPage(2);
       setHasMore(!!data.next_page);
     } else {
+      // Fallback: we treat empty array as an uncaught error
       setIsError(true);
       setPhotos([]);
       setHasMore(false);
@@ -118,6 +125,12 @@ export default function Home({
       setHasMore(!!data.next_page);
       setIsEmpty(false);
       router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
+    } else {
+      // Fallback: we treat empty array as an uncaught error
+      setIsError(true);
+      setPhotos([]);
+      setHasMore(false);
+      setIsEmpty(false);
     }
     setIsLoading(false);
   }, [router, searchTerm]);
@@ -142,6 +155,21 @@ export default function Home({
     }
   }, [nextPage, fetchMode, searchTerm]);
 
+  function renderContent() {
+    if (isLoading) return <Loader />;
+    if (isError) return <ErrorView retry={getFirstPhotos} />;
+    if (isEmpty) return <NoResultsView />;
+    return (
+      <DynamicPhotoMasonry
+        getFirstPhotos={getFirstPhotos}
+        getNextPhotos={getNextPhotos}
+        hasMore={hasMore}
+        photos={photos}
+        setPhoto={setPhoto}
+      />
+    );
+  }
+
   return (
     <>
       <Navigation />
@@ -152,18 +180,7 @@ export default function Home({
           searchTerm={searchTerm}
         />
       </Section>
-      <Section>
-        <DynamicPhotoMasonry
-          getFirstPhotos={getFirstPhotos}
-          getNextPhotos={getNextPhotos}
-          hasMore={hasMore}
-          isEmpty={isEmpty}
-          isError={isError}
-          isLoading={isLoading}
-          photos={photos}
-          setPhoto={setPhoto}
-        />
-      </Section>
+      <Section>{renderContent()}</Section>
       {show === "true" && (
         <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
       )}

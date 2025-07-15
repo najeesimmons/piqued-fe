@@ -1,10 +1,14 @@
 "use client";
 import dynamic from "next/dynamic";
+import Section from "@/components/Section/Section";
 import { getFavorites } from "../../../lib/favorite";
 import Navigation from "@/components/Navigation/Navigation";
 import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Loader from "@/components/Loader/Loader";
+import NoResultsView from "@/components/Views/NoResultsView";
+import ErrorView from "@/components/Views/ErrorView";
 
 const DynamicPhotoMasonry = dynamic(
   () => import("@/components/Masonry/PhotoMasonry"),
@@ -19,6 +23,9 @@ function Favorites() {
   const [hasMore, setHasMore] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [start, setStart] = useState(0);
+  const [isLoading, setIsLoading] = useState();
+  const [isError, setIsError] = useState();
+  const [isEmpty, setIsEmpty] = useState();
 
   const LIMIT = 7;
   const end = start + LIMIT - 1;
@@ -27,19 +34,37 @@ function Favorites() {
   const { show } = router.query || {};
 
   const getFirstFavorites = useCallback(async () => {
-    const result = await getFavorites(0, LIMIT - 1); //0,6
-    if (!result) return;
+    setIsLoading(true);
+    setIsError(false);
+    setIsEmpty(false);
+    setFavorites([]);
+    setHasMore(false);
+    setStart(0);
 
-    const { favorites, count } = result;
-    setFavorites(favorites);
-    setHasMore(LIMIT < count); // 7 < count
-    setStart(LIMIT); // 7
+    const result = await getFavorites(0, LIMIT - 1);
+
+    if (!result) {
+      setIsError(true);
+    } else if (result.favorites.length === 0) {
+      setIsEmpty(true);
+    } else {
+      const { favorites, count } = result;
+      setFavorites(favorites);
+      setHasMore(LIMIT < count);
+      setStart(LIMIT);
+    }
+
+    setIsLoading(false);
   }, []);
 
   const getNextFavorites = useCallback(async () => {
     const end = start + LIMIT - 1;
     const result = await getFavorites(start, end);
-    if (!result) return;
+
+    if (!result) {
+      setIsError(true);
+      return;
+    }
 
     const { favorites: nextFavorites, count } = result;
 
@@ -52,15 +77,27 @@ function Favorites() {
     getFirstFavorites();
   }, [getFirstFavorites]);
 
-  return (
-    <>
-      <Navigation />
+  function renderContent() {
+    if (isLoading) return <Loader />;
+    if (isError) return <ErrorView retry={getFirstFavorites} />;
+    if (isEmpty) return <NoResultsView />;
+    return (
       <DynamicPhotoMasonry
+        getFirstPhotos={getFirstFavorites}
         getNextPhotos={getNextFavorites}
         hasMore={hasMore}
         photos={favorites}
         setPhoto={setPhoto}
       />
+    );
+  }
+
+  return (
+    <>
+      <Section>
+        <Navigation />
+      </Section>
+      <Section>{renderContent()}</Section>
       {show === "true" && (
         <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
       )}

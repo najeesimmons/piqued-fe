@@ -35,7 +35,14 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   const getPhoto = useCallback(async () => {
     setIsLoading(true);
-    const fetchedPhoto = await fetchPexels("show", { id });
+    const { data, error } = await fetchPexels("show", { id });
+    if (error) {
+      setIsError(true);
+      setIsLoading(false);
+      return;
+    }
+
+    const { photo: fetchedPhoto } = data;
     if (fetchedPhoto) {
       setPhoto(fetchedPhoto);
     } else {
