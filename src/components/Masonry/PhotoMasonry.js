@@ -2,14 +2,30 @@ import Loader from "../Loader/Loader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Photo from "../Photo/Photo";
-import { useEffect } from "react";
+import ErrorView from "../Views/ErrorView";
+import NoResultsView from "../Views/NoResultsView";
 
 export default function PhotoMasonry({
+  getFirstPhotos,
   getNextPhotos,
   hasMore,
+  isError,
+  isEmpty,
+  isLoading,
   photos,
   setPhoto,
 }) {
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (isError) {
+    return <ErrorView retry={getFirstPhotos} />;
+  }
+
+  if (isEmpty) {
+    return <NoResultsView />;
+  }
   return (
     <>
       <InfiniteScroll

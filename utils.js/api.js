@@ -9,16 +9,14 @@ function handleApiError(response, endpoint) {
 
   if (
     (endpoint === "curated" || endpoint === "search") &&
-    (!response ||
-      !Array.isArray(response.photos) ||
-      response.photos.length === 0)
+    (!Array.isArray(response.photos) || response.photos.length === 0)
   ) {
     throw new Error(
       `Pexels API Error [${endpoint}]: Invalid or empty photo list`
     );
   }
 
-  if (endpoint === "show" && (!response || !response.id)) {
+  if (endpoint === "show" && !response.id) {
     throw new Error(
       `Pexels API Error [${endpoint}]: Invalid response for photo ID`
     );
@@ -72,12 +70,15 @@ export async function fetchPexels(endpoint, params = {}) {
       const { photos } = response;
 
       return {
-        ...response,
-        photos: photos.map(transformPhoto),
+        data: {
+          ...response,
+          photos: photos.map(transformPhoto),
+          // photos: [],
+        },
       };
     } else {
-      const photo = response;
-      return transformPhoto(photo);
+      // const photo = response;
+      return { data: { photo: transformPhoto(response) } };
     }
   } catch (error) {
     if (error.message) {
@@ -89,5 +90,5 @@ export async function fetchPexels(endpoint, params = {}) {
     }
   }
 
-  return null;
+  return { error };
 }
