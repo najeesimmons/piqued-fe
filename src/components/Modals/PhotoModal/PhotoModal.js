@@ -67,7 +67,11 @@ function PhotoModal({ photo, setPhoto, show }) {
   }, [show]);
 
   useEffect(() => {
-    if (photo) return;
+    if (photo) {
+      //see if photo.pexels_id is in favroites table
+      return;
+    }
+
     getPhoto();
   }, [id, getPhoto, photo]);
 
