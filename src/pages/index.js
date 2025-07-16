@@ -75,10 +75,6 @@ export default function Home({
 
   const { user } = useAuth();
 
-  useEffect(() => {
-    console.log("photos:", photos);
-  }, [photos]);
-
   const getFirstPhotos = useCallback(async () => {
     setIsLoading(true);
     setFetchMode("curated");
