@@ -27,7 +27,7 @@ function Favorites() {
   const [isError, setIsError] = useState();
   const [isEmpty, setIsEmpty] = useState();
 
-  const LIMIT = 7;
+  const LIMIT = 12;
   const end = start + LIMIT - 1;
 
   const router = useRouter();
@@ -65,10 +65,18 @@ function Favorites() {
       setIsError(true);
       return;
     }
-
     const { favorites: nextFavorites, count } = result;
 
-    setFavorites((prev) => [...prev, ...nextFavorites]);
+    setFavorites((prev) => {
+      const existingIds = new Set(prev.map((fav) => fav.pexels_id));
+
+      const newUniqueFavorites = nextFavorites.filter(
+        (fav) => !existingIds.has(fav.pexels_id)
+      );
+
+      return [...prev, ...newUniqueFavorites];
+    });
+
     setStart(end + 1);
     setHasMore(end + 1 < count);
   }, [start]);
@@ -103,6 +111,7 @@ function Favorites() {
           photo={photo}
           setPhoto={setPhoto}
           show={show}
+          photos={favorites}
           setPhotos={setFavorites}
         />
       )}
