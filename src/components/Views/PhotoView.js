@@ -1,13 +1,7 @@
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
-import { useEffect } from "react";
 
 function PhotoView({ photo, handleFavorite }) {
-  useEffect(() => {
-    console.log("in photoView 🖼️");
-    console.log("photoObj:", photo);
-  }, []);
-
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <button
