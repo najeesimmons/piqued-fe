@@ -19,7 +19,7 @@ function PhotoView({ photo, handleFavorite }) {
           })
         }
       >
-        <FaHeart color="white" size={20} />
+        <FaHeart color={photo.isFavorited ? "red" : "white"} size={20} />
       </button>
       <Image
         src={photo.url}
