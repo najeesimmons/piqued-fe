@@ -1,4 +1,5 @@
 import { createClient } from "pexels";
+import { supabase } from "../lib/supabase";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
 
@@ -38,7 +39,7 @@ function transformPhoto(photo) {
   };
 }
 
-export async function fetchPexels(endpoint, params = {}) {
+export async function fetchPexels(endpoint, params = {}, userId) {
   const page = params.page || 1;
 
   try {
@@ -68,12 +69,41 @@ export async function fetchPexels(endpoint, params = {}) {
 
     if (endpoint === "search" || endpoint === "curated") {
       const { photos } = response;
-      return {
-        data: {
-          ...response,
-          photos: photos.map(transformPhoto),
-        },
-      };
+      const transformedPhotos = photos.map(transformPhoto);
+
+      // conditional favorites stuff
+      if (!userId) {
+        return {
+          data: {
+            ...response,
+            photos: transformedPhotos,
+          },
+        };
+      } else {
+        const photoIds = photos.map((p) => p.id);
+
+        const { data: favorites } = await supabase
+          .from("favorites")
+          .select("pexels_id")
+          .eq("user_id", userId)
+          .in("pexels_id", photoIds);
+
+        const favoriteSet = new Set(favorites.map((f) => f.pexels_id));
+
+        const photosWithFavorites = photos.map((photo) => ({
+          ...photo,
+          isFavorited: favoriteSet.has(photo.id),
+        }));
+
+        console.log(photosWithFavorites);
+
+        return {
+          data: {
+            ...response,
+            photos: photosWithFavorites,
+          },
+        };
+      }
     } else {
       return { data: { ...response, photo: transformPhoto(response) } };
     }
