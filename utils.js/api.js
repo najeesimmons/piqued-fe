@@ -80,17 +80,17 @@ export async function fetchPexels(endpoint, params = {}, userId) {
           },
         };
       } else {
-        const photoIds = photos.map((p) => p.id);
+        const photoIds = transformedPhotos.map((p) => p.pexels_id);
 
-        const { data: favorites } = await supabase // include error? how to handle gracefully?
+        const { data: favorites } = await supabase
           .from("favorites")
           .select("pexels_id")
           .eq("user_id", userId)
           .in("pexels_id", photoIds);
 
-        const favoriteSet = new Set(favorites.map((f) => f.pexels_id));
+        const favoriteSet = new Set((favorites || []).map((f) => f.pexels_id));
 
-        const photosWithFavorites = photos.map((photo) => ({
+        const photosWithFavorites = transformedPhotos.map((photo) => ({
           ...photo,
           isFavorited: favoriteSet.has(photo.id),
         }));
