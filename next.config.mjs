@@ -11,7 +11,7 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "img.freepik.com",
-        pathname: "**", // Allows all images from this domain
+        pathname: "**",
       },
     ],
   },
