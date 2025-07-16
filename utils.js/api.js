@@ -82,7 +82,7 @@ export async function fetchPexels(endpoint, params = {}, userId) {
       } else {
         const photoIds = photos.map((p) => p.id);
 
-        const { data: favorites } = await supabase
+        const { data: favorites } = await supabase // include error? how to handle gracefully?
           .from("favorites")
           .select("pexels_id")
           .eq("user_id", userId)
