@@ -89,13 +89,12 @@ export async function fetchPexels(endpoint, params = {}, userId) {
           .in("pexels_id", photoIds);
 
         const favoriteSet = new Set((favorites || []).map((f) => f.pexels_id));
+        console.log("favoritesSet:", favoriteSet);
 
         const photosWithFavorites = transformedPhotos.map((photo) => ({
           ...photo,
-          isFavorited: favoriteSet.has(photo.id),
+          isFavorited: favoriteSet.has(photo.pexels_id),
         }));
-
-        console.log(photosWithFavorites);
 
         return {
           data: {
