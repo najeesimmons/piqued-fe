@@ -89,8 +89,6 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         },
       };
     }
-
-    throw new Error("Invalid endpoint");
   } catch (error) {
     console.error(
       error.message
