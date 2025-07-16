@@ -1,5 +1,10 @@
 import { createClient } from "pexels";
-import { supabase } from "../lib/supabase";
+import {
+  checkFavoritesArray,
+  checkFavoriteSingle,
+  transformPhotoArray,
+  transformPhotoSingle,
+} from "../lib/favorites/utils";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
 
@@ -22,21 +27,6 @@ function handleApiError(response, endpoint) {
       `Pexels API Error [${endpoint}]: Invalid response for photo ID`
     );
   }
-}
-
-function transformPhoto(photo) {
-  return {
-    pexels_id: photo.id,
-    width: photo.width,
-    height: photo.height,
-    url: photo.src.original,
-    photographer: photo.photographer,
-    photographer_url: photo.photographer_url,
-    photographer_id: photo.photographer_id,
-    avg_color: photo.avg_color,
-    src: photo.src,
-    alt: photo.alt,
-  };
 }
 
 export async function fetchPexels(endpoint, params = {}, userId) {
@@ -67,71 +57,46 @@ export async function fetchPexels(endpoint, params = {}, userId) {
 
     handleApiError(response, endpoint);
 
-    if (endpoint === "search" || endpoint === "curated") {
-      const { photos } = response;
-      const transformedPhotos = photos.map(transformPhoto);
+    if (endpoint === "curated" || endpoint === "search") {
+      let transformedPhotos = transformPhotoArray(response.photos);
 
-      // conditional favorites stuff
-      if (!userId) {
-        return {
-          data: {
-            ...response,
-            photos: transformedPhotos,
-          },
-        };
-      } else {
-        const photoIds = transformedPhotos.map((p) => p.pexels_id);
-
-        const { data: favorites } = await supabase
-          .from("favorite")
-          .select("pexels_id")
-          .eq("user_id", userId)
-          .in("pexels_id", photoIds);
-
-        const favoriteSet = new Set((favorites || []).map((f) => f.pexels_id));
-        console.log("favoritesSet:", favoriteSet);
-
-        const photosWithFavorites = transformedPhotos.map((photo) => ({
-          ...photo,
-          isFavorited: favoriteSet.has(photo.pexels_id),
-        }));
-
-        return {
-          data: {
-            ...response,
-            photos: photosWithFavorites,
-          },
-        };
+      if (userId) {
+        transformedPhotos = await checkFavoritesArray(
+          transformedPhotos,
+          userId
+        );
       }
-    } else if (endpoint === "show") {
-      const transformedPhoto = transformPhoto(response);
-      if (!userId) {
-        return { data: { ...response, photo: transformedPhoto } };
-      } else {
-        //do favorite check
-        const pexels_id = transformedPhoto.pexels_id;
-        const { data } = await supabase
-          .from("favorites")
-          .select("pexels_id")
-          .eq("user_id", userId)
-          .eq("pexels_id", pexels_id)
-          .limit(1)
-          .maybeSingle();
 
-        transformedPhoto.isFavorited = !!data;
-        return transformedPhoto;
-      }
-    } else {
-      throw new Error("invalid endpoint");
+      return {
+        data: {
+          ...response,
+          photos: transformedPhotos,
+        },
+      };
     }
+
+    if (endpoint === "show") {
+      let transformedPhoto = transformPhotoSingle(response);
+
+      if (userId) {
+        transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);
+      }
+
+      return {
+        data: {
+          ...response,
+          photo: transformedPhoto,
+        },
+      };
+    }
+
+    throw new Error("Invalid endpoint");
   } catch (error) {
-    if (error.message) {
-      console.error(
-        `❌ Error occurred fetching data from Pexels: ${error.message}`
-      );
-    } else {
-      console.error(`❌ Unexpected error fetching from Pexels 🙅🏾‍♂️: ${error}`);
-    }
+    console.error(
+      error.message
+        ? `❌ Error occurred fetching data from Pexels: ${error.message}`
+        : `❌ Unexpected error fetching from Pexels: ${error}`
+    );
     return { error };
   }
 }

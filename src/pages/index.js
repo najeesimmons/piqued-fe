@@ -12,6 +12,7 @@ import Section from "@/components/Section/Section";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { checkFavoritesArray } from "../../lib/favorites/utils";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
@@ -72,7 +73,18 @@ export default function Home({
   const { show } = router.query || {};
   const { search } = router.query || {};
 
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!user || !photos || photos.length === 0) return;
+
+    if (!Object.hasOwn(photos[0], "isFavorited")) {
+      (async () => {
+        const updatedPhotos = await checkFavoritesArray(photos, user.id);
+        setPhotos(updatedPhotos);
+      })();
+    }
+  }, [user, photos]);
 
   const getFirstPhotos = useCallback(async () => {
     setIsLoading(true);
