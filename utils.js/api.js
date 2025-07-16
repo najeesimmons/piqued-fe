@@ -83,7 +83,7 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         const photoIds = transformedPhotos.map((p) => p.pexels_id);
 
         const { data: favorites } = await supabase
-          .from("favorites")
+          .from("favorite")
           .select("pexels_id")
           .eq("user_id", userId)
           .in("pexels_id", photoIds);
