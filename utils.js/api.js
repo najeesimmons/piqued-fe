@@ -103,8 +103,26 @@ export async function fetchPexels(endpoint, params = {}, userId) {
           },
         };
       }
+    } else if (endpoint === "show") {
+      const transformedPhoto = transformPhoto(response);
+      if (!userId) {
+        return { data: { ...response, photo: transformedPhoto } };
+      } else {
+        //do favorite check
+        const pexels_id = transformedPhoto.pexels_id;
+        const { data } = await supabase
+          .from("favorites")
+          .select("pexels_id")
+          .eq("user_id", userId)
+          .eq("pexels_id", pexels_id)
+          .limit(1)
+          .maybeSingle();
+
+        transformedPhoto.isFavorited = !!data;
+        return transformedPhoto;
+      }
     } else {
-      return { data: { ...response, photo: transformPhoto(response) } };
+      throw new Error("invalid endpoint");
     }
   } catch (error) {
     if (error.message) {
