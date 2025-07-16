@@ -75,17 +75,6 @@ export default function Home({
 
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (!user || !photos || photos.length === 0) return;
-
-    if (!Object.hasOwn(photos[0], "isFavorited")) {
-      (async () => {
-        const updatedPhotos = await checkFavoritesArray(photos, user.id);
-        setPhotos(updatedPhotos);
-      })();
-    }
-  }, [user, photos]);
-
   const getFirstPhotos = useCallback(async () => {
     setIsLoading(true);
     setFetchMode("curated");
@@ -174,6 +163,17 @@ export default function Home({
       setHasMore(false);
     }
   }, [nextPage, fetchMode, searchTerm, user]);
+
+  useEffect(() => {
+    if (!user || !photos || photos.length === 0) return;
+
+    if (!Object.hasOwn(photos[0], "isFavorited")) {
+      (async () => {
+        const updatedPhotos = await checkFavoritesArray(photos, user.id);
+        setPhotos(updatedPhotos);
+      })();
+    }
+  }, [user, photos]);
 
   function renderContent() {
     if (isLoading) return <Loader />;
