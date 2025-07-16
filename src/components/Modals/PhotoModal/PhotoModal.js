@@ -28,6 +28,7 @@ function PhotoModal({ photo, setPhoto, show }) {
     const { action, success } = await toggleFavorite({ photo });
 
     if (!success) return;
+    // need ui indication of problem
     else if (action === "insert") {
       setPhoto((prev) => ({ ...prev, isFavorited: true }));
     } else {
