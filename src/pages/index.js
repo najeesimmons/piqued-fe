@@ -11,6 +11,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
+import { useAuth } from "@/context/AuthContext";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
@@ -71,12 +72,14 @@ export default function Home({
   const { show } = router.query || {};
   const { search } = router.query || {};
 
+  const { user, setUser } = useAuth();
+
   const getFirstPhotos = useCallback(async () => {
     setIsLoading(true);
     setFetchMode("curated");
     setIsError(false);
     setIsEmpty(false);
-    const { data, error } = await fetchPexels("curated");
+    const { data, error } = await fetchPexels("curated", user?.id || null);
     if (error) {
       if (error.message.includes("Invalid or empty photo list")) {
         setIsEmpty(true);
@@ -92,14 +95,14 @@ export default function Home({
       setNextPage(2);
       setHasMore(!!data.next_page);
     } else {
-      // Fallback: we treat empty array as an uncaught error
+      //regard empty array as an uncaught error
       setIsError(true);
       setPhotos([]);
       setHasMore(false);
       setIsEmpty(false);
     }
     setIsLoading(false);
-  }, []);
+  }, [user]);
 
   const getFirstSearchPhotos = useCallback(async () => {
     setIsLoading(true);
@@ -108,7 +111,11 @@ export default function Home({
     setIsEmpty(false);
     setNextPage(1);
 
-    const { data, error } = await fetchPexels("search", { query: searchTerm });
+    const { data, error } = await fetchPexels(
+      "search",
+      { query: searchTerm },
+      user?.id || null
+    );
     if (error) {
       if (error.message.includes("Invalid or empty photo list")) {
         setIsEmpty(true);
@@ -126,19 +133,20 @@ export default function Home({
       setIsEmpty(false);
       router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
     } else {
-      // Fallback: we treat empty array as an uncaught error
+      //regard empty array as an uncaught error
       setIsError(true);
       setPhotos([]);
       setHasMore(false);
       setIsEmpty(false);
     }
     setIsLoading(false);
-  }, [router, searchTerm]);
+  }, [router, searchTerm, user]);
 
   const getNextPhotos = useCallback(async () => {
     const { data, error } = await fetchPexels(fetchMode, {
       ...(nextPage && { page: nextPage }),
       ...(fetchMode === "search" && { query: searchTerm }),
+      userId: user?.id || null,
     });
 
     if (error) {
@@ -153,7 +161,7 @@ export default function Home({
     } else {
       setHasMore(false);
     }
-  }, [nextPage, fetchMode, searchTerm]);
+  }, [nextPage, fetchMode, searchTerm, user]);
 
   function renderContent() {
     if (isLoading) return <Loader />;
