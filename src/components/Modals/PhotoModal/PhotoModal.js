@@ -12,7 +12,7 @@ import ErrorView from "@/components/Views/ErrorView";
 import PhotoView from "@/components/Views/PhotoView";
 import { useAuth } from "@/context/AuthContext";
 
-function PhotoModal({ photo, setPhoto, show }) {
+function PhotoModal({ photo, setPhoto, show, setPhotos }) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -30,12 +30,16 @@ function PhotoModal({ photo, setPhoto, show }) {
     const { action, success } = await toggleFavorite({ photo });
 
     if (!success) return;
+    const isFavorited = action === "insert";
     // need ui indication of problem
-    else if (action === "insert") {
-      setPhoto((prev) => ({ ...prev, isFavorited: true }));
-    } else {
-      setPhoto((prev) => ({ ...prev, isFavorited: false }));
-    }
+
+    setPhoto((prev) => ({ ...prev, isFavorited: isFavorited }));
+
+    setPhotos((prev) =>
+      prev.map((p) =>
+        p.pexels_id === photo.pexels_id ? { ...p, isFavorited: isFavorited } : p
+      )
+    );
     console.log(action, "favorite successful! ❤️");
   };
 
