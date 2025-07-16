@@ -25,12 +25,15 @@ function PhotoModal({ photo, setPhoto, show }) {
   }, [router]);
 
   const handleFavorite = async ({ photo }) => {
-    const response = await toggleFavorite({ photo });
+    const { action, success } = await toggleFavorite({ photo });
 
-    if (!response) return;
-    else {
-      console.log("Favorite added! ❤️", response);
+    if (!success) return;
+    else if (action === "insert") {
+      setPhoto((prev) => ({ ...prev, isFavorited: true }));
+    } else {
+      setPhoto((prev) => ({ ...prev, isFavorited: false }));
     }
+    console.log(action, "favorite successful! ❤️");
   };
 
   const getPhoto = useCallback(async () => {
