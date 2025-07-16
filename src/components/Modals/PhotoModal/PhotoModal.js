@@ -10,12 +10,14 @@ import { useRouter } from "next/router";
 import { toggleFavorite } from "../../../../lib/favorite";
 import ErrorView from "@/components/Views/ErrorView";
 import PhotoView from "@/components/Views/PhotoView";
+import { useAuth } from "@/context/AuthContext";
 
 function PhotoModal({ photo, setPhoto, show }) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
+  const { user } = useAuth();
 
   const handleClose = useCallback(() => {
     const { id, show, ...restQuery } = router.query;
@@ -39,21 +41,21 @@ function PhotoModal({ photo, setPhoto, show }) {
 
   const getPhoto = useCallback(async () => {
     setIsLoading(true);
-    const { data, error } = await fetchPexels("show", { id });
+    const { data, error } = await fetchPexels("show", { id }, user?.id);
     if (error) {
       setIsError(true);
       setIsLoading(false);
       return;
     }
 
-    const { photo: fetchedPhoto } = data;
+    const fetchedPhoto = data;
     if (fetchedPhoto) {
       setPhoto(fetchedPhoto);
     } else {
       setIsError(true);
     }
     setIsLoading(false);
-  }, [id, setPhoto]);
+  }, [id, setPhoto, user]);
 
   useEffect(() => {
     if (show === "true") {
