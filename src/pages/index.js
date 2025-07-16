@@ -75,6 +75,10 @@ export default function Home({
 
   const { user } = useAuth();
 
+  useEffect(() => {
+    console.log("photos:", photos);
+  }, [photos]);
+
   const getFirstPhotos = useCallback(async () => {
     setIsLoading(true);
     setFetchMode("curated");
@@ -144,11 +148,14 @@ export default function Home({
   }, [router, searchTerm, user]);
 
   const getNextPhotos = useCallback(async () => {
-    const { data, error } = await fetchPexels(fetchMode, {
-      ...(nextPage && { page: nextPage }),
-      ...(fetchMode === "search" && { query: searchTerm }),
-      userId: user?.id || null,
-    });
+    const { data, error } = await fetchPexels(
+      fetchMode,
+      {
+        ...(nextPage && { page: nextPage }),
+        ...(fetchMode === "search" && { query: searchTerm }),
+      },
+      user?.id || null
+    );
 
     if (error) {
       setIsError(true);
