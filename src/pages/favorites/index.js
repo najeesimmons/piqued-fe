@@ -19,7 +19,7 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 function Favorites() {
-  const [photo, setPhoto] = useState();
+  const [displayPhoto, setDisplayPhoto] = useState();
   const [hasMore, setHasMore] = useState(false);
   const [favorites, setFavorites] = useState([]);
   const [start, setStart] = useState(0);
@@ -95,7 +95,7 @@ function Favorites() {
         getNextPhotos={getNextFavorites}
         hasMore={hasMore}
         photos={favorites}
-        setPhoto={setPhoto}
+        setPhoto={setDisplayPhoto}
       />
     );
   }
@@ -108,8 +108,8 @@ function Favorites() {
       <Section>{renderContent()}</Section>
       {show === "true" && (
         <PhotoModal
-          photo={photo}
-          setPhoto={setPhoto}
+          photo={displayPhoto}
+          setPhoto={setDisplayPhoto}
           show={show}
           photos={favorites}
           setPhotos={setFavorites}
