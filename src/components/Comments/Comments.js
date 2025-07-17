@@ -1,38 +1,42 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
-import { getCommentsByPexelsId } from "../../../lib/comment/comment";
+import {
+  getCommentsByPexelsId,
+  insertComment,
+} from "../../../lib/comment/comment";
 
-export default function Comments({ displayPhoto, photoComments }) {
+export default function Comments({ displayPhoto }) {
   const [isOpen, setIsOpen] = useState(false);
   const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
 
-  const getComments = useCallback(() => {
-    const response = getCommentsByPexelsId(pexels_id);
+  const getComments = useCallback(async () => {
+    const response = await getCommentsByPexelsId(pexels_id);
+    console.log("response", response);
     if (!response) return;
+    console.log(response);
     setComments(response);
   }, [pexels_id]);
 
   useEffect(() => {
     if (!displayPhoto) return;
-    getComments;
+    getComments();
   }, [displayPhoto, getComments]);
 
-  // const comments = [
-  //   "great",
-  //   "bad",
-  //   "just fine",
-  //   "mid",
-  //   "stinks",
-  //   "rocks",
-  //   "great",
-  //   "bad",
-  //   "just fine",
-  //   "mid",
-  //   "stinks",
-  //   "rocks",
-  // ];
+  useEffect(() => {
+    console.log(comments);
+  }, [comments]);
+
+  const handleSubmitCommet = async ({ pexels_id, text }) => {
+    if (commentText === "") return;
+    const { success, data, error } = await insertComment({ pexels_id, text });
+    if (error) return;
+    if (success === true && data) {
+      setComments((prev) => [...prev, data[0]]);
+    }
+  };
 
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
@@ -51,12 +55,11 @@ export default function Comments({ displayPhoto, photoComments }) {
         />
       )}
 
-      {/* Scrollable Comments List */}
       {isOpen && (
         <div className="mt-2 flex-grow overflow-y-auto space-y-2 border-t pt-2">
           {comments.map((comment, index) => (
             <div key={index} className="border-b pb-1">
-              {comment}
+              {comment.text}
             </div>
           ))}
         </div>
@@ -68,8 +71,15 @@ export default function Comments({ displayPhoto, photoComments }) {
           type="text"
           placeholder="Add a comment..."
           className="w-full p-2 border"
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
         />
       </div>
+      <button
+        onClick={() => handleSubmitCommet({ pexels_id, text: commentText })}
+      >
+        Comment
+      </button>
     </div>
   );
 }
