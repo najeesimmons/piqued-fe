@@ -108,8 +108,8 @@ function Favorites() {
       <Section>{renderContent()}</Section>
       {show === "true" && (
         <PhotoModal
-          photo={displayPhoto}
-          setPhoto={setDisplayPhoto}
+          displayPhoto={displayPhoto}
+          setDiplayPhoto={setDisplayPhoto}
           show={show}
           photos={favorites}
           setPhotos={setFavorites}

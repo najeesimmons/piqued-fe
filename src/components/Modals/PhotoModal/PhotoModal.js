@@ -12,7 +12,7 @@ import ErrorView from "@/components/Views/ErrorView";
 import PhotoView from "@/components/Views/PhotoView";
 import { useAuth } from "@/context/AuthContext";
 
-function PhotoModal({ photo, setPhoto, show, photos, setPhotos }) {
+function PhotoModal({ displayPhoto, setDisplayPhoto, show, setDisplayPhotos }) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -26,17 +26,19 @@ function PhotoModal({ photo, setPhoto, show, photos, setPhotos }) {
     });
   }, [router]);
 
-  const handleFavorite = async ({ photo }) => {
-    const { action, success } = await toggleFavorite({ photo });
+  const handleFavorite = async ({ displayPhoto }) => {
+    const { action, success } = await toggleFavorite({ displayPhoto });
 
     if (!success) return;
     const isFavorited = action === "insert";
 
-    setPhoto((prev) => ({ ...prev, isFavorited: isFavorited }));
+    setDisplayPhoto((prev) => ({ ...prev, isFavorited: isFavorited }));
 
-    setPhotos((prev) =>
+    setDisplayPhotos((prev) =>
       prev.map((p) =>
-        p.pexels_id === photo.pexels_id ? { ...p, isFavorited: isFavorited } : p
+        p.pexels_id === displayPhoto.pexels_id
+          ? { ...p, isFavorited: isFavorited }
+          : p
       )
     );
 
@@ -54,12 +56,12 @@ function PhotoModal({ photo, setPhoto, show, photos, setPhotos }) {
 
     const fetchedPhoto = data;
     if (fetchedPhoto) {
-      setPhoto(fetchedPhoto);
+      setDisplayPhoto(fetchedPhoto);
     } else {
       setIsError(true);
     }
     setIsLoading(false);
-  }, [id, setPhoto, user]);
+  }, [id, setDisplayPhoto, user]);
 
   useEffect(() => {
     if (show === "true") {
@@ -74,10 +76,10 @@ function PhotoModal({ photo, setPhoto, show, photos, setPhotos }) {
   }, [show]);
 
   useEffect(() => {
-    if (photo) return;
+    if (displayPhoto) return;
 
     getPhoto();
-  }, [id, getPhoto, photo]);
+  }, [id, getPhoto, displayPhoto]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -90,7 +92,7 @@ function PhotoModal({ photo, setPhoto, show, photos, setPhotos }) {
   }, [handleClose]);
 
   let content;
-  const photoIsValid = !!photo?.url;
+  const photoIsValid = !!displayPhoto?.url;
 
   if (isLoading) {
     content = (
@@ -107,9 +109,12 @@ function PhotoModal({ photo, setPhoto, show, photos, setPhotos }) {
   } else if (photoIsValid) {
     content = (
       <>
-        <PhotoView photo={photo} handleFavorite={handleFavorite} />
+        <PhotoView
+          displayPhoto={displayPhoto}
+          handleFavorite={handleFavorite}
+        />
         <div className="flex items-center justify-center w-full md:w-1/2 h-full">
-          <Comments photo={photo} />
+          <Comments displayPhoto={displayPhoto} />
         </div>
       </>
     );

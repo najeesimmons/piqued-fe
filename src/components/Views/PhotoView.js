@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FaHeart } from "react-icons/fa";
 
-function PhotoView({ photo, handleFavorite }) {
+function PhotoView({ displayPhoto, handleFavorite }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <button
@@ -9,17 +9,17 @@ function PhotoView({ photo, handleFavorite }) {
         aria-label="Favorite"
         onClick={() =>
           handleFavorite({
-            photo,
+            displayPhoto,
           })
         }
       >
-        <FaHeart color={photo.isFavorited ? "red" : "white"} size={20} />
+        <FaHeart color={displayPhoto.isFavorited ? "red" : "white"} size={20} />
       </button>
       <Image
-        src={photo.url}
-        alt={photo.alt}
-        width={photo.width}
-        height={photo.height}
+        src={displayPhoto.url}
+        alt={displayPhoto.alt}
+        width={displayPhoto.width}
+        height={displayPhoto.height}
         priority
         style={{
           maxWidth: "100%",
