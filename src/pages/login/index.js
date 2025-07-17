@@ -1,5 +1,5 @@
 "use client";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../../../lib/supabase/supabase";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";

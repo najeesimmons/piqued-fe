@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { LiaMountainSolid } from "react-icons/lia";

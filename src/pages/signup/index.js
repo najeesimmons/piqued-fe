@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../../../lib/supabase/supabase";
 
 function Signup() {
   const [email, setEmail] = useState("");

@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { toggleFavorite } from "../../../../lib/favorites/favorite";
+import { toggleFavorite } from "../../../../lib/favorite/utils";
 import ErrorView from "@/components/Views/ErrorView";
 import PhotoView from "@/components/Views/PhotoView";
 import { useAuth } from "@/context/AuthContext";

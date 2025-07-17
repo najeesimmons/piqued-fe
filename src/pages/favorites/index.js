@@ -1,7 +1,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import Section from "@/components/Section/Section";
-import { getFavorites } from "../../../lib/favorites/favorite";
+import { getFavorites } from "../../../lib/favorite/favorite";
 import Navigation from "@/components/Navigation/Navigation";
 import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import { useCallback, useEffect, useState } from "react";

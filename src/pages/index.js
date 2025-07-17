@@ -12,7 +12,7 @@ import Section from "@/components/Section/Section";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { checkFavoritesArray } from "../../lib/favorites/utils";
+import { checkFavoritesArray } from "../../lib/favorite/utils";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(

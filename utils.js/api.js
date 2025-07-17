@@ -2,7 +2,7 @@ import { createClient } from "pexels";
 import {
   checkFavoritesArray,
   checkFavoriteSingle,
-} from "../lib/favorites/utils";
+} from "../lib/favorite/utils";
 import { transformPhotoArray, transformPhotoSingle } from "./helpers";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
