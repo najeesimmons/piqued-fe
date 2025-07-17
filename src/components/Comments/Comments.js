@@ -1,23 +1,38 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
+import { getCommentsByPexelsId } from "../../../lib/comment/comment";
 
-export default function Comments({ photo }) {
+export default function Comments({ displayPhoto, photoComments }) {
   const [isOpen, setIsOpen] = useState(false);
-  const comments = [
-    "great",
-    "bad",
-    "just fine",
-    "mid",
-    "stinks",
-    "rocks",
-    "great",
-    "bad",
-    "just fine",
-    "mid",
-    "stinks",
-    "rocks",
-  ];
+  const [comments, setComments] = useState([]);
+  const { pexels_id } = displayPhoto;
+
+  const getComments = useCallback(() => {
+    const response = getCommentsByPexelsId(pexels_id);
+    if (!response) return;
+    setComments(response);
+  }, [pexels_id]);
+
+  useEffect(() => {
+    if (!displayPhoto) return;
+    getComments;
+  }, [displayPhoto, getComments]);
+
+  // const comments = [
+  //   "great",
+  //   "bad",
+  //   "just fine",
+  //   "mid",
+  //   "stinks",
+  //   "rocks",
+  //   "great",
+  //   "bad",
+  //   "just fine",
+  //   "mid",
+  //   "stinks",
+  //   "rocks",
+  // ];
 
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
@@ -28,10 +43,10 @@ export default function Comments({ photo }) {
         <span className="font-semibold">{comments.length} Comments</span>
         {isOpen ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
       </div>
-      {photo && (
+      {displayPhoto && (
         <PhotogCredit
-          name={photo.photographer}
-          pexelPhotogPageUrl={photo.photographer_url}
+          name={displayPhoto.photographer}
+          pexelPhotogPageUrl={displayPhoto.photographer_url}
           pexelShowPageUrl="https://www.pexels.com"
         />
       )}
