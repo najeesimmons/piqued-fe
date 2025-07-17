@@ -187,7 +187,7 @@ export default function Home({
         getFirstPhotos={getFirstPhotos}
         getNextPhotos={getNextPhotos}
         hasMore={hasMore}
-        photos={masonryPhotos}
+        masonryPhotos={masonryPhotos}
         setDisplayPhoto={setDisplayPhoto}
       />
     );
@@ -209,6 +209,7 @@ export default function Home({
           displayPhoto={displayPhoto}
           setDisplayPhoto={setDisplayPhoto}
           show={show}
+          masonryPhotos={masonryPhotos}
           setMasonryPhotos={setMasonryPhotos}
         />
       )}

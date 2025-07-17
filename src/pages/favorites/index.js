@@ -21,7 +21,7 @@ const DynamicPhotoMasonry = dynamic(
 function Favorites() {
   const [displayPhoto, setDisplayPhoto] = useState();
   const [hasMore, setHasMore] = useState(false);
-  const [favorites, setFavorites] = useState([]);
+  const [masonryPhotos, setMasonryPhotos] = useState([]);
   const [start, setStart] = useState(0);
   const [isLoading, setIsLoading] = useState();
   const [isError, setIsError] = useState();
@@ -37,7 +37,7 @@ function Favorites() {
     setIsLoading(true);
     setIsError(false);
     setIsEmpty(false);
-    setFavorites([]);
+    setMasonryPhotos([]);
     setHasMore(false);
     setStart(0);
 
@@ -49,7 +49,7 @@ function Favorites() {
       setIsEmpty(true);
     } else {
       const { favorites, count } = result;
-      setFavorites(favorites);
+      setMasonryPhotos(favorites);
       setHasMore(LIMIT < count);
       setStart(LIMIT);
     }
@@ -67,7 +67,7 @@ function Favorites() {
     }
     const { favorites: nextFavorites, count } = result;
 
-    setFavorites((prev) => {
+    setMasonryPhotos((prev) => {
       const existingIds = new Set(prev.map((fav) => fav.pexels_id));
 
       const newUniqueFavorites = nextFavorites.filter(
@@ -94,8 +94,8 @@ function Favorites() {
         getFirstPhotos={getFirstFavorites}
         getNextPhotos={getNextFavorites}
         hasMore={hasMore}
-        photos={favorites}
-        setPhoto={setDisplayPhoto}
+        masonryPhotos={masonryPhotos}
+        setDisplayPhoto={setDisplayPhoto}
       />
     );
   }
@@ -109,10 +109,10 @@ function Favorites() {
       {show === "true" && (
         <PhotoModal
           displayPhoto={displayPhoto}
-          setDiplayPhoto={setDisplayPhoto}
+          setDisplayPhoto={setDisplayPhoto}
           show={show}
-          photos={favorites}
-          setPhotos={setFavorites}
+          masonryPhotos={masonryPhotos}
+          setMasonryPhotos={setMasonryPhotos}
         />
       )}
     </>

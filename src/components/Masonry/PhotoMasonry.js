@@ -7,13 +7,13 @@ import EndOfResultsView from "../Views/EndOfResultsView";
 export default function PhotoMasonry({
   getNextPhotos,
   hasMore,
-  photos,
+  masonryPhotos,
   setDisplayPhoto,
 }) {
   return (
     <>
       <InfiniteScroll
-        dataLength={photos.length}
+        dataLength={masonryPhotos.length}
         endMessage={<EndOfResultsView />}
         hasMore={hasMore}
         loader={<Loader />}
@@ -21,7 +21,7 @@ export default function PhotoMasonry({
       >
         <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
           <Masonry>
-            {photos.map((photo, index) => {
+            {masonryPhotos.map((photo, index) => {
               const isPriority = index >= 0 && index <= 6;
               return (
                 <Photo
