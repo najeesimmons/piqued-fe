@@ -5,7 +5,9 @@ function PhotoView({ displayPhoto, handleFavorite }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       <button
-        className="absolute top-2 right-2 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 z-10"
+        className={`absolute top-2 right-2 text-white bg-black rounded-full p-2 hover:bg-opacity-60 z-10 ${
+          displayPhoto.isFavorited ? "bg-opacity-10" : "bg-opacity-50"
+        }`}
         aria-label="Favorite"
         onClick={() => handleFavorite(displayPhoto)}
       >
