@@ -67,6 +67,7 @@ function Favorites() {
     }
     const { favorites: nextFavorites, count } = result;
 
+    //deduping masonryPhotos
     setMasonryPhotos((prev) => {
       const existingIds = new Set(prev.map((fav) => fav.pexels_id));
 
