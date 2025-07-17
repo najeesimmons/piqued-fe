@@ -65,8 +65,8 @@ export default function Home({
   const [isError, setIsError] = useState(initIsError);
   const [isLoading, setIsLoading] = useState(false);
   const [nextPage, setNextPage] = useState(initNextPage);
-  const [photo, setPhoto] = useState();
-  const [photos, setPhotos] = useState(initPhotos);
+  const [displayPhoto, setDisplayPhoto] = useState();
+  const [masonryPhotos, setMasonryPhotos] = useState(initPhotos);
   const [searchTerm, setSearchTerm] = useState("");
 
   const router = useRouter();
@@ -89,16 +89,16 @@ export default function Home({
         setIsError(true);
         setIsEmpty(false);
       }
-      setPhotos([]);
+      setMasonryPhotos([]);
       setHasMore(false);
     } else if (data.photos.length > 0) {
-      setPhotos(data.photos);
+      setMasonryPhotos(data.photos);
       setNextPage(2);
       setHasMore(!!data.next_page);
     } else {
       //regard empty array as an uncaught error
       setIsError(true);
-      setPhotos([]);
+      setMasonryPhotos([]);
       setHasMore(false);
       setIsEmpty(false);
     }
@@ -125,10 +125,10 @@ export default function Home({
         setIsError(true);
         setIsEmpty(false);
       }
-      setPhotos([]);
+      setMasonryPhotos([]);
       setHasMore(false);
     } else if (data.photos.length > 0) {
-      setPhotos(data.photos);
+      setMasonryPhotos(data.photos);
       setNextPage(2);
       setHasMore(!!data.next_page);
       setIsEmpty(false);
@@ -136,7 +136,7 @@ export default function Home({
     } else {
       //regard empty array as an uncaught error
       setIsError(true);
-      setPhotos([]);
+      setMasonryPhotos([]);
       setHasMore(false);
       setIsEmpty(false);
     }
@@ -159,7 +159,7 @@ export default function Home({
     }
 
     if (data?.photos?.length > 0) {
-      setPhotos((prevPhotos) => [...prevPhotos, ...data.photos]);
+      setMasonryPhotos((prevPhotos) => [...prevPhotos, ...data.photos]);
       setNextPage((prevPage) => prevPage + 1);
       setHasMore(!!data.next_page);
     } else {
@@ -168,15 +168,15 @@ export default function Home({
   }, [nextPage, fetchMode, searchTerm, user]);
 
   useEffect(() => {
-    if (!user || !photos || photos.length === 0) return;
+    if (!user || !masonryPhotos || masonryPhotos.length === 0) return;
 
-    if (!Object.hasOwn(photos[0], "isFavorited")) {
+    if (!Object.hasOwn(masonryPhotos[0], "isFavorited")) {
       (async () => {
-        const updatedPhotos = await checkFavoritesArray(photos, user.id);
-        setPhotos(updatedPhotos);
+        const updatedPhotos = await checkFavoritesArray(masonryPhotos, user.id);
+        setMasonryPhotos(updatedPhotos);
       })();
     }
-  }, [user, photos]);
+  }, [user, masonryPhotos]);
 
   function renderContent() {
     if (isLoading) return <Loader />;
@@ -187,8 +187,8 @@ export default function Home({
         getFirstPhotos={getFirstPhotos}
         getNextPhotos={getNextPhotos}
         hasMore={hasMore}
-        photos={photos}
-        setPhoto={setPhoto}
+        photos={masonryPhotos}
+        setDisplayPhoto={setDisplayPhoto}
       />
     );
   }
@@ -205,7 +205,12 @@ export default function Home({
       </Section>
       <Section>{renderContent()}</Section>
       {show === "true" && (
-        <PhotoModal photo={photo} setPhoto={setPhoto} show={show} />
+        <PhotoModal
+          displayPhoto={displayPhoto}
+          setDisplayPhoto={setDisplayPhoto}
+          show={show}
+          setMasonryPhotos={setMasonryPhotos}
+        />
       )}
     </>
   );

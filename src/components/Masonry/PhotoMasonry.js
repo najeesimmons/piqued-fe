@@ -8,7 +8,7 @@ export default function PhotoMasonry({
   getNextPhotos,
   hasMore,
   photos,
-  setPhoto,
+  setDisplayPhoto,
 }) {
   return (
     <>
@@ -28,7 +28,7 @@ export default function PhotoMasonry({
                   key={index}
                   photo={photo}
                   priority={isPriority ? true : undefined}
-                  setPhoto={setPhoto}
+                  setDisplayPhoto={setDisplayPhoto}
                 />
               );
             })}

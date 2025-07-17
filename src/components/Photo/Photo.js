@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-function Photo({ photo, priority, setPhoto }) {
+function Photo({ photo, priority, setDisplayPhoto }) {
   const router = useRouter();
   const openPhotoModal = () => {
     const liveQuery = { ...router.query, show: "true", id: photo.pexels_id };
@@ -20,7 +20,7 @@ function Photo({ photo, priority, setPhoto }) {
       sizes="(max-width: 350px) 100vw, (max-width: 750px) 50vw, 33.33vw"
       {...(priority && { priority })}
       onClick={() => {
-        setPhoto(photo);
+        setDisplayPhoto(photo);
         openPhotoModal();
       }}
     />
