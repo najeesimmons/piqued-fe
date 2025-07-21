@@ -14,16 +14,16 @@ function handleApiError(response, endpoint) {
 
   if (
     (endpoint === "curated" || endpoint === "search") &&
-    (!Array.isArray(response.photos) || response.photos.length === 0)
+    !Array.isArray(response.photos)
   ) {
     throw new Error(
-      `Pexels API Error [${endpoint}]: Invalid or empty photo list`
+      `Pexels API Error [${endpoint}]: Invalid response for this endpoint.`
     );
   }
 
   if (endpoint === "show" && !response.id) {
     throw new Error(
-      `Pexels API Error [${endpoint}]: Invalid response for photo ID`
+      `Pexels API Error [${endpoint}]: Invalid response for this endpoint.`
     );
   }
 }
@@ -94,6 +94,6 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         ? `❌ Error occurred fetching data from Pexels: ${error.message}`
         : `❌ Unexpected error fetching from Pexels: ${error}`
     );
-    return { error };
+    return;
   }
 }
