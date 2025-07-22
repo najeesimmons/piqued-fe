@@ -66,12 +66,6 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         );
       }
 
-      // return {
-      //   data: {
-      //     ...response,
-      //     photos: transformedPhotos,
-      //   },
-      // };
       return {
         ...response,
         photos: transformedPhotos,
