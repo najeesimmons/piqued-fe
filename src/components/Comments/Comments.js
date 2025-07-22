@@ -38,7 +38,9 @@ export default function Comments({ displayPhoto }) {
         className="flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="font-semibold">{comments.length} Comments</span>
+        <span className="font-semibold text-sm">
+          {comments.length} Comments
+        </span>
         {isOpen ? <FaChevronUp size={20} /> : <FaChevronDown size={20} />}
       </div>
       {displayPhoto && (
@@ -64,13 +66,13 @@ export default function Comments({ displayPhoto }) {
         <textarea
           type="text"
           placeholder="Add a comment..."
-          className="w-full p-2 border"
+          className="w-full p-2 border text-sm"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
       </div>
       <button
-        className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold"
+        className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
         onClick={() => handleSubmitCommet({ pexels_id, text: commentText })}
       >
         Comment
