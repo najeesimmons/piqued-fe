@@ -41,14 +41,14 @@ function Favorites() {
     setHasMore(false);
     setStart(0);
 
-    const result = await getFavorites(0, LIMIT - 1);
+    const response = await getFavorites(0, LIMIT - 1);
+    const { favorites, count } = response;
 
-    if (!result) {
+    if (!response) {
       setIsError(true);
-    } else if (result.favorites.length === 0) {
+    } else if (favorites.length === 0) {
       setIsEmpty(true);
     } else {
-      const { favorites, count } = result;
       setMasonryPhotos(favorites);
       setHasMore(LIMIT < count);
       setStart(LIMIT);

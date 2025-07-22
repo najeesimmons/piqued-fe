@@ -7,17 +7,15 @@ import {
 } from "../../../lib/comment/comment";
 
 export default function Comments({ displayPhoto }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
 
   const getComments = useCallback(async () => {
-    const response = await getCommentsByPexelsId(pexels_id);
-    console.log("response", response);
-    if (!response) return;
-    console.log(response);
-    setComments(response);
+    const { data, error } = await getCommentsByPexelsId(pexels_id);
+    if (error) return;
+    setComments(data);
   }, [pexels_id]);
 
   useEffect(() => {

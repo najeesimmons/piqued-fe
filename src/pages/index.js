@@ -24,7 +24,6 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  // const { data, error } = await fetchPexels("curated");
   const response = await fetchPexels("curated");
   const {
     next_page,
@@ -43,7 +42,7 @@ export async function getStaticProps() {
     initIsError: false,
   };
 
-  if (error) {
+  if (!response) {
     props.initIsError = true;
   } else if (photos.length > 0) {
     props.initPhotos = photos;
@@ -84,6 +83,7 @@ export default function Home({
     setFetchMode("curated");
     setIsError(false);
     setIsEmpty(false);
+
     const response = await fetchPexels("curated", user?.id || null);
     const {
       next_page,
@@ -94,7 +94,7 @@ export default function Home({
       error,
     } = response;
 
-    if (error) {
+    if (!response) {
       setIsError(true);
     } else if (photos.length > 0) {
       setMasonryPhotos(photos);
@@ -129,7 +129,7 @@ export default function Home({
       error,
     } = response;
 
-    if (error) {
+    if (!response) {
       setIsError(true);
     } else if (photos.length > 0) {
       setMasonryPhotos(photos);
