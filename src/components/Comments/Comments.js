@@ -13,9 +13,9 @@ export default function Comments({ displayPhoto }) {
   const { pexels_id } = displayPhoto;
 
   const getComments = useCallback(async () => {
-    const { data, error } = await getCommentsByPexelsId(pexels_id);
-    if (error) return;
-    setComments(data);
+    const response = await getCommentsByPexelsId(pexels_id);
+    if (!response) return;
+    setComments(response);
   }, [pexels_id]);
 
   useEffect(() => {
