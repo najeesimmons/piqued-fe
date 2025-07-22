@@ -97,8 +97,7 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         : `❌ Unexpected error fetching from Pexels: ${error}`
     );
     return {
-      error:
-        error.message || `❌ Unexpected error fetching from Pexels: ${error}`,
+      error,
     };
   }
 }
