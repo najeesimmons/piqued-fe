@@ -23,10 +23,6 @@ export default function Comments({ displayPhoto }) {
     getComments();
   }, [displayPhoto, getComments]);
 
-  useEffect(() => {
-    console.log(comments);
-  }, [comments]);
-
   const handleSubmitCommet = async ({ pexels_id, text }) => {
     if (commentText === "") return;
     const { success, data, error } = await insertComment({ pexels_id, text });
@@ -65,7 +61,7 @@ export default function Comments({ displayPhoto }) {
 
       {/* Input Field (Sticky to Bottom) */}
       <div className="mt-2">
-        <input
+        <textarea
           type="text"
           placeholder="Add a comment..."
           className="w-full p-2 border"
@@ -74,6 +70,7 @@ export default function Comments({ displayPhoto }) {
         />
       </div>
       <button
+        className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold"
         onClick={() => handleSubmitCommet({ pexels_id, text: commentText })}
       >
         Comment
