@@ -66,11 +66,15 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         );
       }
 
+      // return {
+      //   data: {
+      //     ...response,
+      //     photos: transformedPhotos,
+      //   },
+      // };
       return {
-        data: {
-          ...response,
-          photos: transformedPhotos,
-        },
+        ...response,
+        photos: transformedPhotos,
       };
     }
 
@@ -82,10 +86,8 @@ export async function fetchPexels(endpoint, params = {}, userId) {
       }
 
       return {
-        data: {
-          ...response,
-          photo: transformedPhoto,
-        },
+        ...response,
+        photo: transformedPhoto,
       };
     }
   } catch (error) {
@@ -94,6 +96,9 @@ export async function fetchPexels(endpoint, params = {}, userId) {
         ? `❌ Error occurred fetching data from Pexels: ${error.message}`
         : `❌ Unexpected error fetching from Pexels: ${error}`
     );
-    return;
+    return {
+      error:
+        error.message || `❌ Unexpected error fetching from Pexels: ${error}`,
+    };
   }
 }

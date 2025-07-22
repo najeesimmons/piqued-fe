@@ -24,7 +24,16 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  const { data, error } = await fetchPexels("curated");
+  // const { data, error } = await fetchPexels("curated");
+  const response = await fetchPexels("curated");
+  const {
+    next_page,
+    page,
+    per_page,
+    photos = [],
+    total_results,
+    error,
+  } = response;
 
   const props = {
     initPhotos: [],
@@ -35,18 +44,13 @@ export async function getStaticProps() {
   };
 
   if (error) {
-    if (error.message.includes("Invalid or empty photo list")) {
-      props.initIsEmpty = true;
-    } else {
-      props.initIsError = true;
-    }
-  } else if (data?.photos?.length > 0) {
-    const { photos, page, next_page } = data;
+    props.initIsError = true;
+  } else if (photos.length > 0) {
     props.initPhotos = photos;
     props.initNextPage = page + 1;
     props.initHasMore = !!next_page;
   } else {
-    props.initIsError = true;
+    props.isEmpty = true;
   }
 
   return { props, revalidate: 3600 };
@@ -80,27 +84,26 @@ export default function Home({
     setFetchMode("curated");
     setIsError(false);
     setIsEmpty(false);
-    const { data, error } = await fetchPexels("curated", user?.id || null);
+    const response = await fetchPexels("curated", user?.id || null);
+    const {
+      next_page,
+      page,
+      per_page,
+      photos = [],
+      total_results,
+      error,
+    } = response;
+
     if (error) {
-      if (error.message.includes("Invalid or empty photo list")) {
-        setIsEmpty(true);
-        setIsError(false);
-      } else {
-        setIsError(true);
-        setIsEmpty(false);
-      }
-      setMasonryPhotos([]);
-      setHasMore(false);
-    } else if (data.photos.length > 0) {
-      setMasonryPhotos(data.photos);
-      setNextPage(2);
-      setHasMore(!!data.next_page);
-    } else {
-      //regard empty array as an uncaught error
       setIsError(true);
-      setMasonryPhotos([]);
+    } else if (photos.length > 0) {
+      setMasonryPhotos(photos);
+      setNextPage(2);
+      setHasMore(!!next_page);
+    } else {
+      setMasonryPhotos(photos);
       setHasMore(false);
-      setIsEmpty(false);
+      setIsEmpty(true);
     }
     setIsLoading(false);
   }, [user]);
@@ -112,39 +115,38 @@ export default function Home({
     setIsEmpty(false);
     setNextPage(1);
 
-    const { data, error } = await fetchPexels(
+    const response = await fetchPexels(
       "search",
       { query: searchTerm },
       user?.id || null
     );
+    const {
+      next_page,
+      page,
+      per_page,
+      photos = [],
+      total_results,
+      error,
+    } = response;
+
     if (error) {
-      if (error.message.includes("Invalid or empty photo list")) {
-        setIsEmpty(true);
-        setIsError(false);
-      } else {
-        setIsError(true);
-        setIsEmpty(false);
-      }
-      setMasonryPhotos([]);
-      setHasMore(false);
-    } else if (data.photos.length > 0) {
-      setMasonryPhotos(data.photos);
+      setIsError(true);
+    } else if (photos.length > 0) {
+      setMasonryPhotos(photos);
       setNextPage(2);
-      setHasMore(!!data.next_page);
+      setHasMore(!!next_page);
       setIsEmpty(false);
       router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
     } else {
-      //regard empty array as an uncaught error
-      setIsError(true);
-      setMasonryPhotos([]);
+      setMasonryPhotos(photos);
       setHasMore(false);
-      setIsEmpty(false);
+      setIsEmpty(true);
     }
     setIsLoading(false);
   }, [router, searchTerm, user]);
 
   const getNextPhotos = useCallback(async () => {
-    const { data, error } = await fetchPexels(
+    const response = await fetchPexels(
       fetchMode,
       {
         ...(nextPage && { page: nextPage }),
@@ -153,15 +155,24 @@ export default function Home({
       user?.id || null
     );
 
+    const {
+      next_page,
+      page,
+      per_page,
+      photos = [],
+      total_results,
+      error,
+    } = response;
+
     if (error) {
       setIsError(true);
       return;
     }
 
-    if (data?.photos?.length > 0) {
-      setMasonryPhotos((prevPhotos) => [...prevPhotos, ...data.photos]);
+    if (photos.length > 0) {
+      setMasonryPhotos((prevPhotos) => [...prevPhotos, ...photos]);
       setNextPage((prevPage) => prevPage + 1);
-      setHasMore(!!data.next_page);
+      setHasMore(!!next_page);
     } else {
       setHasMore(false);
     }
