@@ -5,10 +5,14 @@ const AuthContext = createContext({ user: null, setUser: () => {} });
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data, error }) => {
-      if (!error) setUser(data.user ?? null);
+      if (!error) {
+        setUser(data.user ?? null);
+        setIsAuthLoading(false);
+      }
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
@@ -21,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, isAuthLoading }}>
       {children}
     </AuthContext.Provider>
   );

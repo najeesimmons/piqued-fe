@@ -17,7 +17,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
 
   const handleClose = useCallback(() => {
     const { id, show, ...restQuery } = router.query;
@@ -47,19 +47,15 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
 
   const getPhoto = useCallback(async () => {
     setIsLoading(true);
-    const { data, error } = await fetchPexels("show", { id }, user?.id);
-    if (error) {
+    const fetchedPhoto = await fetchPexels("show", { id }, user?.id);
+    if (!fetchedPhoto) {
       setIsError(true);
       setIsLoading(false);
       return;
+    } else {
+      setDisplayPhoto(fetchedPhoto);
     }
 
-    const fetchedPhoto = data;
-    if (fetchedPhoto) {
-      setDisplayPhoto(fetchedPhoto);
-    } else {
-      setIsError(true);
-    }
     setIsLoading(false);
   }, [id, setDisplayPhoto, user]);
 
@@ -76,10 +72,10 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   }, [show]);
 
   useEffect(() => {
-    if (displayPhoto) return;
+    if (displayPhoto || isAuthLoading) return;
 
     getPhoto();
-  }, [id, getPhoto, displayPhoto]);
+  }, [id, isAuthLoading, getPhoto, displayPhoto]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

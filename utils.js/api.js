@@ -74,15 +74,13 @@ export async function fetchPexels(endpoint, params = {}, userId) {
 
     if (endpoint === "show") {
       let transformedPhoto = transformPhotoSingle(response);
+      console.log("userId", userId);
 
       if (userId) {
         transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);
       }
 
-      return {
-        ...response,
-        photo: transformedPhoto,
-      };
+      return transformedPhoto;
     }
   } catch (error) {
     console.error(

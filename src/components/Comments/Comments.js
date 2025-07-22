@@ -18,19 +18,33 @@ export default function Comments({ displayPhoto }) {
     setComments(response);
   }, [pexels_id]);
 
+  const handleSubmitCommet = useCallback(
+    async ({ pexels_id, text }) => {
+      if (commentText === "") return;
+      const { success, error } = await insertComment({ pexels_id, text });
+      if (error) return;
+      if (success === true) {
+        setComments((prev) => [...prev, { text: commentText, user_id: 1234 }]);
+      }
+      setCommentText("");
+    },
+    [commentText]
+  );
+
   useEffect(() => {
     if (!displayPhoto) return;
     getComments();
   }, [displayPhoto, getComments]);
 
-  const handleSubmitCommet = async ({ pexels_id, text }) => {
-    if (commentText === "") return;
-    const { success, data, error } = await insertComment({ pexels_id, text });
-    if (error) return;
-    if (success === true && data) {
-      setComments((prev) => [...prev, data[0]]);
-    }
-  };
+  useEffect(() => {
+    const handleKeyDown = async (e) => {
+      if (e.key === "Enter") {
+        await handleSubmitCommet({ pexels_id, text });
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleSubmitCommet, pexels_id]);
 
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
@@ -52,16 +66,16 @@ export default function Comments({ displayPhoto }) {
       )}
 
       {isOpen && (
-        <div className="mt-2 flex-grow overflow-y-auto space-y-2 border-t pt-2">
+        <div className="mt-2 flex-grow overflow-y-auto space-y-2 border-t pt-2 text-sm">
           {comments.map((comment, index) => (
             <div key={index} className="border-b pb-1">
-              {comment.text}
+              <div className="font-semibold text-xs">{comment.user_id}</div>
+              <div className="text-sm">{comment.text}</div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Input Field (Sticky to Bottom) */}
       <div className="mt-2">
         <textarea
           type="text"
