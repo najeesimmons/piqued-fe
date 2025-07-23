@@ -44,18 +44,13 @@ function Navigation() {
           </>
         )}
         {user && !isFavoritesPage && (
-          <>
-            <li className="font-semibold">
-              <Link href={"/favorites"}>favorites</Link>
-            </li>
-            <li
-              className="font-semibold cursor-pointer"
-              onClick={handleSignOut}
-            >
-              sign out
-            </li>
-          </>
+          <li className="font-semibold">
+            <Link href={"/favorites"}>favorites</Link>
+          </li>
         )}
+        <li className="font-semibold cursor-pointer" onClick={handleSignOut}>
+          sign out
+        </li>
       </ul>
     </nav>
   );
