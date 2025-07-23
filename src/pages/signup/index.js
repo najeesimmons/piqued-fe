@@ -16,7 +16,7 @@ function Signup() {
     setError("");
     setSuccess(false);
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     });
@@ -26,8 +26,7 @@ function Signup() {
       return;
     }
 
-    // setUser(data.user); don't set user here unless deactiveate email confirmation, user won't be signed in at successful sign up
-    console.log("Logged in as:", data.user);
+    setPassword("");
     setSuccess(true);
   };
 
