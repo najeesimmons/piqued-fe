@@ -28,8 +28,8 @@ function Navigation() {
   return (
     <nav className="py-2 flex flex-row items-center justify-between font-semibold text-sm">
       <Link href="/" className="flex items-center gap-1 font-semibold">
-        <LiaMountainSolid />
-        <span>piqued</span>
+        <LiaMountainSolid size={20} />
+        <span className="text-lg">piqued</span>
       </Link>
 
       <ul className="flex flex-row gap-4">
