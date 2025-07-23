@@ -5,12 +5,14 @@ import {
   getCommentsByPexelsId,
   insertComment,
 } from "../../../lib/comment/comment";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Comments({ displayPhoto }) {
   const [isOpen, setIsOpen] = useState(true);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
+  const { user } = useAuth();
 
   const getComments = useCallback(async () => {
     const response = await getCommentsByPexelsId(pexels_id);
@@ -24,11 +26,14 @@ export default function Comments({ displayPhoto }) {
       const { success, error } = await insertComment({ pexels_id, text });
       if (error) return;
       if (success === true) {
-        setComments((prev) => [...prev, { text: commentText, user_id: 1234 }]);
+        setComments((prev) => [
+          ...prev,
+          { text: commentText, user_id: user.id },
+        ]);
       }
       setCommentText("");
     },
-    [commentText]
+    [commentText, user]
   );
 
   useEffect(() => {
