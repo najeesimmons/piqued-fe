@@ -32,7 +32,7 @@ function Navigation() {
         <span>piqued</span>
       </Link>
 
-      <ul className="flex flex-row gap-2">
+      <ul className="flex flex-row gap-4">
         {!user && !isLoginPage && (
           <>
             <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
@@ -46,7 +46,7 @@ function Navigation() {
           </>
         )}
         {user && !isFavoritesPage && (
-          <li className="font-semibold">
+          <li className="font-semibold flex items-center">
             <Link href={"/favorites"}>favorites</Link>
           </li>
         )}
