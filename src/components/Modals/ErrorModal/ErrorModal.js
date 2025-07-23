@@ -35,10 +35,6 @@ function ErrorModal({ isError, setisError }) {
     };
   }, [isError]);
 
-  useEffect(() => {
-    console.log("home re-rendered 🏠");
-  }, []);
-
   if (!modalRoot) return null;
 
   return ReactDOM.createPortal(

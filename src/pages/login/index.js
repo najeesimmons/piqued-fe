@@ -11,7 +11,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const { setUser } = useAuth();
   const router = useRouter();
@@ -19,7 +18,6 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess(false);
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
@@ -32,8 +30,6 @@ function Login() {
     }
 
     setUser(data.user);
-    setSuccess(true);
-    console.log("Logged in as:", data.user);
     router.push("/");
   };
 
@@ -92,9 +88,6 @@ function Login() {
             </form>
           </div>
           {error && <p className="mt-3 text-red-500 text-center">{error}</p>}
-          {success && (
-            <p className="mt-3 text-green-500 text-center">Login successful!</p>
-          )}
         </div>
       </Section>
     </>
