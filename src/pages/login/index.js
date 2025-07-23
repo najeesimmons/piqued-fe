@@ -29,6 +29,7 @@ function Login() {
       return;
     }
 
+    setPassword("");
     setUser(data.user);
     router.push("/");
   };
