@@ -10,6 +10,7 @@ function Navigation() {
 
   const router = useRouter();
   const isFavoritesPage = router.asPath.includes("/favorites");
+  const isLoginPage = router.asPath.includes("/login");
 
   const handleSignOut = async () => {
     try {
@@ -19,7 +20,6 @@ function Navigation() {
         return;
       }
       setUser(null);
-      console.log("Sign-out successful");
     } catch (error) {
       console.error("Error during sign-out:", error);
     }
@@ -33,7 +33,7 @@ function Navigation() {
       </Link>
 
       <ul className="flex flex-row gap-2">
-        {!user && (
+        {!user && !isLoginPage && (
           <>
             <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
               <Link
@@ -51,8 +51,13 @@ function Navigation() {
           </li>
         )}
         {user && (
-          <li className="font-semibold cursor-pointer" onClick={handleSignOut}>
-            sign out
+          <li className="font-semibold">
+            <button
+              onClick={handleSignOut}
+              className="cursor-pointer bg-black text-white px-4 py-2 hover:bg-gray-800"
+            >
+              sign out
+            </button>
           </li>
         )}
       </ul>

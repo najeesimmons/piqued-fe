@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import Loader from "@/components/Loader/Loader";
 import NoResultsView from "@/components/Views/NoResultsView";
 import ErrorView from "@/components/Views/ErrorView";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 const DynamicPhotoMasonry = dynamic(
   () => import("@/components/Masonry/PhotoMasonry"),
@@ -26,6 +28,7 @@ function Favorites() {
   const [isLoading, setIsLoading] = useState();
   const [isError, setIsError] = useState();
   const [isEmpty, setIsEmpty] = useState();
+  const { user } = useAuth();
 
   const LIMIT = 12;
   const end = start + LIMIT - 1;
@@ -67,7 +70,6 @@ function Favorites() {
     }
     const { favorites: nextFavorites, count } = result;
 
-    //deduping masonryPhotos
     setMasonryPhotos((prev) => {
       const existingIds = new Set(prev.map((fav) => fav.pexels_id));
 
@@ -106,15 +108,33 @@ function Favorites() {
       <Section>
         <Navigation />
       </Section>
-      <Section>{renderContent()}</Section>
-      {show === "true" && (
-        <PhotoModal
-          displayPhoto={displayPhoto}
-          setDisplayPhoto={setDisplayPhoto}
-          show={show}
-          masonryPhotos={masonryPhotos}
-          setMasonryPhotos={setMasonryPhotos}
-        />
+      {user ? (
+        <>
+          <Section>{renderContent()}</Section>
+          {show === "true" && (
+            <PhotoModal
+              displayPhoto={displayPhoto}
+              setDisplayPhoto={setDisplayPhoto}
+              show={show}
+              masonryPhotos={masonryPhotos}
+              setMasonryPhotos={setMasonryPhotos}
+            />
+          )}
+        </>
+      ) : (
+        <Section>
+          <p className="text-center mt-32">
+            Already a member?{" "}
+            <Link className="font-semibold" href="/login">
+              Log in
+            </Link>{" "}
+            to view your favorites. New here?{" "}
+            <Link className="font-semibold" href="/signup">
+              Sign up
+            </Link>{" "}
+            to get started!
+          </p>
+        </Section>
       )}
     </>
   );
