@@ -67,6 +67,15 @@ function Signup() {
                   style={{ textIndent: "8px" }}
                 />
               </div>
+              {error && (
+                <p className="mt-3 text-red-500 font-center">{error}</p>
+              )}
+              {success && (
+                <p className="mt-3 text-sm font-bold">
+                  Success! We&apos;ve sent you an email — confirm it to activate
+                  your account and access your profile.
+                </p>
+              )}
               <button
                 className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
                 type="submit"
@@ -81,12 +90,6 @@ function Signup() {
               </p>
             </form>
           </div>
-          {error && <p className="mt-3 text-red-500 text-center">{error}</p>}
-          {success && (
-            <p className="mt-3 text-green-500 text-center">
-              Sign-up successful! Confirm via email to activate...
-            </p>
-          )}
         </div>
       </Section>
     </>
