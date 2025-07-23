@@ -36,10 +36,12 @@ function Navigation() {
         {!user && (
           <>
             <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
-              <Link href={"/login"}>log in</Link>
-            </li>
-            <li className="font-semibold">
-              <Link href={"/signup"}>sign up</Link>
+              <Link
+                className="bg-black text-white px-4 py-2 hover:bg-gray-800"
+                href={"/login"}
+              >
+                log in
+              </Link>
             </li>
           </>
         )}
@@ -48,9 +50,11 @@ function Navigation() {
             <Link href={"/favorites"}>favorites</Link>
           </li>
         )}
-        <li className="font-semibold cursor-pointer" onClick={handleSignOut}>
-          sign out
-        </li>
+        {user && (
+          <li className="font-semibold cursor-pointer" onClick={handleSignOut}>
+            sign out
+          </li>
+        )}
       </ul>
     </nav>
   );
