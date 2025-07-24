@@ -2,6 +2,7 @@ import { useAuth } from "@/context/AuthContext";
 import { getOwnProfile } from "../../../lib/profile/profile";
 import { useEffect, useState } from "react";
 import AddProfileView from "@/components/Views/Profile/AddProfileView";
+import Navigation from "@/components/Navigation/Navigation";
 
 export default function Me() {
   const { user } = useAuth();
@@ -10,12 +11,21 @@ export default function Me() {
   useEffect(() => {
     if (!user) return;
     const getMyProfile = async () => {
-      const { myProfile } = await getOwnProfile(user.id);
-      setProfile(myProfile);
+      const profile = await getOwnProfile(user.id);
+      setProfile(profile);
     };
 
     getMyProfile();
   }, [user]);
 
-  return !profile ? <AddProfileView user={user} /> : <div></div>;
+  return (
+    <>
+      <Navigation />
+      {!profile ? (
+        <AddProfileView user={user} setProfile={setProfile} />
+      ) : (
+        <div>You have profile.</div>
+      )}
+    </>
+  );
 }
