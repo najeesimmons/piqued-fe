@@ -23,17 +23,15 @@ export default function Comments({ displayPhoto }) {
   const handleSubmitCommet = useCallback(
     async ({ pexels_id, text }) => {
       if (commentText === "") return;
-      const { success, error } = await insertComment({ pexels_id, text });
-      if (error) return;
-      if (success === true) {
-        setComments((prev) => [
-          ...prev,
-          { text: commentText, user_id: user.id },
-        ]);
+      const data = await insertComment({ pexels_id, text });
+      if (!data) {
+        return;
+      } else {
+        setComments((prev) => [...prev, data]);
       }
       setCommentText("");
     },
-    [commentText, user]
+    [commentText]
   );
 
   useEffect(() => {
