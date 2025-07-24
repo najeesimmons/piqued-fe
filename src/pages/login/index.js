@@ -1,6 +1,6 @@
 "use client";
 import { supabase } from "../../../lib/supabase/supabase";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
@@ -12,7 +12,7 @@ function Login() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -34,6 +34,9 @@ function Login() {
     router.push("/");
   };
 
+  useEffect(() => {
+    if (user) router.push("/");
+  }, [user, router]);
   return (
     <>
       <Navigation />
