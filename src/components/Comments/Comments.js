@@ -72,7 +72,9 @@ export default function Comments({ displayPhoto }) {
         <div className="mt-2 flex-grow overflow-y-auto space-y-2 border-t pt-2 text-sm">
           {comments.map((comment, index) => (
             <div key={index} className="border-b pb-1">
-              <div className="font-semibold text-xs">{comment.user_id}</div>
+              <div className="font-semibold text-xs">
+                {comment.profile.username || comment.displayName}
+              </div>
               <div className="text-sm">{comment.text}</div>
             </div>
           ))}
