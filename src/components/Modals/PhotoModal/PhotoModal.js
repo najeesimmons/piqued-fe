@@ -27,6 +27,11 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   }, [router]);
 
   const handleFavorite = async (displayPhoto) => {
+    if (!user) {
+      alert("Create an account to start making favorites.");
+      return;
+    }
+
     const { action, success } = await toggleFavorite(displayPhoto);
 
     if (!success) return;
@@ -41,8 +46,6 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
           : p
       )
     );
-
-    console.log(action, "favorite successful! ❤️");
   };
 
   const getPhoto = useCallback(async () => {
