@@ -24,6 +24,7 @@ export default function Comments({ displayPhoto }) {
     async ({ pexels_id, text }) => {
       if (commentText === "") return;
       const data = await insertComment({ pexels_id, text });
+      console.log(data);
       if (!data) {
         return;
       } else {
@@ -73,7 +74,7 @@ export default function Comments({ displayPhoto }) {
           {comments.map((comment, index) => (
             <div key={index} className="border-b pb-1">
               <div className="font-semibold text-xs">
-                {comment.profile.username || comment.displayName}
+                {comment.profile.username || comment.display_name}
               </div>
               <div className="text-sm">{comment.text}</div>
             </div>
