@@ -24,7 +24,6 @@ export default function Comments({ displayPhoto }) {
     async ({ pexels_id, text }) => {
       if (commentText === "") return;
       const data = await insertComment({ pexels_id, text });
-      console.log(data);
       if (!data) {
         return;
       } else {
