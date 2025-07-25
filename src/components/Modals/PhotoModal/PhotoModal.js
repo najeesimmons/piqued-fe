@@ -1,20 +1,22 @@
 "use client";
 import Comments from "@/components/Comments/Comments";
-import { fetchPexels } from "../../../../utils.js/api";
-import { IoCloseSharp } from "react-icons/io5";
+import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import Loader from "@/components/Loader/Loader";
+import LoginOrSignupModal from "../LoginOrSignupModal/LoginOrSignupView";
+import PhotoView from "@/components/Views/PhotoView";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
+import { fetchPexels } from "../../../../utils.js/api";
+import { IoCloseSharp } from "react-icons/io5";
+import { toggleFavorite } from "../../../../lib/favorite/utils";
+import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { toggleFavorite } from "../../../../lib/favorite/utils";
-import ErrorView from "@/components/Views/ErrorView";
-import PhotoView from "@/components/Views/PhotoView";
-import { useAuth } from "@/context/AuthContext";
 
 function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { user, isAuthLoading } = useAuth();
@@ -28,7 +30,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
 
   const handleFavorite = async (displayPhoto) => {
     if (!user) {
-      alert("Create an account to start making favorites.");
+      setIsShowAuthCta(true);
       return;
     }
 
@@ -120,20 +122,25 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   }
 
   return ReactDOM.createPortal(
-    <Section>
-      <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
-        <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white relative">
-          <button
-            onClick={handleClose}
-            className="absolute top-4 left-4 text-3xl z-[10000]"
-            aria-label="Close Modal"
-          >
-            <IoCloseSharp color="black" size={35} />
-          </button>
-          {content}
+    <>
+      <Section>
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
+          <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white relative">
+            <button
+              onClick={handleClose}
+              className="absolute top-4 left-4 text-3xl z-[10000]"
+              aria-label="Close Modal"
+            >
+              <IoCloseSharp color="black" size={35} />
+            </button>
+            {content}
+          </div>
         </div>
-      </div>
-    </Section>,
+      </Section>
+      {isShowAuthCta && (
+        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
+      )}
+    </>,
     document.getElementById("modal-root")
   );
 }
