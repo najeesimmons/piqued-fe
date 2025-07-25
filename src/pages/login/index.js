@@ -1,11 +1,11 @@
 "use client";
-import { supabase } from "../../../lib/supabase/supabase";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
+import { supabase } from "../../../lib/supabase/supabase";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 function Login() {
   const [email, setEmail] = useState("");
