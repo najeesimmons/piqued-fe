@@ -2,7 +2,7 @@ import Loader from "../Loader/Loader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Photo from "../Photo/Photo";
-import EndOfResultsView from "../Views/EndOfResultsView";
+import EndOfResultsView from "../Views/SearchResults/EndOfResultsView";
 
 export default function PhotoMasonry({
   getNextPhotos,
