@@ -7,8 +7,8 @@ import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Loader from "@/components/Loader/Loader";
-import NoResultsView from "@/components/Views/NoResultsView";
-import ErrorView from "@/components/Views/ErrorView";
+import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
+import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 
