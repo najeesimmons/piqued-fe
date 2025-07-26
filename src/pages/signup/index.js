@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabase/supabase";
 
 function Signup() {
@@ -10,6 +12,9 @@ function Signup() {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const { user, setUser } = useAuth();
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +34,10 @@ function Signup() {
     setPassword("");
     setSuccess(true);
   };
+
+  useEffect(() => {
+    if (user) router.push("/");
+  }, [user, router]);
 
   return (
     <>
