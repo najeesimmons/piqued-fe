@@ -27,9 +27,9 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
     setIsLoading(false);
   }, [pexels_id]);
 
-  const handleCommet = useCallback(
+  const handleComment = useCallback(
     async ({ pexels_id, text }) => {
-      if (!user || commentText === "") {
+      if (!user) {
         setIsShowAuthCta(true);
         return;
       }
@@ -43,7 +43,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
       }
       setCommentText("");
     },
-    [commentText, setIsShowAuthCta, user]
+    [setIsShowAuthCta, user]
   );
 
   useEffect(() => {
@@ -54,12 +54,12 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
   useEffect(() => {
     const handleKeyDown = async (e) => {
       if (e.key === "Enter" && commentText !== "") {
-        await handleCommet({ pexels_id, text });
+        await handleComment({ pexels_id, text });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [commentText, handleCommet, pexels_id]);
+  }, [commentText, handleComment, pexels_id]);
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
@@ -106,7 +106,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
       </div>
       <button
         className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
-        onClick={() => handleCommet({ pexels_id, text: commentText })}
+        onClick={() => handleComment({ pexels_id, text: commentText })}
       >
         Comment
       </button>
