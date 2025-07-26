@@ -91,7 +91,7 @@ function Favorites() {
   function renderContent() {
     if (isLoading) return <Loader />;
     if (isError) return <ErrorView retry={getFirstFavorites} />;
-    if (isEmpty) return <NoResultsView />;
+    if (isEmpty) return <NoResultsView type="favorites" />;
     return (
       <DynamicPhotoMasonry
         getFirstPhotos={getFirstFavorites}
@@ -128,7 +128,7 @@ function Favorites() {
             <Link className="font-semibold" href="/login">
               Log in
             </Link>{" "}
-            to view your favorites. New here?{" "}
+            to view your favorites ❤️. New here?{" "}
             <Link className="font-semibold" href="/signup">
               Sign up
             </Link>{" "}
