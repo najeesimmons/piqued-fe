@@ -45,6 +45,11 @@ export default function Me() {
     setIsUpdateError(false);
     setIsUpdateSuccess(false);
 
+    if (!user) {
+      setIsShowAuthCta(true);
+      return;
+    }
+
     const result = await updateOwnProfile(profileForm, user.id);
 
     if (!result) {
@@ -116,7 +121,6 @@ export default function Me() {
             </p>
           )}
           <button
-            disabled={!user}
             type="submit"
             className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
           >
