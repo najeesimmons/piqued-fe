@@ -40,6 +40,7 @@ export default function Me() {
   }, [user, setIsShowAuthCta]);
 
   const handleSubmit = async (e) => {
+    //TODO: if no user set isSHOW CTA to true
     e.preventDefault();
     setIsUpdateError(false);
     setIsUpdateSuccess(false);
@@ -115,6 +116,7 @@ export default function Me() {
             </p>
           )}
           <button
+            disabled={!user}
             type="submit"
             className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
           >
