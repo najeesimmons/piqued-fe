@@ -4,13 +4,13 @@ import { useEffect } from "react";
 function SearchBar({ getSearchPhotos, searchTerm, setSearchTerm }) {
   useEffect(() => {
     const handleKeyDown = async (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && searchTerm !== "") {
         await getSearchPhotos();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [getSearchPhotos]);
+  }, [getSearchPhotos, searchTerm]);
 
   return (
     <div className="flex h-8 mb-4">
