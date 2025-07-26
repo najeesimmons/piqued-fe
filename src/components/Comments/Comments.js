@@ -1,18 +1,20 @@
-import { useCallback, useEffect, useState } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import {
   getCommentsByPexelsId,
   insertComment,
 } from "../../../lib/comment/comment";
+import { useAuth } from "@/context/AuthContext";
+import { useCallback, useEffect, useState } from "react";
 
-export default function Comments({ displayPhoto }) {
-  const [isOpen, setIsOpen] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+export default function Comments({ displayPhoto, setIsShowAuthCta }) {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
+  const [isOpen, setIsOpen] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
 
   const getComments = useCallback(async () => {
     setIsLoading(true);
@@ -25,9 +27,13 @@ export default function Comments({ displayPhoto }) {
     setIsLoading(false);
   }, [pexels_id]);
 
-  const handleSubmitCommet = useCallback(
+  const handleCommet = useCallback(
     async ({ pexels_id, text }) => {
-      if (commentText === "") return;
+      if (!user || commentText === "") {
+        setIsShowAuthCta(true);
+        return;
+      }
+
       const result = await insertComment({ pexels_id, text });
       if (!result) {
         //TODO: error capture/behavior for submit comment
@@ -37,7 +43,7 @@ export default function Comments({ displayPhoto }) {
       }
       setCommentText("");
     },
-    [commentText]
+    [commentText, setIsShowAuthCta]
   );
 
   useEffect(() => {
@@ -48,12 +54,12 @@ export default function Comments({ displayPhoto }) {
   useEffect(() => {
     const handleKeyDown = async (e) => {
       if (e.key === "Enter") {
-        await handleSubmitCommet({ pexels_id, text });
+        await handleCommet({ pexels_id, text });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleSubmitCommet, pexels_id]);
+  }, [handleCommet, pexels_id]);
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
@@ -100,7 +106,7 @@ export default function Comments({ displayPhoto }) {
       </div>
       <button
         className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
-        onClick={() => handleSubmitCommet({ pexels_id, text: commentText })}
+        onClick={() => handleCommet({ pexels_id, text: commentText })}
       >
         Comment
       </button>

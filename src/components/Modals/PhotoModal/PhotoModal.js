@@ -115,7 +115,10 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
           handleFavorite={handleFavorite}
         />
         <div className="flex items-center justify-center w-full md:w-1/2 h-full">
-          <Comments displayPhoto={displayPhoto} />
+          <Comments
+            displayPhoto={displayPhoto}
+            setIsShowAuthCta={setIsShowAuthCta}
+          />
         </div>
       </>
     );
