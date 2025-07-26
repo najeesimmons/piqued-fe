@@ -1,6 +1,5 @@
 import Navigation from "@/components/Navigation/Navigation";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
-import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
