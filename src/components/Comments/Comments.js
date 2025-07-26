@@ -43,7 +43,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
       }
       setCommentText("");
     },
-    [commentText, setIsShowAuthCta]
+    [commentText, setIsShowAuthCta, user]
   );
 
   useEffect(() => {
