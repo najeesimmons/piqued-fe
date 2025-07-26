@@ -1,8 +1,7 @@
 import Navigation from "@/components/Navigation/Navigation";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/router";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 
 export default function Me() {
