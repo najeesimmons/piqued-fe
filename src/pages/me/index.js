@@ -6,31 +6,35 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 export default function Me() {
-  const { user } = useAuth();
+  const { user, isAuthLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [profileFormData, setProfileFormData] = useState(null);
+  const [profileForm, setProfileForm] = useState({});
   const [submitStatus, setSubmitStatus] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) router.push("/");
-  }, [user, router]);
+    if (!isAuthLoading && !user) {
+      router.push("/");
+    }
+  }, [isAuthLoading, user, router]);
 
   useEffect(() => {
-    const getMyProfile = async () => {
-      setIsLoading(true);
-      const profile = await getOwnProfile(user?.id);
-      if (!profile) {
-        setIsError(true);
-      } else {
-        setProfileFormData(profile);
-      }
-      setIsLoading(false);
-    };
+    if (!isAuthLoading && user) {
+      const getMyProfile = async () => {
+        setIsLoading(true);
+        const result = await getOwnProfile(user.id);
+        if (!result) {
+          setIsError(true);
+        } else {
+          setProfileForm(result);
+        }
+        setIsLoading(false);
+      };
 
-    getMyProfile();
-  });
+      getMyProfile();
+    }
+  }, [isAuthLoading, user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,7 +46,7 @@ export default function Me() {
 
     const { error } = await supabase
       .from("profiles")
-      .update(profileFormData)
+      .update(profileForm)
       .eq("id", user.id);
 
     if (error) {
@@ -54,58 +58,65 @@ export default function Me() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfileFormData((prev) => ({
+    setProfileForm((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  if (isError) return <div>Error</div>;
+  if (isLoading || isAuthLoading) return <div>Loading</div>;
   return (
     <>
       <Navigation />
-      {isError && <div>Error Loading Profile</div>}
-      {isLoading && <div>Loading Profile</div>}
-      {!isLoading && !isError && (
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
-          <div>
-            <label>First Name</label>
-            <input
-              name="first_name"
-              value={profileFormData?.first_name}
-              onChange={handleChange}
-              className="input"
-            />
-          </div>
-          <div>
-            <label>Last Name</label>
-            <input
-              name="last_name"
-              value={profileFormData?.last_name}
-              onChange={handleChange}
-              className="input"
-            />
-          </div>
-          <div>
-            <label>Username</label>
-            <input
-              name="username"
-              value={profileFormData?.username}
-              onChange={handleChange}
-              className="input"
-            />
-          </div>
-          <button type="submit" className="btn">
-            Update Profile
-          </button>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 max-w-md mx-auto mt-16"
+      >
+        <div>
+          <label className="block">first name</label>
+          <input
+            className="w-full h-8 border"
+            name="first_name"
+            value={profileForm?.first_name}
+            onChange={handleChange}
+            style={{ textIndent: "8px" }}
+          />
+        </div>
+        <div>
+          <label className="block">last name</label>
+          <input
+            className="w-full h-8 border"
+            name="last_name"
+            value={profileForm?.last_name}
+            onChange={handleChange}
+            style={{ textIndent: "8px" }}
+          />
+        </div>
+        <div>
+          <label className="block">username</label>
+          <input
+            className="w-full h-8 border"
+            name="username"
+            value={profileForm?.username}
+            onChange={handleChange}
+            style={{ textIndent: "8px" }}
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
+        >
+          Update Profile
+        </button>
 
-          {submitStatus === "success" && (
-            <p className="text-green-500">Profile updated!</p>
-          )}
-          {submitStatus === "error" && (
-            <p className="text-red-500">Something went wrong.</p>
-          )}
-        </form>
-      )}
+        {submitStatus === "success" && (
+          <p className="text-green-500">Profile updated!</p>
+        )}
+        {submitStatus === "error" && (
+          <p className="text-red-500">Something went wrong.</p>
+        )}
+      </form>
     </>
   );
 }
