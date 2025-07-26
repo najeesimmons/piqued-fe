@@ -53,13 +53,13 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
 
   useEffect(() => {
     const handleKeyDown = async (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && commentText !== "") {
         await handleCommet({ pexels_id, text });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleCommet, pexels_id]);
+  }, [commentText, handleCommet, pexels_id]);
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;
