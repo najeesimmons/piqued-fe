@@ -1,5 +1,5 @@
 import Navigation from "@/components/Navigation/Navigation";
-import { getOwnProfile } from "../../../lib/profile/profile";
+import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
 import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
@@ -41,22 +41,13 @@ export default function Me() {
     e.preventDefault();
     setIsUpdateError(false);
     setIsUpdateSuccess(false);
-    const { data, error } = await supabase
-      .from("profile")
-      .update({
-        first_name: profileForm.first_name,
-        last_name: profileForm.last_name,
-        username: profileForm.username,
-      })
-      .eq("user_id", user.id)
-      .select()
-      .maybeSingle();
 
-    if (error) {
-      console.error(error);
+    const result = await updateOwnProfile(profileForm, user.id);
+
+    if (!result) {
       setIsUpdateError(true);
     } else {
-      setProfileForm(data);
+      setProfileForm(result);
       setIsUpdateSuccess(true);
     }
   };
