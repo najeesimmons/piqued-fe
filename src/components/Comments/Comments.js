@@ -5,29 +5,35 @@ import {
   getCommentsByPexelsId,
   insertComment,
 } from "../../../lib/comment/comment";
-import { useAuth } from "@/context/AuthContext";
 
 export default function Comments({ displayPhoto }) {
   const [isOpen, setIsOpen] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
-  const { user } = useAuth();
 
   const getComments = useCallback(async () => {
-    const response = await getCommentsByPexelsId(pexels_id);
-    if (!response) return;
-    setComments(response);
+    setIsLoading(true);
+    const result = await getCommentsByPexelsId(pexels_id);
+    if (!result) {
+      setIsError(true);
+    } else {
+      setComments(result);
+    }
+    setIsLoading(false);
   }, [pexels_id]);
 
   const handleSubmitCommet = useCallback(
     async ({ pexels_id, text }) => {
       if (commentText === "") return;
-      const data = await insertComment({ pexels_id, text });
-      if (!data) {
+      const result = await insertComment({ pexels_id, text });
+      if (!result) {
+        //TODO: error capture/behavior for submit comment
         return;
       } else {
-        setComments((prev) => [...prev, data]);
+        setComments((prev) => [...prev, result]);
       }
       setCommentText("");
     },
@@ -49,6 +55,8 @@ export default function Comments({ displayPhoto }) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleSubmitCommet, pexels_id]);
 
+  if (isLoading) return <div>Loading</div>;
+  if (isError) return <div>Error</div>;
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
       <div
