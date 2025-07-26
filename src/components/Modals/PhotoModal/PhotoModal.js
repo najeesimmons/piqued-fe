@@ -12,6 +12,7 @@ import { toggleFavorite } from "../../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
 
 function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   const [isError, setIsError] = useState(false);
@@ -81,6 +82,19 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
 
     getPhoto();
   }, [id, isAuthLoading, getPhoto, displayPhoto]);
+
+  useEffect(() => {
+    if (user && displayPhoto) {
+      const updateDisplayPhotoIfNeeded = async () => {
+        if (!("isFavorited" in displayPhoto)) {
+          const updatedPhoto = await checkFavoriteSingle(displayPhoto, user.id);
+          setDisplayPhoto(updatedPhoto);
+        }
+      };
+
+      updateDisplayPhotoIfNeeded();
+    }
+  }, [displayPhoto, setDisplayPhoto, user]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

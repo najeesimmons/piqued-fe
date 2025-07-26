@@ -189,6 +189,17 @@ export default function Home({
     }
   }, [user, masonryPhotos]);
 
+  useEffect(() => {
+    if (!user) {
+      setMasonryPhotos((prevPhotos) => {
+        const hasAnyFavorited = prevPhotos.some((p) => "isFavorited" in p);
+        if (!hasAnyFavorited) return prevPhotos;
+
+        return prevPhotos.map(({ isFavorited, ...rest }) => rest);
+      });
+    }
+  }, [user]);
+
   function renderContent() {
     if (isLoading) return <Loader />;
     if (isError) return <ErrorView retry={getFirstPhotos} />;
