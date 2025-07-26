@@ -44,10 +44,10 @@ function Favorites() {
     setHasMore(false);
     setStart(0);
 
-    const response = await getFavorites(0, LIMIT - 1);
-    const { favorites, count } = response;
+    const result = await getFavorites(0, LIMIT - 1);
+    const { favorites, count } = result;
 
-    if (!response) {
+    if (!result) {
       setIsError(true);
     } else if (favorites.length === 0) {
       setIsEmpty(true);
