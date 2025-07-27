@@ -155,6 +155,8 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
         </div>
       </Section>
       {isShowAuthCta && (
+        //TODO: disableParentModalAction var to pass into LoginOrSignUp which will disable all buttons on photoModal
+        //TODO: photoModal should receive one too from index or whoever is calling it
         <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
       )}
     </>,
