@@ -29,6 +29,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
 
   const handleComment = useCallback(
     async ({ pexels_id, text }) => {
+      if (commentText === "") return;
       if (!user) {
         setIsShowAuthCta(true);
         return;
@@ -43,7 +44,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
       }
       setCommentText("");
     },
-    [setIsShowAuthCta, user]
+    [setIsShowAuthCta, user, commentText]
   );
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
 
   useEffect(() => {
     const handleKeyDown = async (e) => {
-      if (e.key === "Enter" && commentText !== "") {
+      if (e.key === "Enter") {
         await handleComment({ pexels_id, text });
       }
     };
