@@ -29,22 +29,25 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
 
   const handleComment = useCallback(
     async ({ pexels_id, text }) => {
-      if (commentText === "") return;
       if (!user) {
         setIsShowAuthCta(true);
         return;
       }
 
-      const result = await insertComment({ pexels_id, text });
-      if (!result) {
-        //TODO: error capture/behavior for submit comment
-        return;
-      } else {
-        setComments((prev) => [...prev, result]);
+      if (commentText !== "") {
+        const result = await insertComment({ pexels_id, text });
+        if (!result) {
+          //TODO: error capture/behavior for submit comment
+          return;
+        } else {
+          setComments((prev) => [...prev, result]);
+        }
+        setCommentText("");
       }
-      setCommentText("");
+      return;
     },
-    [setIsShowAuthCta, user, commentText]
+
+    [commentText, setIsShowAuthCta, user]
   );
 
   useEffect(() => {
