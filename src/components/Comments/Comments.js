@@ -7,7 +7,12 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 
-export default function Comments({ displayPhoto, setIsShowAuthCta }) {
+export default function Comments({
+  disableComment,
+  setDisableComment,
+  displayPhoto,
+  setIsShowAuthCta,
+}) {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
@@ -30,6 +35,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
   const handleComment = useCallback(
     async ({ pexels_id, text }) => {
       if (!user) {
+        setDisableComment(true);
         setIsShowAuthCta(true);
         return;
       }
@@ -47,7 +53,7 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
       return;
     },
 
-    [commentText, setIsShowAuthCta, user]
+    [commentText, setDisableComment, setIsShowAuthCta, user]
   );
 
   useEffect(() => {
@@ -57,13 +63,14 @@ export default function Comments({ displayPhoto, setIsShowAuthCta }) {
 
   useEffect(() => {
     const handleKeyDown = async (e) => {
-      if (e.key === "Enter") {
+      if (disableComment === true) return;
+      if ((e.key === "Enter") & (commentText !== "")) {
         await handleComment({ pexels_id, text });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [commentText, handleComment, pexels_id]);
+  }, [commentText, disableComment, handleComment, pexels_id]);
 
   if (isLoading) return <div>Loading</div>;
   if (isError) return <div>Error</div>;

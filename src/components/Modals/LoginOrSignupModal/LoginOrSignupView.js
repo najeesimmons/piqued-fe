@@ -5,7 +5,10 @@ import Signup from "@/components/Views/Auth/Signup";
 import { IoCloseSharp } from "react-icons/io5";
 import { useState } from "react";
 
-export default function LoginOrSignupModal({ setIsShowAuthCta }) {
+export default function LoginOrSignupModal({
+  setIsShowAuthCta,
+  setDisableComment,
+}) {
   const [authMode, setAuthMode] = useState("login");
 
   return ReactDOM.createPortal(
@@ -13,7 +16,10 @@ export default function LoginOrSignupModal({ setIsShowAuthCta }) {
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
         <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white relative">
           <button
-            onClick={() => setIsShowAuthCta(false)}
+            onClick={() => {
+              setIsShowAuthCta(false);
+              setDisableComment(false);
+            }}
             className="absolute top-4 left-4 text-3xl z-[10000]"
             aria-label="Close Modal"
           >
@@ -23,6 +29,7 @@ export default function LoginOrSignupModal({ setIsShowAuthCta }) {
           {authMode === "login" ? (
             <Login
               setAuthMode={setAuthMode}
+              setDisableComment={setDisableComment}
               setIsShowAuthCta={setIsShowAuthCta}
             />
           ) : (

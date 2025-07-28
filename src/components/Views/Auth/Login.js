@@ -3,7 +3,11 @@ import { supabase } from "../../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 
-export default function Login({ setAuthMode, setIsShowAuthCta }) {
+export default function Login({
+  setAuthMode,
+  setDisableComment,
+  setIsShowAuthCta,
+}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthError, setIsAuthError] = useState(false);
@@ -25,6 +29,7 @@ export default function Login({ setAuthMode, setIsShowAuthCta }) {
 
     setPassword("");
     setUser(data.user);
+    setDisableComment(false);
     setIsShowAuthCta(false);
   };
 

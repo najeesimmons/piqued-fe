@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
 
 function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
+  const [disableComment, setDisableComment] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isShowAuthCta, setIsShowAuthCta] = useState(false);
@@ -132,6 +133,8 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
           <Comments
             displayPhoto={displayPhoto}
             setIsShowAuthCta={setIsShowAuthCta}
+            disableComment={disableComment}
+            setDisableComment={setDisableComment}
           />
         </div>
       </>
@@ -155,7 +158,11 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
         </div>
       </Section>
       {isShowAuthCta && (
-        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
+        <LoginOrSignupModal
+          setIsShowAuthCta={setIsShowAuthCta}
+          disableComment={disableComment}
+          setDisableComment={setDisableComment}
+        />
       )}
     </>,
     document.getElementById("modal-root")
