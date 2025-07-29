@@ -5,6 +5,7 @@ import { useState } from "react";
 export default function Signup({ setAuthMode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [isAuthError, setIsAuthError] = useState(false);
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
@@ -32,6 +33,7 @@ export default function Signup({ setAuthMode }) {
     const { error: profileError } = await supabase.from("profile").insert([
       {
         user_id: user.id,
+        username,
       },
     ]);
 
@@ -65,6 +67,17 @@ export default function Signup({ setAuthMode }) {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email"
                 value={email}
+                required
+                style={{ textIndent: "8px" }}
+              />
+            </div>
+            <div className="text-sm">
+              <label className="block">username</label>
+              <input
+                className="w-full h-8 border"
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="username"
+                value={username}
                 required
                 style={{ textIndent: "8px" }}
               />
