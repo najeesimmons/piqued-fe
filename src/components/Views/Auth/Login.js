@@ -77,7 +77,7 @@ export default function Login({
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
                 `There was an error creating your account: ${error}. Please try
-                again.``
+                again.`
               </p>
             )}
             <button
