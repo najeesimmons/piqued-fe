@@ -9,7 +9,7 @@ export default function Login({
   setIsShowAuthCta,
 }) {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [isAuthError, setIsAuthError] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
@@ -18,6 +18,7 @@ export default function Login({
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsAuthError("");
+    setError("");
 
     const { data, error } = await supabase.auth.signInWithPassword({
       email: isGuest ? "piquedguest@gmail.com" : email,
