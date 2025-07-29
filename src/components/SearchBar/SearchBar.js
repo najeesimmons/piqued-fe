@@ -1,16 +1,17 @@
 import { IoIosSearch } from "react-icons/io";
 import { useEffect } from "react";
 
-function SearchBar({ getSearchPhotos, searchTerm, setSearchTerm }) {
+function SearchBar({ getSearchPhotos, isDisabled, searchTerm, setSearchTerm }) {
   useEffect(() => {
     const handleKeyDown = async (e) => {
+      if (isDisabled) return;
       if (e.key === "Enter" && searchTerm !== "") {
         await getSearchPhotos();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [getSearchPhotos, searchTerm]);
+  }, [getSearchPhotos, isDisabled, searchTerm]);
 
   return (
     <div className="flex h-8 mb-4">
