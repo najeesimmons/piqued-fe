@@ -47,7 +47,7 @@ export default function Comments({
         setIsCommentError(true);
         return;
       } else {
-        setComments((prev) => [...prev, result]);
+        setComments((prev) => [result, ...prev]);
       }
       setCommentText("");
     }
