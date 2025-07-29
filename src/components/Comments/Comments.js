@@ -66,7 +66,7 @@ export default function Comments({
   useEffect(() => {
     const handleKeyDown = async (e) => {
       if (disableComment === true) return;
-      if ((e.key === "Enter") & (commentText !== "")) {
+      if (e.key === "Enter" && commentText !== "") {
         await handleComment({ pexels_id, text });
       }
     };
