@@ -9,8 +9,10 @@ export default function Login({
   setIsShowAuthCta,
 }) {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
   const [password, setPassword] = useState("");
   const [isAuthError, setIsAuthError] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -18,11 +20,14 @@ export default function Login({
     setIsAuthError("");
 
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: isGuest ? "piquedguest@gmail.com" : email,
+      password: isGuest
+        ? process.env.NEXT_PUBLIC_PUBLIC_DEMO_PASSWORD
+        : password,
     });
 
     if (error) {
+      setError(error.message);
       setIsAuthError(true);
       return;
     }
@@ -53,7 +58,7 @@ export default function Login({
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email"
                 value={email}
-                required
+                required={!isGuest}
                 style={{ textIndent: "8px" }}
               />
             </div>
@@ -64,13 +69,14 @@ export default function Login({
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="password"
                 value={password}
-                required
+                required={!isGuest}
                 style={{ textIndent: "8px" }}
               />
             </div>
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
-                There was an error creating your account. Please try again.
+                `There was an error creating your account: ${error}. Please try
+                again.``
               </p>
             )}
             <button
@@ -78,6 +84,13 @@ export default function Login({
               type="submit"
             >
               log in
+            </button>
+            <button
+              className="bg-black font-semibold mx-auto p-2 text-white w-full"
+              onClick={() => setIsGuest(true)}
+              type="submit"
+            >
+              explore as guest
             </button>
             <p className="text-sm mt-2 text-center">
               New here?{" "}
