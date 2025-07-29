@@ -9,7 +9,6 @@ function Navigation() {
   const { user, setUser } = useAuth();
 
   const router = useRouter();
-  const isFavoritesPage = router.asPath.includes("/favorites");
   const isLoginPage = router.asPath.includes("/login");
 
   const handleSignOut = async () => {
