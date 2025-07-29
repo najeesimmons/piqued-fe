@@ -11,33 +11,53 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
-  const [success, setSuccess] = useState(false);
-
-  const { user, setUser } = useAuth();
-  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [isAuthError, setIsAuthError] = useState(false);
+  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess(false);
+    setIsAuthError(false);
+    setError(false);
 
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
     });
 
     if (error) {
       setError(error.message);
+      setIsAuthError(true);
+      return;
+    }
+
+    const user = data?.user;
+
+    if (!user) {
+      setIsAuthError(true);
+      return;
+    }
+
+    const { error: profileError } = await supabase.from("profile").insert([
+      {
+        user_id: user.id,
+        username,
+      },
+    ]);
+
+    if (profileError) {
+      console.error("Profile creation failed:", profileError);
+      setIsAuthError(true);
       return;
     }
 
     setPassword("");
-    setSuccess(true);
+    setIsAuthSuccess(true);
   };
 
-  useEffect(() => {
-    if (user) router.push("/");
-  }, [user, router]);
+  // useEffect(() => {
+  //   if (user) router.push("/");
+  // }, [user, router]);
 
   return (
     <>
@@ -66,6 +86,17 @@ function Signup() {
                 />
               </div>
               <div className="text-sm">
+                <label className="block">username</label>
+                <input
+                  className="w-full h-8 border"
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="username"
+                  value={username}
+                  required
+                  style={{ textIndent: "8px" }}
+                />
+              </div>
+              <div className="text-sm">
                 <label className="block">password</label>
                 <input
                   className="w-full h-8 border"
@@ -76,13 +107,15 @@ function Signup() {
                   style={{ textIndent: "8px" }}
                 />
               </div>
-              {error && (
-                <p className="mt-3 text-red-500 font-center">{error}</p>
+              {isAuthError && (
+                <p className="mt-3 text-red-500 font-center">
+                  `There was an error creating your account: ${error}. Please
+                  try again.`
+                </p>
               )}
-              {success && (
+              {isAuthSuccess && (
                 <p className="mt-3 text-sm font-bold">
-                  Success! We&apos;ve sent you an email — confirm it to activate
-                  your account and access your profile.
+                  Success! Go find some Piques you love!
                 </p>
               )}
               <button

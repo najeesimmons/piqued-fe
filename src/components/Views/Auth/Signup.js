@@ -4,6 +4,7 @@ import { useState } from "react";
 
 export default function Signup({ setAuthMode }) {
   const [email, setEmail] = useState("");
+  const [error, setError] = useState(false);
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [isAuthError, setIsAuthError] = useState(false);
@@ -20,6 +21,7 @@ export default function Signup({ setAuthMode }) {
 
     if (error) {
       setIsAuthError(true);
+      setError(error.message);
       return;
     }
 
@@ -95,7 +97,8 @@ export default function Signup({ setAuthMode }) {
             </div>
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
-                There was an error creating your account. Please try again.
+                `There was an error creating your account: ${error}. Please try
+                again.`
               </p>
             )}
             {isAuthSuccess && (
