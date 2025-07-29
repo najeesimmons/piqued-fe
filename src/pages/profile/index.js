@@ -13,6 +13,8 @@ export default function Me() {
   const [isUpdateError, setIsUpdateError] = useState(false);
   const [profileForm, setProfileForm] = useState({});
 
+  const guestEmail = "piquedguest@gmail.com";
+
   useEffect(() => {
     if (!isAuthLoading && user) {
       setIsLoading(true);
@@ -63,6 +65,11 @@ export default function Me() {
           onSubmit={handleSubmit}
           className="space-y-4 max-w-md mx-auto mt-16"
         >
+          {user.email === guestEmail && (
+            <p className="mt-3 text-red-500 font-center">
+              Guest profiles may not be edited.
+            </p>
+          )}
           <div>
             <label className="block" style={{ textIndent: "8px" }}>
               first name
@@ -73,7 +80,7 @@ export default function Me() {
               value={profileForm?.first_name}
               onChange={handleChange}
               style={{ textIndent: "8px" }}
-              disabled={user && user.email === "piquedguest@gmail.com"}
+              disabled={user && user.email === guestEmail}
             />
           </div>
           <div>
@@ -86,7 +93,7 @@ export default function Me() {
               value={profileForm?.last_name}
               onChange={handleChange}
               style={{ textIndent: "8px" }}
-              disabled={user && user.email === "piquedguest@gmail.com"}
+              disabled={user && user.email === guestEmail}
             />
           </div>
           <div>
@@ -99,7 +106,7 @@ export default function Me() {
               value={profileForm?.username}
               onChange={handleChange}
               style={{ textIndent: "8px" }}
-              disabled={user && user.email === "piquedguest@gmail.com"}
+              disabled={user && user.email === guestEmail}
             />
           </div>
           {isUpdateError && (
