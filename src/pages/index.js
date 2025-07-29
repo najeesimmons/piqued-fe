@@ -223,6 +223,7 @@ export default function Home({
           getSearchPhotos={getFirstSearchPhotos}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
+          isDisabled={show}
         />
       </Section>
       <Section>{renderContent()}</Section>
