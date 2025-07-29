@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 function Login() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [isAuthError, setIsAuthError] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   const [password, setPassword] = useState("");
 
   const { user, setUser } = useAuth();
@@ -20,12 +22,15 @@ function Login() {
     setError("");
 
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: isGuest ? "piquedguest@gmail.com" : email,
+      password: isGuest
+        ? process.env.NEXT_PUBLIC_PUBLIC_DEMO_PASSWORD
+        : password,
     });
 
     if (error) {
       setError(error.message);
+      setIsAuthError(true);
       return;
     }
 
@@ -59,7 +64,7 @@ function Login() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
                   value={email}
-                  required
+                  required={!isGuest}
                   style={{ textIndent: "8px" }}
                 />
               </div>
@@ -70,7 +75,7 @@ function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
                   value={password}
-                  required
+                  required={!isGuest}
                   style={{ textIndent: "8px" }}
                 />
               </div>
@@ -79,6 +84,13 @@ function Login() {
                 type="submit"
               >
                 log in
+              </button>
+              <button
+                className="bg-black font-semibold mx-auto p-2 text-white w-full"
+                onClick={() => setIsGuest(true)}
+                type="submit"
+              >
+                explore as guest
               </button>
               <p className="text-sm mt-2 text-center">
                 New here?{" "}
@@ -91,7 +103,12 @@ function Login() {
               </p>
             </form>
           </div>
-          {error && <p className="mt-3 text-red-500 text-center">{error}</p>}
+          {isAuthError && (
+            <p className="mt-3 text-red-500 font-center">
+              `There was an error creating your account: ${error}. Please try
+              again.``
+            </p>
+          )}
         </div>
       </Section>
     </>
