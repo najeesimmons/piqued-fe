@@ -99,13 +99,14 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (isShowAuthCta) return;
       if (e.key === "Escape") {
         handleClose();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleClose]);
+  }, [handleClose, isShowAuthCta]);
 
   let content;
   const photoIsValid = !!displayPhoto?.url;

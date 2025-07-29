@@ -3,13 +3,23 @@ import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import Signup from "@/components/Views/Auth/Signup";
 import { IoCloseSharp } from "react-icons/io5";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginOrSignupModal({
   setIsShowAuthCta,
   setDisableComment,
 }) {
   const [authMode, setAuthMode] = useState("login");
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setIsShowAuthCta(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setIsShowAuthCta]);
 
   return ReactDOM.createPortal(
     <Section>
