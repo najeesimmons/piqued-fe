@@ -34,20 +34,23 @@ function Navigation() {
 
       <ul className="flex flex-row gap-4">
         {!user && !isLoginPage && (
-          <>
-            <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
-              <Link
-                className="bg-black text-white px-4 py-2 hover:bg-gray-800"
-                href={"/login"}
-              >
-                log in
-              </Link>
-            </li>
-          </>
+          <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
+            <Link
+              className="bg-black text-white px-4 py-2 hover:bg-gray-800"
+              href={"/login"}
+            >
+              log in
+            </Link>
+          </li>
         )}
         {user && !isFavoritesPage && (
           <li className="font-semibold flex items-center">
             <Link href={"/favorites"}>favorites</Link>
+          </li>
+        )}
+        {user && (
+          <li className="font-semibold flex items-center">
+            <Link href={"/profile"}>my profile</Link>
           </li>
         )}
         {user && (
