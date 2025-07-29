@@ -81,7 +81,9 @@ export default function Me() {
           className="space-y-4 max-w-md mx-auto mt-16"
         >
           <div>
-            <label className="block">first name</label>
+            <label className="block" style={{ textIndent: "8px" }}>
+              first name
+            </label>
             <input
               className="w-full h-8 border"
               name="first_name"
@@ -91,7 +93,9 @@ export default function Me() {
             />
           </div>
           <div>
-            <label className="block">last name</label>
+            <label className="block" style={{ textIndent: "8px" }}>
+              last name
+            </label>
             <input
               className="w-full h-8 border"
               name="last_name"
@@ -101,7 +105,9 @@ export default function Me() {
             />
           </div>
           <div>
-            <label className="block">username</label>
+            <label className="block" style={{ textIndent: "8px" }}>
+              username
+            </label>
             <input
               className="w-full h-8 border"
               name="username"
