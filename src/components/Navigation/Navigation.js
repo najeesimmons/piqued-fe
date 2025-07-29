@@ -32,6 +32,9 @@ function Navigation() {
       </Link>
 
       <ul className="flex flex-row gap-4">
+        <li className="font-semibold flex items-center">
+          <Link href={"/"}>home</Link>
+        </li>
         {!user && !isLoginPage && (
           <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
             <Link
