@@ -33,30 +33,26 @@ export default function Comments({
     setIsLoading(false);
   }, [pexels_id]);
 
-  const handleComment = useCallback(
-    async ({ pexels_id, text }) => {
-      if (!user) {
-        setDisableComment(true);
-        setIsShowAuthCta(true);
-        return;
-      }
-
-      if (commentText !== "") {
-        setIsCommentError(false);
-        const result = await insertComment({ pexels_id, text });
-        if (!result) {
-          setIsCommentError(true);
-          return;
-        } else {
-          setComments((prev) => [...prev, result]);
-        }
-        setCommentText("");
-      }
+  const handleComment = useCallback(async () => {
+    if (!user) {
+      setDisableComment(true);
+      setIsShowAuthCta(true);
       return;
-    },
+    }
 
-    [commentText, setDisableComment, setIsShowAuthCta, user]
-  );
+    if (commentText !== "") {
+      setIsCommentError(false);
+      const result = await insertComment({ pexels_id, commentText });
+      if (!result) {
+        setIsCommentError(true);
+        return;
+      } else {
+        setComments((prev) => [...prev, result]);
+      }
+      setCommentText("");
+    }
+    return;
+  }, [commentText, pexels_id, setDisableComment, setIsShowAuthCta, user]);
 
   useEffect(() => {
     if (!displayPhoto) return;
@@ -67,7 +63,7 @@ export default function Comments({
     const handleKeyDown = async (e) => {
       if (disableComment === true) return;
       if (e.key === "Enter" && commentText !== "") {
-        await handleComment({ pexels_id, text });
+        await handleComment(pexels_id, commentText);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -124,7 +120,7 @@ export default function Comments({
       )}
       <button
         className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
-        onClick={() => handleComment({ pexels_id, text: commentText })}
+        onClick={handleComment}
       >
         Comment
       </button>
