@@ -73,6 +73,7 @@ export default function Me() {
               value={profileForm?.first_name}
               onChange={handleChange}
               style={{ textIndent: "8px" }}
+              disabled={user && user.email === "piquedguest@gmail.com"}
             />
           </div>
           <div>
@@ -85,6 +86,7 @@ export default function Me() {
               value={profileForm?.last_name}
               onChange={handleChange}
               style={{ textIndent: "8px" }}
+              disabled={user && user.email === "piquedguest@gmail.com"}
             />
           </div>
           <div>
@@ -97,6 +99,7 @@ export default function Me() {
               value={profileForm?.username}
               onChange={handleChange}
               style={{ textIndent: "8px" }}
+              disabled={user && user.email === "piquedguest@gmail.com"}
             />
           </div>
           {isUpdateError && (
