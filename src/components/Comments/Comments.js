@@ -16,6 +16,7 @@ export default function Comments({
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState("");
   const { pexels_id } = displayPhoto;
+  const [isCommentError, setIsCommentError] = useState(false);
   const [isOpen, setIsOpen] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,9 +42,10 @@ export default function Comments({
       }
 
       if (commentText !== "") {
+        setIsCommentError(false);
         const result = await insertComment({ pexels_id, text });
         if (!result) {
-          //TODO: error capture/behavior for submit comment
+          setIsCommentError(true);
           return;
         } else {
           setComments((prev) => [...prev, result]);
@@ -115,6 +117,11 @@ export default function Comments({
           onChange={(e) => setCommentText(e.target.value)}
         />
       </div>
+      {isCommentError && (
+        <p className="mt-3 text-red-500 font-center text-xs">
+          There was an submitting your comment. Please try again.
+        </p>
+      )}
       <button
         className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
         onClick={() => handleComment({ pexels_id, text: commentText })}
