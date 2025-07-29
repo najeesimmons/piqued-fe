@@ -43,15 +43,16 @@ function Navigation() {
             </Link>
           </li>
         )}
-        {user && !isFavoritesPage && (
-          <li className="font-semibold flex items-center">
-            <Link href={"/favorites"}>favorites</Link>
-          </li>
-        )}
         {user && (
-          <li className="font-semibold flex items-center">
-            <Link href={"/profile"}>my profile</Link>
-          </li>
+          <>
+            <li className="font-semibold flex items-center">
+              <Link href={"/favorites"}>favorites</Link>
+            </li>
+
+            <li className="font-semibold flex items-center">
+              <Link href={"/profile"}>my profile</Link>
+            </li>
+          </>
         )}
         {user && (
           <li className="font-semibold">

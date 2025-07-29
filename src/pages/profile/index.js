@@ -1,8 +1,9 @@
+import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
+import Section from "@/components/Section/Section";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 
 export default function Me() {
   const { user, isAuthLoading } = useAuth();
@@ -10,7 +11,6 @@ export default function Me() {
   const [isError, setIsError] = useState(false);
   const [isUpdateSuccess, setIsUpdateSuccess] = useState();
   const [isUpdateError, setIsUpdateError] = useState(false);
-  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
   const [profileForm, setProfileForm] = useState({});
 
   useEffect(() => {
@@ -18,7 +18,6 @@ export default function Me() {
       setIsLoading(true);
       const getMyProfile = async () => {
         const result = await getOwnProfile(user.id);
-        console.log(result);
         if (!result) {
           setIsError(true);
         } else {
@@ -31,24 +30,10 @@ export default function Me() {
     }
   }, [isAuthLoading, user]);
 
-  useEffect(() => {
-    if (!user) {
-      setIsShowAuthCta(true);
-    } else {
-      setIsShowAuthCta(false);
-    }
-  }, [user, setIsShowAuthCta]);
-
   const handleSubmit = async (e) => {
-    //TODO: if no user set isSHOW CTA to true
     e.preventDefault();
     setIsUpdateError(false);
     setIsUpdateSuccess(false);
-
-    if (!user) {
-      setIsShowAuthCta(true);
-      return;
-    }
 
     const result = await updateOwnProfile(profileForm, user.id);
 
@@ -73,9 +58,7 @@ export default function Me() {
   return (
     <>
       <Navigation />
-      {isShowAuthCta ? (
-        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
-      ) : (
+      {user ? (
         <form
           onSubmit={handleSubmit}
           className="space-y-4 max-w-md mx-auto mt-16"
@@ -133,6 +116,20 @@ export default function Me() {
             Update Profile
           </button>
         </form>
+      ) : (
+        <Section>
+          <p className="text-center mt-32">
+            Already a member?{" "}
+            <Link className="font-semibold" href="/login">
+              Log in
+            </Link>{" "}
+            to create your profile. New here?{" "}
+            <Link className="font-semibold" href="/signup">
+              Sign up
+            </Link>{" "}
+            to get started!
+          </p>
+        </Section>
       )}
     </>
   );
