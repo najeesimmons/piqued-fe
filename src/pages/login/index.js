@@ -58,7 +58,9 @@ function Login() {
               onSubmit={handleSubmit}
             >
               <div className="text-sm">
-                <label className="block">email</label>
+                <label className="block" style={{ textIndent: "8px" }}>
+                  email
+                </label>
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +71,9 @@ function Login() {
                 />
               </div>
               <div className="text-sm">
-                <label className="block">password</label>
+                <label className="block" style={{ textIndent: "8px" }}>
+                  password
+                </label>
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setPassword(e.target.value)}
