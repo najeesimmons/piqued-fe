@@ -4,6 +4,9 @@ import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { LiaMountainSolid } from "react-icons/lia";
+import { IoHomeOutline } from "react-icons/io5";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { HiOutlineUser } from "react-icons/hi2";
 
 function Navigation() {
   const { user, setUser } = useAuth();
@@ -33,7 +36,9 @@ function Navigation() {
 
       <ul className="flex flex-row gap-4">
         <li className="font-semibold flex items-center">
-          <Link href={"/"}>home</Link>
+          <Link href={"/"}>
+            <IoHomeOutline title="home" size={20} />
+          </Link>
         </li>
         {!user && !isLoginPage && (
           <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
@@ -48,11 +53,15 @@ function Navigation() {
         {user && (
           <>
             <li className="font-semibold flex items-center">
-              <Link href={"/favorites"}>favorites</Link>
+              <Link href={"/favorites"}>
+                <IoMdHeartEmpty title="favorites" size={23} />
+              </Link>
             </li>
 
             <li className="font-semibold flex items-center">
-              <Link href={"/profile"}>my profile</Link>
+              <Link href={"/profile"}>
+                <HiOutlineUser title="profile" size={22} />
+              </Link>
             </li>
           </>
         )}
