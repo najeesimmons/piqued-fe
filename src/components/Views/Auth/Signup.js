@@ -93,6 +93,7 @@ export default function Signup({ setAuthMode }) {
                 value={password}
                 required
                 style={{ textIndent: "8px" }}
+                type="password"
               />
             </div>
             {isAuthError && (

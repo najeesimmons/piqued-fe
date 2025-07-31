@@ -81,6 +81,7 @@ function Login() {
                   value={password}
                   required={!isGuest}
                   style={{ textIndent: "8px" }}
+                  type="password"
                 />
               </div>
               <button
