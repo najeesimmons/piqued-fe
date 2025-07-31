@@ -105,6 +105,7 @@ function Signup() {
                   value={password}
                   required
                   style={{ textIndent: "8px" }}
+                  type="password"
                 />
               </div>
               {isAuthError && (
