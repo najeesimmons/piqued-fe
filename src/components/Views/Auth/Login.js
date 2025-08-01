@@ -64,7 +64,7 @@ export default function Login({
                 style={{ textIndent: "8px" }}
               />
             </div>
-            <div className="text-sm">
+            {/* <div className="text-sm">
               <label className="block">password</label>
               <input
                 className="w-full h-8 border"
@@ -75,6 +75,32 @@ export default function Login({
                 style={{ textIndent: "8px" }}
                 type={showPassword ? "text" : "password"}
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-blue-500"
+              >
+                {showPassword ? "hide" : "show"}
+              </button>
+            </div> */}
+            <div className="text-sm relative">
+              <label className="block">password</label>
+              <input
+                className="w-full h-8 border pr-12"
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="password"
+                value={password}
+                required={!isGuest}
+                style={{ textIndent: "8px" }}
+                type={showPassword ? "text" : "password"}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-2 top-1/2 text-sm font-bold"
+              >
+                {showPassword ? "hide" : "show"}
+              </button>
             </div>
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
