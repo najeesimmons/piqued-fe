@@ -10,9 +10,11 @@ import { useState, useEffect } from "react";
 function Login() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const [isAuthError, setIsAuthError] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
-  const [password, setPassword] = useState("");
 
   const { user, setUser } = useAuth();
   const router = useRouter();
@@ -70,7 +72,7 @@ function Login() {
                   style={{ textIndent: "8px" }}
                 />
               </div>
-              <div className="text-sm">
+              <div className="text-sm relative">
                 <label className="block" style={{ textIndent: "8px" }}>
                   password
                 </label>
@@ -81,8 +83,17 @@ function Login() {
                   value={password}
                   required={!isGuest}
                   style={{ textIndent: "8px" }}
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                 />
+                {password.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 text-sm font-bold"
+                  >
+                    {showPassword ? "hide" : "show"}
+                  </button>
+                )}
               </div>
               <button
                 className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
