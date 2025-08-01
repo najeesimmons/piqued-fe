@@ -9,6 +9,7 @@ import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
 import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
+import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -62,20 +63,22 @@ export default function Home({
   initIsError,
   initIsEmpty,
 }) {
+  const [displayPhoto, setDisplayPhoto] = useState({});
   const [fetchMode, setFetchMode] = useState("curated");
   const [hasMore, setHasMore] = useState(initHasMore);
+  const [masonryPhotos, setMasonryPhotos] = useState(initPhotos);
+  const [nextPage, setNextPage] = useState(initNextPage);
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [isEmpty, setIsEmpty] = useState(initIsEmpty);
   const [isError, setIsError] = useState(initIsError);
   const [isLoading, setIsLoading] = useState(false);
-  const [nextPage, setNextPage] = useState(initNextPage);
-  const [displayPhoto, setDisplayPhoto] = useState();
-  const [masonryPhotos, setMasonryPhotos] = useState(initPhotos);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
 
   const router = useRouter();
+
   const { show } = router.query || {};
   const { search } = router.query || {};
-
   const { user } = useAuth();
 
   const getFirstPhotos = useCallback(async () => {
@@ -217,7 +220,7 @@ export default function Home({
 
   return (
     <>
-      <Navigation />
+      <Navigation setIsShowAuthCta={setIsShowAuthCta} />
       <Section>
         <SearchBar
           getSearchPhotos={getFirstSearchPhotos}
@@ -235,6 +238,9 @@ export default function Home({
           masonryPhotos={masonryPhotos}
           setMasonryPhotos={setMasonryPhotos}
         />
+      )}
+      {isShowAuthCta && (
+        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
       )}
     </>
   );

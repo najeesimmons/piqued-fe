@@ -28,7 +28,7 @@ export default function LoginOrSignupModal({
           <button
             onClick={() => {
               setIsShowAuthCta(false);
-              setDisableComment(false);
+              setDisableComment?.(false);
             }}
             className="absolute top-4 left-4 text-3xl z-[10000]"
             aria-label="Close Modal"
