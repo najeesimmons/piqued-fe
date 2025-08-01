@@ -11,6 +11,7 @@ export default function Login({
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [isAuthError, setIsAuthError] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
   const { setUser } = useAuth();
@@ -72,7 +73,7 @@ export default function Login({
                 value={password}
                 required={!isGuest}
                 style={{ textIndent: "8px" }}
-                type="password"
+                type={showPassword ? "text" : "password"}
               />
             </div>
             {isAuthError && (
