@@ -43,15 +43,35 @@ function Navigation({ setIsShowAuthCta }) {
         </li>
 
         <li className="font-semibold flex items-center">
-          <Link href={"/favorites"}>
-            <IoMdHeartEmpty title="favorites" size={23} />
-          </Link>
+          {user ? (
+            <Link href="/favorites">
+              <IoMdHeartEmpty title="favorites" size={23} />
+            </Link>
+          ) : (
+            <button
+              onClick={() => setIsShowAuthCta(true)}
+              className="text-black"
+              aria-label="Open auth modal"
+            >
+              <IoMdHeartEmpty title="favorites" size={23} />
+            </button>
+          )}
         </li>
 
         <li className="font-semibold flex items-center">
-          <Link href={"/profile"}>
-            <HiOutlineUser title="profile" size={22} />
-          </Link>
+          {user ? (
+            <Link href="/profile">
+              <HiOutlineUser title="profile" size={22} />
+            </Link>
+          ) : (
+            <button
+              onClick={() => setIsShowAuthCta(true)}
+              className="text-black"
+              aria-label="Open auth modal"
+            >
+              <HiOutlineUser title="profile" size={22} />
+            </button>
+          )}
         </li>
 
         {!user && !isLoginPage && (
