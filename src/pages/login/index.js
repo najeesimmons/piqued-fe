@@ -60,11 +60,8 @@ function Login() {
               onSubmit={handleSubmit}
             >
               <div className="text-sm">
-                <label className="block" style={{ textIndent: "8px" }}>
-                  email
-                </label>
                 <input
-                  className="w-full h-8 border"
+                  className="w-full h-8 border mt-4"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
                   value={email}
@@ -73,9 +70,6 @@ function Login() {
                 />
               </div>
               <div className="text-sm relative">
-                <label className="block" style={{ textIndent: "8px" }}>
-                  password
-                </label>
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setPassword(e.target.value)}
@@ -89,7 +83,7 @@ function Login() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-2 top-1/2 text-sm font-bold"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-bold"
                   >
                     {showPassword ? "hide" : "show"}
                   </button>
