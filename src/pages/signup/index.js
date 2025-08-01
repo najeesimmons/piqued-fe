@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
+import { LiaMountainSolid } from "react-icons/lia";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -70,8 +71,11 @@ function Signup() {
           style={{ height: "calc(100vh - 35.99px)" }}
         >
           <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4">
-            <h1 className="font-bold text-center text-2xl">piqued</h1>
-            <h2 className="mt-1 text-center text-xl">create your account</h2>
+            <h1 className="font-bold text-center text-2xl flex items-center justify-center gap-2">
+              <LiaMountainSolid size={25} />
+              piqued
+            </h1>
+            <h2 className="mt-1 text-center text-base">create your account</h2>
             <form
               className="mt-2 mx-auto space-y-2 w-3/4"
               onSubmit={handleSubmit}
