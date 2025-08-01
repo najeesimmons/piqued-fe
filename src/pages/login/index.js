@@ -59,9 +59,9 @@ function Login() {
               className="mt-2 mx-auto space-y-2 w-3/4"
               onSubmit={handleSubmit}
             >
-              <div className="text-sm">
+              <div className="text-sm  mt-4">
                 <input
-                  className="w-full h-8 border mt-4"
+                  className="w-full h-8 border"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
                   value={email}
