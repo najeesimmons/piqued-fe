@@ -64,25 +64,6 @@ export default function Login({
                 style={{ textIndent: "8px" }}
               />
             </div>
-            {/* <div className="text-sm">
-              <label className="block">password</label>
-              <input
-                className="w-full h-8 border"
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="password"
-                value={password}
-                required={!isGuest}
-                style={{ textIndent: "8px" }}
-                type={showPassword ? "text" : "password"}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-blue-500"
-              >
-                {showPassword ? "hide" : "show"}
-              </button>
-            </div> */}
             <div className="text-sm relative">
               <label className="block">password</label>
               <input
