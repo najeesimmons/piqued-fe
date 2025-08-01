@@ -38,7 +38,7 @@ export default function Login({
 
     setPassword("");
     setUser(data.user);
-    setDisableComment(false);
+    setDisableComment?.(false);
     setIsShowAuthCta(false);
   };
 

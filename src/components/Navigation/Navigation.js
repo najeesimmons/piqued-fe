@@ -1,17 +1,18 @@
 "use client";
 import Link from "next/link";
+import { HiOutlineUser } from "react-icons/hi2";
+import { IoHomeOutline } from "react-icons/io5";
+import { IoMdHeartEmpty } from "react-icons/io";
+import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
-import { LiaMountainSolid } from "react-icons/lia";
-import { IoHomeOutline } from "react-icons/io5";
-import { IoMdHeartEmpty } from "react-icons/io";
-import { HiOutlineUser } from "react-icons/hi2";
 
-function Navigation() {
+function Navigation({ setIsShowAuthCta }) {
   const { user, setUser } = useAuth();
 
   const router = useRouter();
+
   const isLoginPage = router.asPath.includes("/login");
 
   const handleSignOut = async () => {
@@ -42,12 +43,14 @@ function Navigation() {
         </li>
         {!user && !isLoginPage && (
           <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
-            <Link
+            <button
               className="bg-black text-white px-4 py-2 hover:bg-gray-800"
-              href={"/login"}
+              onClick={() => {
+                setIsShowAuthCta(true);
+              }}
             >
               log in
-            </Link>
+            </button>
           </li>
         )}
         {user && (
