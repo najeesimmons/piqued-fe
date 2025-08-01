@@ -41,8 +41,41 @@ function Navigation({ setIsShowAuthCta }) {
             <IoHomeOutline title="home" size={20} />
           </Link>
         </li>
+
+        <li className="font-semibold flex items-center">
+          {user ? (
+            <Link href="/favorites">
+              <IoMdHeartEmpty title="favorites" size={23} />
+            </Link>
+          ) : (
+            <button
+              onClick={() => setIsShowAuthCta(true)}
+              className="text-black"
+              aria-label="Open auth modal"
+            >
+              <IoMdHeartEmpty title="favorites" size={23} />
+            </button>
+          )}
+        </li>
+
+        <li className="font-semibold flex items-center">
+          {user ? (
+            <Link href="/profile">
+              <HiOutlineUser title="profile" size={22} />
+            </Link>
+          ) : (
+            <button
+              onClick={() => setIsShowAuthCta(true)}
+              className="text-black"
+              aria-label="Open auth modal"
+            >
+              <HiOutlineUser title="profile" size={22} />
+            </button>
+          )}
+        </li>
+
         {!user && !isLoginPage && (
-          <li className="after:content-['|'] after:mx-2 last:after:content-none font-semibold">
+          <li className="font-semibold">
             <button
               className="bg-black text-white px-4 py-2 hover:bg-gray-800"
               onClick={() => {
@@ -53,21 +86,7 @@ function Navigation({ setIsShowAuthCta }) {
             </button>
           </li>
         )}
-        {user && (
-          <>
-            <li className="font-semibold flex items-center">
-              <Link href={"/favorites"}>
-                <IoMdHeartEmpty title="favorites" size={23} />
-              </Link>
-            </li>
 
-            <li className="font-semibold flex items-center">
-              <Link href={"/profile"}>
-                <HiOutlineUser title="profile" size={22} />
-              </Link>
-            </li>
-          </>
-        )}
         {user && (
           <li className="font-semibold">
             <button
