@@ -75,13 +75,15 @@ export default function Login({
                 style={{ textIndent: "8px" }}
                 type={showPassword ? "text" : "password"}
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-2 top-1/2 text-sm font-bold"
-              >
-                {showPassword ? "hide" : "show"}
-              </button>
+              {password.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 text-sm font-bold"
+                >
+                  {showPassword ? "hide" : "show"}
+                </button>
+              )}
             </div>
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
