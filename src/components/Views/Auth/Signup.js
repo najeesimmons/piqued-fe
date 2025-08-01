@@ -98,7 +98,7 @@ export default function Signup({ setAuthMode }) {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-2 top-1/2 text-sm font-bold"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-bold"
                 >
                   {showPassword ? "hide" : "show"}
                 </button>
