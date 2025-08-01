@@ -11,7 +11,9 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
+
   const [isAuthError, setIsAuthError] = useState(false);
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
@@ -96,7 +98,7 @@ function Signup() {
                   style={{ textIndent: "8px" }}
                 />
               </div>
-              <div className="text-sm">
+              <div className="text-sm relative">
                 <label className="block">password</label>
                 <input
                   className="w-full h-8 border"
@@ -105,8 +107,17 @@ function Signup() {
                   value={password}
                   required
                   style={{ textIndent: "8px" }}
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                 />
+                {password.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="absolute right-2 top-1/2 text-sm font-bold"
+                  >
+                    {showPassword ? "hide" : "show"}
+                  </button>
+                )}
               </div>
               {isAuthError && (
                 <p className="mt-3 text-red-500 font-center">

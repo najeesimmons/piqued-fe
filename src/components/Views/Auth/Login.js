@@ -11,6 +11,8 @@ export default function Login({
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
   const [isAuthError, setIsAuthError] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
   const { setUser } = useAuth();
@@ -63,17 +65,26 @@ export default function Login({
                 style={{ textIndent: "8px" }}
               />
             </div>
-            <div className="text-sm">
+            <div className="text-sm relative">
               <label className="block">password</label>
               <input
-                className="w-full h-8 border"
+                className="w-full h-8 border pr-12"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="password"
                 value={password}
                 required={!isGuest}
                 style={{ textIndent: "8px" }}
-                type="password"
+                type={showPassword ? "text" : "password"}
               />
+              {password.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 text-sm font-bold"
+                >
+                  {showPassword ? "hide" : "show"}
+                </button>
+              )}
             </div>
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
