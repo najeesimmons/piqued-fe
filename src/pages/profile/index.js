@@ -133,7 +133,7 @@ export default function Me() {
             <Link className="font-semibold" href="/login">
               Log in
             </Link>{" "}
-            to create your profile. New here?{" "}
+            to create or update your profile. New here?{" "}
             <Link className="font-semibold" href="/signup">
               Sign up
             </Link>{" "}
