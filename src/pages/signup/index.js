@@ -76,8 +76,7 @@ function Signup() {
               className="mt-2 mx-auto space-y-2 w-3/4"
               onSubmit={handleSubmit}
             >
-              <div className="text-sm">
-                <label className="block">email</label>
+              <div className="text-sm mt-4">
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setEmail(e.target.value)}
@@ -88,7 +87,6 @@ function Signup() {
                 />
               </div>
               <div className="text-sm">
-                <label className="block">username</label>
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setUsername(e.target.value)}
@@ -99,7 +97,6 @@ function Signup() {
                 />
               </div>
               <div className="text-sm relative">
-                <label className="block">password</label>
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setPassword(e.target.value)}
@@ -113,7 +110,7 @@ function Signup() {
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-2 top-1/2 text-sm font-bold"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-bold"
                   >
                     {showPassword ? "hide" : "show"}
                   </button>

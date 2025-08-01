@@ -54,8 +54,7 @@ export default function Login({
             className="mt-2 mx-auto space-y-2 w-3/4"
             onSubmit={handleSubmit}
           >
-            <div className="text-sm">
-              <label className="block">email</label>
+            <div className="text-sm mt-4">
               <input
                 className="w-full h-8 border"
                 onChange={(e) => setEmail(e.target.value)}
@@ -66,7 +65,6 @@ export default function Login({
               />
             </div>
             <div className="text-sm relative">
-              <label className="block">password</label>
               <input
                 className="w-full h-8 border pr-12"
                 onChange={(e) => setPassword(e.target.value)}
@@ -80,7 +78,7 @@ export default function Login({
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-2 top-1/2 text-sm font-bold"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-sm font-bold"
                 >
                   {showPassword ? "hide" : "show"}
                 </button>
