@@ -13,6 +13,7 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
+
   const [isAuthError, setIsAuthError] = useState(false);
   const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
