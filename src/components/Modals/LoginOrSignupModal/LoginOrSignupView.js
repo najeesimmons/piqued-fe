@@ -34,7 +34,7 @@ export default function LoginOrSignupModal({
   return ReactDOM.createPortal(
     <Section>
       <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
-        <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg bg-white relative">
+        <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg relative">
           <button
             onClick={() => {
               setIsShowAuthCta(false);
