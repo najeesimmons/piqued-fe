@@ -1,6 +1,7 @@
 import Section from "@/components/Section/Section";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Signup({ setAuthMode, setIsShowAuthCta }) {
@@ -11,6 +12,8 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
   const [username, setUsername] = useState("");
 
   const [isAuthError, setIsAuthError] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,6 +52,13 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
 
     setPassword("");
     setIsShowAuthCta(false);
+
+    const redirectPath = router.query.redirect;
+
+    if (typeof redirectPath === "string") {
+      await router.push(redirectPath);
+      router.replace(redirectPath, undefined, { shallow: true });
+    }
   };
 
   return (

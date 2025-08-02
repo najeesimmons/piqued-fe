@@ -47,7 +47,8 @@ export default function Login({
     const redirectPath = router.query.redirect;
 
     if (typeof redirectPath === "string") {
-      router.push(redirectPath);
+      await router.push(redirectPath);
+      router.replace(redirectPath, undefined, { shallow: true });
     }
   };
 
