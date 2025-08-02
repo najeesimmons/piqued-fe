@@ -3,7 +3,7 @@ import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
 import { useState } from "react";
 
-export default function Signup({ setAuthMode }) {
+export default function Signup({ setAuthMode, setIsShowAuthCta }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   const [password, setPassword] = useState("");
@@ -48,6 +48,7 @@ export default function Signup({ setAuthMode }) {
     }
 
     setPassword("");
+    setIsShowAuthCta(false);
   };
 
   return (
