@@ -85,6 +85,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
                 value={email}
                 required
                 style={{ textIndent: "8px" }}
+                autoComplete="email"
               />
             </div>
             <div className="text-sm">
@@ -95,6 +96,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
                 value={username}
                 required
                 style={{ textIndent: "8px" }}
+                autoComplete="username"
               />
             </div>
             <div className="text-sm relative">

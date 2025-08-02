@@ -88,6 +88,7 @@ function Signup() {
                   value={email}
                   required
                   style={{ textIndent: "8px" }}
+                  autoComplete="email"
                 />
               </div>
               <div className="text-sm">
@@ -98,6 +99,7 @@ function Signup() {
                   value={username}
                   required
                   style={{ textIndent: "8px" }}
+                  autoComplete="username"
                 />
               </div>
               <div className="text-sm relative">
@@ -109,6 +111,7 @@ function Signup() {
                   required
                   style={{ textIndent: "8px" }}
                   type={showPassword ? "text" : "password"}
+                  a
                 />
                 {password.length > 0 && (
                   <button

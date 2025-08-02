@@ -76,6 +76,7 @@ export default function Login({
                 value={email}
                 required={!isGuest}
                 style={{ textIndent: "8px" }}
+                autoComplete="email"
               />
             </div>
             <div className="text-sm relative">
@@ -87,6 +88,7 @@ export default function Login({
                 required={!isGuest}
                 style={{ textIndent: "8px" }}
                 type={showPassword ? "text" : "password"}
+                autoComplete="current-password"
               />
               {password.length > 0 && (
                 <button
