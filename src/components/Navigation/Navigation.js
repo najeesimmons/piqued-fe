@@ -14,6 +14,8 @@ function Navigation({ setIsShowAuthCta }) {
   const router = useRouter();
 
   const isLoginPage = router.asPath.includes("/login");
+  const isFavoritesPage = router.pathname === "/favorites";
+  const isProfilePage = router.pathname === "/profile";
 
   const handleSignOut = async () => {
     try {
@@ -50,8 +52,14 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
-                router.push(`/?redirect=/favorites`);
-                setIsShowAuthCta(true);
+                if (router.pathname === "/") {
+                  router.push("/?redirect=/favorites");
+                  setIsShowAuthCta(true);
+                } else if (router.pathname === "/favorites") {
+                  setIsShowAuthCta(true);
+                } else {
+                  router.push("/favorites");
+                }
               }}
               className="text-black"
               aria-label="Open auth modal"
@@ -69,8 +77,14 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
-                router.push(`/?redirect=/profile`);
-                setIsShowAuthCta(true);
+                if (router.pathname === "/profile") {
+                  setIsShowAuthCta(true);
+                } else if (router.pathname === "/") {
+                  router.push("/?redirect=/profile");
+                  setIsShowAuthCta(true);
+                } else {
+                  router.push("/profile");
+                }
               }}
               className="text-black"
               aria-label="Open auth modal"

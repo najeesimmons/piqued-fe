@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
@@ -6,12 +7,14 @@ import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 
 export default function Me() {
-  const { user, isAuthLoading } = useAuth();
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [isUpdateSuccess, setIsUpdateSuccess] = useState();
-  const [isUpdateError, setIsUpdateError] = useState(false);
   const [profileForm, setProfileForm] = useState({});
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUpdateError, setIsUpdateError] = useState(false);
+  const [isUpdateSuccess, setIsUpdateSuccess] = useState();
+  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
+
+  const { user, isAuthLoading } = useAuth();
 
   const guestEmail = "piquedguest@gmail.com";
 
@@ -59,7 +62,7 @@ export default function Me() {
   if (isLoading || isAuthLoading) return <div>Loading</div>;
   return (
     <>
-      <Navigation />
+      <Navigation setIsShowAuthCta={setIsShowAuthCta} />
       {user ? (
         <form
           onSubmit={handleSubmit}
@@ -129,17 +132,19 @@ export default function Me() {
       ) : (
         <Section>
           <p className="text-center mt-32">
-            Already a member?{" "}
-            <Link className="font-semibold" href="/login">
-              Log in
-            </Link>{" "}
-            to create or update your profile. New here?{" "}
-            <Link className="font-semibold" href="/signup">
-              Sign up
-            </Link>{" "}
-            to get started!
+            Please{" "}
+            <button
+              className="font-semibold"
+              onClick={() => setIsShowAuthCta(true)}
+            >
+              login or signup
+            </button>{" "}
+            to create or update your profile.
           </p>
         </Section>
+      )}
+      {isShowAuthCta && (
+        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
       )}
     </>
   );
