@@ -108,7 +108,7 @@ export default function Comments({
         <textarea
           type="text"
           placeholder="Add a comment..."
-          className="w-full p-2 border text-sm"
+          className="w-full p-2 border text-sm dark:bg-black"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
         />
