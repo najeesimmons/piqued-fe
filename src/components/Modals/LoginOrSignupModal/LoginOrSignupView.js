@@ -15,11 +15,12 @@ export default function LoginOrSignupModal({
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         setIsShowAuthCta(false);
+        setDisableComment?.(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [setIsShowAuthCta]);
+  }, [setIsShowAuthCta, setDisableComment]);
 
   return ReactDOM.createPortal(
     <Section>
