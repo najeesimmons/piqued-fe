@@ -14,8 +14,6 @@ function Navigation({ setIsShowAuthCta }) {
   const router = useRouter();
 
   const isLoginPage = router.asPath.includes("/login");
-  const isFavoritesPage = router.pathname === "/favorites";
-  const isProfilePage = router.pathname === "/profile";
 
   const handleSignOut = async () => {
     try {
