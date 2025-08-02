@@ -52,10 +52,14 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
-                if (!isFavoritesPage) {
-                  router.push(`/?redirect=/favorites`);
+                if (router.pathname === "/") {
+                  router.push("/?redirect=/favorites");
+                  setIsShowAuthCta(true);
+                } else if (router.pathname === "/favorites") {
+                  setIsShowAuthCta(true);
+                } else {
+                  router.push("/favorites");
                 }
-                setIsShowAuthCta(true);
               }}
               className="text-black"
               aria-label="Open auth modal"
@@ -73,10 +77,14 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
-                if (!isProfilePage) {
-                  router.push(`/?redirect=/profile`);
+                if (router.pathname === "/profile") {
+                  setIsShowAuthCta(true);
+                } else if (router.pathname === "/") {
+                  router.push("/?redirect=/profile");
+                  setIsShowAuthCta(true);
+                } else {
+                  router.push("/profile");
                 }
-                setIsShowAuthCta(true);
               }}
               className="text-black"
               aria-label="Open auth modal"
