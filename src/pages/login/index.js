@@ -53,7 +53,7 @@ function Login() {
           className="flex h-screen items-center justify-center overflow-y-auto"
           style={{ height: "calc(100vh - 35.99px)" }}
         >
-          <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4">
+          <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4 text-black">
             <h1 className="font-bold text-center text-2xl flex items-center justify-center gap-2">
               <LiaMountainSolid size={25} />
               piqued
