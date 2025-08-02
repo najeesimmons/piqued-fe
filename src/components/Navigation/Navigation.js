@@ -14,6 +14,8 @@ function Navigation({ setIsShowAuthCta }) {
   const router = useRouter();
 
   const isLoginPage = router.asPath.includes("/login");
+  const isFavoritesPage = router.pathname === "/favorites";
+  const isProfilePage = router.pathname === "/profile";
 
   const handleSignOut = async () => {
     try {
@@ -50,7 +52,9 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
-                router.push(`/?redirect=/favorites`);
+                if (!isFavoritesPage) {
+                  router.push(`/?redirect=/favorites`);
+                }
                 setIsShowAuthCta(true);
               }}
               className="text-black"
@@ -69,7 +73,9 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
-                router.push(`/?redirect=/profile`);
+                if (!isProfilePage) {
+                  router.push(`/?redirect=/profile`);
+                }
                 setIsShowAuthCta(true);
               }}
               className="text-black"

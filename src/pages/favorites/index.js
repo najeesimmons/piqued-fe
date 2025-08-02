@@ -1,16 +1,17 @@
 "use client";
+import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import Loader from "@/components/Loader/Loader";
+import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
+import Navigation from "@/components/Navigation/Navigation";
+import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
+import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import Section from "@/components/Section/Section";
 import { getFavorites } from "../../../lib/favorite/favorite";
-import Navigation from "@/components/Navigation/Navigation";
-import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
+import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Loader from "@/components/Loader/Loader";
-import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
-import { useAuth } from "@/context/AuthContext";
-import Link from "next/link";
 
 const DynamicPhotoMasonry = dynamic(
   () => import("@/components/Masonry/PhotoMasonry"),
@@ -25,16 +26,19 @@ function Favorites() {
   const [hasMore, setHasMore] = useState(false);
   const [masonryPhotos, setMasonryPhotos] = useState([]);
   const [start, setStart] = useState(0);
-  const [isLoading, setIsLoading] = useState();
-  const [isError, setIsError] = useState();
-  const [isEmpty, setIsEmpty] = useState();
-  const { user } = useAuth();
 
-  const LIMIT = 12;
-  const end = start + LIMIT - 1;
+  const [isEmpty, setIsEmpty] = useState();
+  const [isError, setIsError] = useState();
+  const [isLoading, setIsLoading] = useState();
+  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
+
+  const { user } = useAuth();
 
   const router = useRouter();
   const { show } = router.query || {};
+
+  const LIMIT = 12;
+  const end = start + LIMIT - 1;
 
   const getFirstFavorites = useCallback(async () => {
     setIsLoading(true);
@@ -85,8 +89,9 @@ function Favorites() {
   }, [start]);
 
   useEffect(() => {
+    if (!user) return;
     getFirstFavorites();
-  }, [getFirstFavorites]);
+  }, [getFirstFavorites, user]);
 
   function renderContent() {
     if (isLoading) return <Loader />;
@@ -106,7 +111,7 @@ function Favorites() {
   return (
     <>
       <Section>
-        <Navigation />
+        <Navigation setIsShowAuthCta={setIsShowAuthCta} />
       </Section>
       {user ? (
         <>
@@ -124,17 +129,19 @@ function Favorites() {
       ) : (
         <Section>
           <p className="text-center mt-32">
-            Already a member?{" "}
-            <Link className="font-semibold" href="/login">
-              Log in
-            </Link>{" "}
-            to view your favorites ❤️. New here?{" "}
-            <Link className="font-semibold" href="/signup">
-              Sign up
-            </Link>{" "}
-            to get started!
+            Please{" "}
+            <button
+              className="font-semibold"
+              onClick={() => setIsShowAuthCta(true)}
+            >
+              login or signup
+            </button>{" "}
+            to view or save favorites.
           </p>
         </Section>
+      )}
+      {isShowAuthCta && (
+        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
       )}
     </>
   );
