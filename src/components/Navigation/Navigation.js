@@ -49,7 +49,10 @@ function Navigation({ setIsShowAuthCta }) {
             </Link>
           ) : (
             <button
-              onClick={() => setIsShowAuthCta(true)}
+              onClick={() => {
+                router.push(`/?redirect=/favorites`);
+                setIsShowAuthCta(true);
+              }}
               className="text-black"
               aria-label="Open auth modal"
             >
@@ -65,7 +68,10 @@ function Navigation({ setIsShowAuthCta }) {
             </Link>
           ) : (
             <button
-              onClick={() => setIsShowAuthCta(true)}
+              onClick={() => {
+                router.push(`/?redirect=/profile`);
+                setIsShowAuthCta(true);
+              }}
               className="text-black"
               aria-label="Open auth modal"
             >

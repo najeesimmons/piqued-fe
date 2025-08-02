@@ -2,6 +2,7 @@ import Section from "@/components/Section/Section";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function Login({
@@ -16,6 +17,8 @@ export default function Login({
 
   const [isAuthError, setIsAuthError] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
+
+  const router = useRouter();
   const { setUser } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -40,6 +43,13 @@ export default function Login({
     setUser(data.user);
     setDisableComment?.(false);
     setIsShowAuthCta(false);
+
+    const redirectPath = router.query.redirect;
+
+    if (typeof redirectPath === "string") {
+      await router.push(redirectPath);
+      router.replace(redirectPath, undefined, { shallow: true });
+    }
   };
 
   return (

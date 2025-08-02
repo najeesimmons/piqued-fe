@@ -1,9 +1,10 @@
 import Section from "@/components/Section/Section";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
-export default function Signup({ setAuthMode }) {
+export default function Signup({ setAuthMode, setIsShowAuthCta }) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   const [password, setPassword] = useState("");
@@ -11,7 +12,8 @@ export default function Signup({ setAuthMode }) {
   const [username, setUsername] = useState("");
 
   const [isAuthError, setIsAuthError] = useState(false);
-  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +51,14 @@ export default function Signup({ setAuthMode }) {
     }
 
     setPassword("");
-    setIsAuthSuccess(true);
+    setIsShowAuthCta(false);
+
+    const redirectPath = router.query.redirect;
+
+    if (typeof redirectPath === "string") {
+      await router.push(redirectPath);
+      router.replace(redirectPath, undefined, { shallow: true });
+    }
   };
 
   return (
@@ -112,11 +121,6 @@ export default function Signup({ setAuthMode }) {
               <p className="mt-3 text-red-500 font-center">
                 `There was an error creating your account: ${error}. Please try
                 again.`
-              </p>
-            )}
-            {isAuthSuccess && (
-              <p className="mt-3 text-sm font-bold">
-                Success! Close this window and enjoy Piqued!
               </p>
             )}
             <button
