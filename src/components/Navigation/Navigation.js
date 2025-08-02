@@ -61,7 +61,6 @@ function Navigation({ setIsShowAuthCta }) {
                   router.push("/favorites");
                 }
               }}
-              className="text-black"
               aria-label="Open auth modal"
             >
               <IoMdHeartEmpty title="favorites" size={23} />
@@ -86,7 +85,6 @@ function Navigation({ setIsShowAuthCta }) {
                   router.push("/profile");
                 }
               }}
-              className="text-black"
               aria-label="Open auth modal"
             >
               <HiOutlineUser title="profile" size={22} />
