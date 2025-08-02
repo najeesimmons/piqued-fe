@@ -11,7 +11,6 @@ export default function Signup({ setAuthMode }) {
   const [username, setUsername] = useState("");
 
   const [isAuthError, setIsAuthError] = useState(false);
-  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,7 +48,6 @@ export default function Signup({ setAuthMode }) {
     }
 
     setPassword("");
-    setIsAuthSuccess(true);
   };
 
   return (
@@ -112,11 +110,6 @@ export default function Signup({ setAuthMode }) {
               <p className="mt-3 text-red-500 font-center">
                 `There was an error creating your account: ${error}. Please try
                 again.`
-              </p>
-            )}
-            {isAuthSuccess && (
-              <p className="mt-3 text-sm font-bold">
-                Success! Close this window and enjoy Piqued!
               </p>
             )}
             <button
