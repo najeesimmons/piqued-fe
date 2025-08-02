@@ -3,7 +3,7 @@ function ErrorView({ retry }) {
     retry();
   };
   return (
-    <div className="flex flex-col p-4 h-auto bg-white">
+    <div className="flex flex-col p-4 h-auto">
       <h1 className="mx-auto text-xl font-bold">Oops! 🙈</h1>
       <h2 className="mt-2 text-center">
         We ran into a little trouble loading your photo(s). Please click the
