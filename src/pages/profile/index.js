@@ -66,7 +66,7 @@ export default function Me() {
       {user ? (
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 max-w-md mx-auto mt-16"
+          className="space-y-4 max-w-md mx-auto mt-16 text-black"
         >
           {user.email === guestEmail && (
             <p className="mt-3 text-red-500 font-center">
