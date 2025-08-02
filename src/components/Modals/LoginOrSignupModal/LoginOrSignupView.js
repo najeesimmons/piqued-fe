@@ -4,6 +4,7 @@ import Section from "@/components/Section/Section";
 import Signup from "@/components/Views/Auth/Signup";
 import { IoCloseSharp } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function LoginOrSignupModal({
   setIsShowAuthCta,
@@ -11,16 +12,24 @@ export default function LoginOrSignupModal({
 }) {
   const [authMode, setAuthMode] = useState("login");
 
+  const router = useRouter();
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         setIsShowAuthCta(false);
         setDisableComment?.(false);
+
+        const { redirect, ...rest } = router.query;
+        const newQuery = new URLSearchParams(rest).toString();
+        const newUrl = `${router.pathname}${newQuery ? `?${newQuery}` : ""}`;
+
+        router.replace(newUrl, undefined, { shallow: true });
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [setIsShowAuthCta, setDisableComment]);
+  }, [setDisableComment, setIsShowAuthCta, router]);
 
   return ReactDOM.createPortal(
     <Section>
@@ -30,6 +39,13 @@ export default function LoginOrSignupModal({
             onClick={() => {
               setIsShowAuthCta(false);
               setDisableComment?.(false);
+              const { redirect, ...rest } = router.query;
+              const newQuery = new URLSearchParams(rest).toString();
+              const newUrl = `${router.pathname}${
+                newQuery ? `?${newQuery}` : ""
+              }`;
+
+              router.replace(newUrl, undefined, { shallow: true });
             }}
             className="absolute top-4 left-4 text-3xl z-[10000]"
             aria-label="Close Modal"
