@@ -1,4 +1,5 @@
 import Section from "@/components/Section/Section";
+import { IoCloseSharp } from "react-icons/io5";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
 import { useRouter } from "next/router";
@@ -67,7 +68,24 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
         className="flex h-screen items-center justify-center overflow-y-auto"
         style={{ height: "calc(100vh - 35.99px)" }}
       >
-        <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4 text-black">
+        <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4 text-black relative">
+          <button
+            onClick={() => {
+              setIsShowAuthCta(false);
+              setDisableComment?.(false);
+              const { redirect, ...rest } = router.query;
+              const newQuery = new URLSearchParams(rest).toString();
+              const newUrl = `${router.pathname}${
+                newQuery ? `?${newQuery}` : ""
+              }`;
+
+              router.replace(newUrl, undefined, { shallow: true });
+            }}
+            className="absolute top-2 left-2 text-3xl z-[10000]"
+            aria-label="Close Modal"
+          >
+            <IoCloseSharp color="black" size={25} />
+          </button>
           <h1 className="font-bold text-center text-2xl flex items-center justify-center gap-2">
             <LiaMountainSolid size={25} />
             piqued
