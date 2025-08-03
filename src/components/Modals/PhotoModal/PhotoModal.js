@@ -6,22 +6,25 @@ import LoginOrSignupModal from "../LoginOrSignupModal/LoginOrSignupView";
 import PhotoView from "@/components/Views/PhotoView";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
+import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
 import { fetchPexels } from "../../../../utils.js/api";
 import { IoCloseSharp } from "react-icons/io5";
 import { toggleFavorite } from "../../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
 
 function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   const [disableComment, setDisableComment] = useState(false);
+
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isShowAuthCta, setIsShowAuthCta] = useState(false);
+
+  const { user, isAuthLoading } = useAuth();
+
   const router = useRouter();
   const { id } = router.query;
-  const { user, isAuthLoading } = useAuth();
 
   const handleClose = useCallback(() => {
     const { id, show, ...restQuery } = router.query;
@@ -145,8 +148,8 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   return ReactDOM.createPortal(
     <>
       <Section>
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto w-full flex items-center justify-center z-[9999]">
-          <div className="flex flex-col md:flex-row p-4 w-[90vw] h-auto md:h-[90vh] shadow-lg relative bg-white dark:bg-black">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 w-full flex items-center justify-center z-[9999]">
+          <div className="flex flex-col md:flex-row p-4 w-[90vw] max-h-[90vh] overflow-y-auto shadow-lg relative bg-white dark:bg-black">
             <button
               onClick={handleClose}
               className="absolute top-4 left-4 text-3xl z-[10000]"
