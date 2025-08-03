@@ -128,7 +128,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
     );
   } else if (photoIsValid) {
     content = (
-      <>
+      <div className="flex flex-col md:flex-row">
         <PhotoView
           displayPhoto={displayPhoto}
           handleFavorite={handleFavorite}
@@ -141,7 +141,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
             setDisableComment={setDisableComment}
           />
         </div>
-      </>
+      </div>
     );
   }
 
@@ -149,7 +149,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
     <>
       <Section>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 w-full flex items-center justify-center z-[9999]">
-          <div className="flex flex-col md:flex-row p-4 w-[90vw] max-h-[90vh] overflow-y-auto shadow-lg relative bg-white dark:bg-black">
+          <div className="flex p-4 w-[90vw] max-h-[90vh] overflow-y-auto shadow-lg relative bg-white dark:bg-black">
             <button
               onClick={handleClose}
               className="absolute top-4 left-4 text-3xl z-[10000]"
