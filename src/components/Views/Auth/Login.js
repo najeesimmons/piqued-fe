@@ -56,8 +56,8 @@ export default function Login({
   return (
     <Section>
       <div
-        className="flex h-screen items-center justify-center overflow-y-auto"
-        style={{ height: "calc(100vh - 35.99px)" }}
+        // className="flex h-screen items-center justify-center overflow-y-auto"
+        className="flex items-center justify-center overflow-y-auto"
       >
         <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4 text-black relative">
           <button
