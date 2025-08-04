@@ -234,7 +234,6 @@ export default function Home({
         <PhotoModal
           displayPhoto={displayPhoto}
           setDisplayPhoto={setDisplayPhoto}
-          show={show}
           masonryPhotos={masonryPhotos}
           setMasonryPhotos={setMasonryPhotos}
         />

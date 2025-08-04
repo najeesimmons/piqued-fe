@@ -14,7 +14,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
+function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   const [disableComment, setDisableComment] = useState(false);
 
   const [isError, setIsError] = useState(false);
@@ -70,16 +70,11 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, show, setMasonryPhotos }) {
   }, [id, setDisplayPhoto, user]);
 
   useEffect(() => {
-    if (show === "true") {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [show]);
+  }, []);
 
   useEffect(() => {
     if (displayPhoto || isAuthLoading) return;
