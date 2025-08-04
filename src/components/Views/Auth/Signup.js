@@ -65,7 +65,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
   return (
     <Section>
       <div className="flex items-center justify-center overflow-y-auto">
-        <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-3/4 text-black relative">
+        <div className="flex flex-col bg-gray-200 p-6 md:w-1/2 w-full text-black relative">
           <button
             onClick={() => {
               setIsShowAuthCta(false);
