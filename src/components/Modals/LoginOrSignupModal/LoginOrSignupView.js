@@ -14,6 +14,13 @@ export default function LoginOrSignupModal({
   const router = useRouter();
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         setIsShowAuthCta(false);
