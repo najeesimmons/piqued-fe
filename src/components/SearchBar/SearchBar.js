@@ -16,7 +16,7 @@ function SearchBar({ getSearchPhotos, isDisabled, searchTerm, setSearchTerm }) {
   return (
     <div className="flex h-8 mb-4">
       <input
-        className="mb-4 border-2 p-4 flex-grow"
+        className="mb-4 border-2 p-4 flex-grow bg-inherit"
         placeholder="Search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
