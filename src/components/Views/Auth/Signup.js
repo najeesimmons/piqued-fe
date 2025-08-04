@@ -87,7 +87,6 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
             <LiaMountainSolid size={25} />
             piqued
           </h1>
-          <h2 className="mt-1 text-center text-base">create your account</h2>
           <form
             className="mt-2 mx-auto space-y-2 w-3/4"
             onSubmit={handleSubmit}
