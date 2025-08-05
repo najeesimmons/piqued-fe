@@ -5,7 +5,7 @@ function SearchBar({ getSearchPhotos, isDisabled, searchTerm, setSearchTerm }) {
   useEffect(() => {
     const handleKeyDown = async (e) => {
       if (isDisabled) return;
-      if (e.key === "Enter" && searchTerm !== "") {
+      if (e.key === "Enter" && searchTerm.trim() !== "") {
         await getSearchPhotos();
       }
     };
@@ -19,12 +19,12 @@ function SearchBar({ getSearchPhotos, isDisabled, searchTerm, setSearchTerm }) {
         className="mb-4 border-2 p-4 flex-grow bg-inherit"
         placeholder="Search..."
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => setSearchTerm(e.target.value.trimStart())}
       />
       <button
         className="w-1/12 flex py-4 items-center justify-center border-2 border-l-0"
         onClick={() => {
-          if (searchTerm !== "" && !isDisabled) getSearchPhotos();
+          if (searchTerm.trim() !== "" && !isDisabled) getSearchPhotos();
         }}
       >
         <IoIosSearch size={25} />
