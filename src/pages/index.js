@@ -226,11 +226,11 @@ export default function Home({
           getSearchPhotos={getFirstSearchPhotos}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
-          isDisabled={show}
+          isDisabled={show || isShowAuthCta}
         />
       </Section>
       <Section>{renderContent()}</Section>
-      {show === "true" && (
+      {show && (
         <PhotoModal
           displayPhoto={displayPhoto}
           setDisplayPhoto={setDisplayPhoto}
