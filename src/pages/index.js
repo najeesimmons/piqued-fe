@@ -63,7 +63,7 @@ export default function Home({
   initIsError,
   initIsEmpty,
 }) {
-  const [displayPhoto, setDisplayPhoto] = useState({});
+  const [displayPhoto, setDisplayPhoto] = useState(null);
   const [fetchMode, setFetchMode] = useState("curated");
   const [hasMore, setHasMore] = useState(initHasMore);
   const [masonryPhotos, setMasonryPhotos] = useState(initPhotos);
