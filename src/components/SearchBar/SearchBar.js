@@ -23,7 +23,9 @@ function SearchBar({ getSearchPhotos, isDisabled, searchTerm, setSearchTerm }) {
       />
       <button
         className="w-1/12 flex py-4 items-center justify-center border-2 border-l-0"
-        onClick={getSearchPhotos}
+        onClick={() => {
+          if (searchTerm !== "" && !isDisabled) getSearchPhotos();
+        }}
       >
         <IoIosSearch size={25} />
       </button>
