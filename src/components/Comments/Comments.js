@@ -1,6 +1,8 @@
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
 import {
+  deleteOwnCommnent,
   getCommentsByPexelsId,
   insertComment,
 } from "../../../lib/comment/comment";
@@ -54,6 +56,19 @@ export default function Comments({
     return;
   }, [commentText, pexels_id, setDisableComment, setIsShowAuthCta, user]);
 
+  const handleDeleteComment = useCallback(
+    async (id) => {
+      if (!user) return;
+      const result = await deleteOwnCommnent(id);
+      if (!result) {
+        return;
+      } else {
+        setComments((prev) => prev.filter((c) => c.id !== result.id));
+      }
+    },
+    [user]
+  );
+
   useEffect(() => {
     if (!displayPhoto) return;
     getComments();
@@ -94,9 +109,20 @@ export default function Comments({
       {isOpen && (
         <div className="mt-2 flex-grow overflow-y-auto space-y-2 border-t pt-2 text-sm">
           {comments.map((comment, index) => (
-            <div key={index} className="border-b pb-1">
-              <div className="font-semibold text-xs">
-                {comment.profile.username || comment.display_name}
+            <div key={index} className="group border-b pb-1">
+              <div className="flex justify-between font-semibold text-xs">
+                <p>{comment.profile.username || comment.display_name}</p>
+                <button
+                  aria-label="delete comment"
+                  className={`${
+                    comment.user_id !== user?.id
+                      ? "hidden"
+                      : "invisible group-hover:visible"
+                  }`}
+                  onClick={() => handleDeleteComment(comment.id)}
+                >
+                  <IoCloseSharp size={15} />
+                </button>
               </div>
               <div className="text-sm">{comment.text}</div>
             </div>
