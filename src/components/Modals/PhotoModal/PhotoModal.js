@@ -144,7 +144,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     <>
       <Section>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 w-full flex items-center justify-center z-[9999]">
-          <div className="flex p-4 w-[90vw] max-h-[90vh] overflow-y-auto shadow-lg relative bg-white dark:bg-black">
+          <div className="flex p-4 md:w-[90vw] w-[100vw] md:h-[90vh] h-[100vh] overflow-y-auto shadow-lg relative bg-white dark:bg-black">
             <button
               onClick={handleClose}
               className="absolute top-4 left-4 text-3xl z-[10000]"
