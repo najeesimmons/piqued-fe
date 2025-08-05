@@ -14,7 +14,7 @@ function PhotoView({ displayPhoto, handleFavorite }) {
         <FaHeart color={displayPhoto.isFavorited ? "red" : "white"} size={20} />
       </button>
       <Image
-        src={displayPhoto.url}
+        src={displayPhoto.urlLarge2x}
         alt={displayPhoto.alt}
         width={displayPhoto.width}
         height={displayPhoto.height}
