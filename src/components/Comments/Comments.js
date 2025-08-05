@@ -1,6 +1,7 @@
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import {
+  deleteOwnCommnent,
   getCommentsByPexelsId,
   insertComment,
 } from "../../../lib/comment/comment";
@@ -53,6 +54,16 @@ export default function Comments({
     }
     return;
   }, [commentText, pexels_id, setDisableComment, setIsShowAuthCta, user]);
+
+  const handleDeleteComment = useCallback(async () => {
+    if (!user) return;
+    const result = await deleteOwnCommnent({ id });
+    if (!result) {
+      return;
+    } else {
+      setComments((prev) => prev.filter((c) => c.id !== result.id));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (!displayPhoto) return;
