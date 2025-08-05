@@ -1,19 +1,19 @@
 // @ts-nocheck
 "use client";
 import dynamic from "next/dynamic";
+import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import { fetchPexels } from "../../utils.js/api";
-import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import Loader from "@/components/Loader/Loader";
+import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
 import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
-import { useRouter } from "next/router";
-import { useState, useEffect, useCallback } from "react";
-import { useAuth } from "@/context/AuthContext";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/router";
+import { useEffect, useCallback, useState } from "react";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
