@@ -12,7 +12,7 @@ function Photo({ photo, priority, setDisplayPhoto }) {
   };
   return (
     <Image
-      src={photo.urlLarge2x}
+      src={photo.url}
       alt={photo.alt || ""}
       width={photo.width}
       height={photo.height}
