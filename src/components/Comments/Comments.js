@@ -109,12 +109,16 @@ export default function Comments({
       {isOpen && (
         <div className="mt-2 flex-grow overflow-y-auto space-y-2 border-t pt-2 text-sm">
           {comments.map((comment, index) => (
-            <div key={index} className="border-b pb-1">
+            <div key={index} className="group border-b pb-1">
               <div className="flex justify-between font-semibold text-xs">
                 <p>{comment.profile.username || comment.display_name}</p>
                 <button
                   aria-label="delete comment"
-                  className={comment.user_id !== user?.id ? "hidden" : ""}
+                  className={`${
+                    comment.user_id !== user?.id
+                      ? "hidden"
+                      : "invisible group-hover:visible"
+                  }`}
                   onClick={() => handleDeleteComment(comment.id)}
                 >
                   <IoCloseSharp size={15} />
