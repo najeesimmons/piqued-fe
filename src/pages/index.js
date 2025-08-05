@@ -2,7 +2,6 @@
 "use client";
 import dynamic from "next/dynamic";
 import ErrorView from "@/components/Views/SearchResults/ErrorView";
-import { fetchPexels } from "../../utils.js/api";
 import Loader from "@/components/Loader/Loader";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
@@ -11,6 +10,7 @@ import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
+import { fetchPexels } from "../../utils.js/api";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useState } from "react";
