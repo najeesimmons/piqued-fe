@@ -158,6 +158,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
       </Section>
       {isShowAuthCta && (
         <LoginOrSignupModal
+          isOverflowRestoreDelayed={true}
           setIsShowAuthCta={setIsShowAuthCta}
           disableComment={disableComment}
           setDisableComment={setDisableComment}
