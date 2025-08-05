@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function LoginOrSignupModal({
+  isOverflowRestoreDelayed,
   setIsShowAuthCta,
   setDisableComment,
 }) {
@@ -14,11 +15,13 @@ export default function LoginOrSignupModal({
   const router = useRouter();
 
   useEffect(() => {
+    if (isOverflowRestoreDelayed) return;
+
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
     };
-  }, []);
+  }, [isOverflowRestoreDelayed]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
