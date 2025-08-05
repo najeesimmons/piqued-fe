@@ -16,7 +16,7 @@ function PhotoView({ displayPhoto, handleFavorite }) {
         </div>
       )}
       <button
-        className={`absolute top-2 right-2 text-white bg-black rounded-full p-2 hover:bg-opacity-60 z-10 ${
+        className={`absolute bottom-2 md:bottom-auto md:top-2 right-2 text-white bg-black rounded-full p-2 hover:bg-opacity-60 z-10 ${
           displayPhoto.isFavorited ? "bg-opacity-10" : "bg-opacity-50"
         }`}
         aria-label="Favorite"
