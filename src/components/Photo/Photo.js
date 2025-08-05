@@ -14,8 +14,8 @@ function Photo({ photo, priority, setDisplayPhoto }) {
     <Image
       src={photo.url}
       alt={photo.alt || ""}
-      width={0}
-      height={0}
+      width={photo.width}
+      height={photo.height}
       className="w-full h-auto cursor-pointer"
       sizes="(max-width: 350px) 100vw, (max-width: 750px) 50vw, 33.33vw"
       {...(priority && { priority })}
