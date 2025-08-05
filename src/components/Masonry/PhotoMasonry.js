@@ -25,7 +25,8 @@ export default function PhotoMasonry({
               const isPriority = index >= 0 && index <= 6;
               return (
                 <Photo
-                  key={index}
+                  // key={index}
+                  key={photo.id}
                   photo={photo}
                   priority={isPriority ? true : undefined}
                   setDisplayPhoto={setDisplayPhoto}
