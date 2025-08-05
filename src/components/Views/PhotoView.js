@@ -1,9 +1,18 @@
 import Image from "next/image";
+import Loader from "../Loader/Loader";
 import { FaHeart } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 function PhotoView({ displayPhoto, handleFavorite }) {
+  const [isReadyToRender, setIsReadyToRender] = useState(false);
+
   return (
     <div className="relative w-full h-full flex items-center justify-center">
+      {!isReadyToRender && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-70">
+          <Loader />
+        </div>
+      )}
       <button
         className={`absolute top-2 right-2 text-white bg-black rounded-full p-2 hover:bg-opacity-60 z-10 ${
           displayPhoto.isFavorited ? "bg-opacity-10" : "bg-opacity-50"
@@ -23,7 +32,10 @@ function PhotoView({ displayPhoto, handleFavorite }) {
           maxWidth: "100%",
           maxHeight: "100%",
           objectFit: "contain",
+          opacity: isReadyToRender ? 1 : 0,
+          transition: "opacity 0.4s ease-in-out",
         }}
+        onLoad={() => setIsReadyToRender(true)}
       />
     </div>
   );
