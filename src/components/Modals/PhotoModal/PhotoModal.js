@@ -150,7 +150,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
               className="absolute top-4 left-4 text-3xl z-[10000]"
               aria-label="Close Modal"
             >
-              <IoCloseSharp color="black" size={35} />
+              <IoCloseSharp size={35} />
             </button>
             {content}
           </div>
