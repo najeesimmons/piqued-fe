@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Loader from "../Loader/Loader";
 import { FaHeart } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function PhotoView({ displayPhoto, handleFavorite }) {
   const [isReadyToRender, setIsReadyToRender] = useState(false);
