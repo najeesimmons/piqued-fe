@@ -29,7 +29,7 @@ function Navigation({ setIsShowAuthCta }) {
   };
 
   return (
-    <nav className="py-2 flex flex-row items-center justify-between font-semibold text-sm">
+    <nav className="py-2 flex flex-row items-center justify-between font-semibold text-base">
       <Link href="/" className="flex items-center gap-1 font-semibold">
         <LiaMountainSolid className="w-[30px] h-[30px] md:w-[22px] md:h-[22px]" />
         <span className="text-lg">piqued</span>
@@ -106,7 +106,7 @@ function Navigation({ setIsShowAuthCta }) {
         </li>
 
         {!user && !isLoginPage && (
-          <li className="font-semibold">
+          <li className="font-semibold md:text-sm">
             <button
               className="bg-black text-white px-4 py-2 hover:bg-gray-800"
               onClick={() => {
@@ -119,7 +119,7 @@ function Navigation({ setIsShowAuthCta }) {
         )}
 
         {user && (
-          <li className="font-semibold">
+          <li className="font-semibold ms:text-sm">
             <button
               onClick={handleSignOut}
               className="cursor-pointer bg-black text-white px-4 py-2 hover:bg-gray-800"
