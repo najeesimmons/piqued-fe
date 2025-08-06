@@ -59,10 +59,10 @@ function Login() {
               piqued
             </h1>
             <form
-              className="mt-2 mx-auto space-y-2 w-3/4"
+              className="mt-2 mx-auto space-y-2 w-3/4 md:w-1/2"
               onSubmit={handleSubmit}
             >
-              <div className="text-sm  mt-4">
+              <div className="text-base md:text-sm mt-4">
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setEmail(e.target.value)}
@@ -73,7 +73,7 @@ function Login() {
                   autoComplete="email"
                 />
               </div>
-              <div className="text-sm relative">
+              <div className="text-base md:text-sm relative">
                 <input
                   className="w-full h-8 border"
                   onChange={(e) => setPassword(e.target.value)}
