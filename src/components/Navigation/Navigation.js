@@ -30,13 +30,13 @@ function Navigation({ setIsShowAuthCta }) {
 
   return (
     <nav className="py-2 flex flex-row items-center justify-between font-semibold text-base">
-      <Link href="/" className="flex items-center gap-1 font-semibold">
-        <LiaMountainSolid className="w-[30px] h-[30px] md:w-[22px] md:h-[22px]" />
+      <Link href="/" className="flex items-center gap-2 font-semibold">
+        <LiaMountainSolid className="w-[25px] h-[25px] md:w-[22px] md:h-[22px]" />
         <span className="text-lg">piqued</span>
       </Link>
 
-      <ul className="flex flex-row gap-1">
-        <li className="font-semibold flex items-center">
+      <ul className="flex flex-row gap-2">
+        <li className="font-semibold flex items-center mr-1">
           <Link href={"/"}>
             <IoHomeOutline
               title="home"
