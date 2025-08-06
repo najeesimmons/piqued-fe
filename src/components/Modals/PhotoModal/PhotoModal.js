@@ -123,7 +123,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     );
   } else if (photoIsValid) {
     content = (
-      <div className="flex flex-col md:flex-row mt-4 md:mt-0">
+      <div className="flex flex-col md:flex-row mt-2 md:mt-0">
         <PhotoView
           displayPhoto={displayPhoto}
           handleClose={handleClose}
