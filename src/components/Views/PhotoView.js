@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Loader from "../Loader/Loader";
 import { FaHeart } from "react-icons/fa";
+import { IoCloseSharp } from "react-icons/io5";
 import { useState } from "react";
 
-function PhotoView({ displayPhoto, handleFavorite }) {
+function PhotoView({ displayPhoto, handleClose, handleFavorite }) {
   const [isReadyToRender, setIsReadyToRender] = useState(false);
 
   return (
@@ -23,6 +24,13 @@ function PhotoView({ displayPhoto, handleFavorite }) {
         onClick={() => handleFavorite(displayPhoto)}
       >
         <FaHeart color={displayPhoto.isFavorited ? "red" : "white"} size={20} />
+      </button>
+      <button
+        onClick={handleClose}
+        className="absolute bottom-2 md:bottom-auto md:top-2 left-4 text-3xl bg-black rounded-full bg-opacity-10 hover:bg-opacity-60 z-[10000]"
+        aria-label="Close Modal"
+      >
+        <IoCloseSharp size={30} />
       </button>
       <Image
         src={displayPhoto.urlLarge2x}
