@@ -123,7 +123,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     );
   } else if (photoIsValid) {
     content = (
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row mt-4 md:mt-0">
         <PhotoView
           displayPhoto={displayPhoto}
           handleClose={handleClose}
@@ -145,7 +145,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     <>
       <Section>
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 w-full flex items-center justify-center z-[9999]">
-          <div className="flex p-4 md:w-[90vw] w-[100vw] md:h-[90vh] h-[100vh] overflow-y-auto shadow-lg relative bg-white dark:bg-black">
+          <div className="flex p-4 md:w-[90vw] w-[100vw] md:h-[90vh] h-[100vh] overflow-y-auto shadow-lg bg-white dark:bg-black">
             {content}
           </div>
         </div>
