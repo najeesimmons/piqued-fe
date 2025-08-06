@@ -35,7 +35,7 @@ function Navigation({ setIsShowAuthCta }) {
         <span className="text-lg">piqued</span>
       </Link>
 
-      <ul className="flex flex-row gap-4">
+      <ul className="flex flex-row gap-1">
         <li className="font-semibold flex items-center">
           <Link href={"/"}>
             <IoHomeOutline
@@ -108,7 +108,7 @@ function Navigation({ setIsShowAuthCta }) {
         {!user && !isLoginPage && (
           <li className="font-semibold md:text-sm">
             <button
-              className="bg-black text-white px-4 py-2 hover:bg-gray-800"
+              className="ml-2 bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
               onClick={() => {
                 setIsShowAuthCta(true);
               }}
@@ -119,10 +119,10 @@ function Navigation({ setIsShowAuthCta }) {
         )}
 
         {user && (
-          <li className="font-semibold ms:text-sm">
+          <li className="font-semibold md:text-sm">
             <button
               onClick={handleSignOut}
-              className="cursor-pointer bg-black text-white px-4 py-2 hover:bg-gray-800"
+              className="ml-2 cursor-pointer bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
             >
               sign out
             </button>
