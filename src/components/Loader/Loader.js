@@ -1,11 +1,28 @@
+"use client";
 import { BeatLoader } from "react-spinners";
+import { useEffect, useState } from "react";
 
-function Loader() {
+export default function LoaderWithTheme() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    setIsDark(mediaQuery.matches);
+
+    const handleChange = (e) => {
+      setIsDark(e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
+
   return (
     <div className="flex justify-center items-center">
-      <BeatLoader loading={true} />
+      <BeatLoader loading={true} color={isDark ? "white" : "black"} />
     </div>
   );
 }
-
-export default Loader;
