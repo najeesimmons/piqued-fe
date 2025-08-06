@@ -29,23 +29,29 @@ function Navigation({ setIsShowAuthCta }) {
   };
 
   return (
-    <nav className="py-2 flex flex-row items-center justify-between font-semibold text-sm">
+    <nav className="py-2 flex flex-row items-center justify-between font-semibold text-base">
       <Link href="/" className="flex items-center gap-1 font-semibold">
-        <LiaMountainSolid size={20} />
+        <LiaMountainSolid className="w-[30px] h-[30px] md:w-[22px] md:h-[22px]" />
         <span className="text-lg">piqued</span>
       </Link>
 
       <ul className="flex flex-row gap-4">
         <li className="font-semibold flex items-center">
           <Link href={"/"}>
-            <IoHomeOutline title="home" size={20} />
+            <IoHomeOutline
+              title="home"
+              className="w-[25px] h-[25px] md:w-[20px] md:h-[20px]"
+            />
           </Link>
         </li>
 
         <li className="font-semibold flex items-center">
           {user ? (
             <Link href="/favorites">
-              <IoMdHeartEmpty title="favorites" size={23} />
+              <IoMdHeartEmpty
+                title="favorites"
+                className="w-[25px] h-[25px] md:w-[22px] md:h-[22px]"
+              />
             </Link>
           ) : (
             <button
@@ -61,7 +67,10 @@ function Navigation({ setIsShowAuthCta }) {
               }}
               aria-label="Open auth modal"
             >
-              <IoMdHeartEmpty title="favorites" size={23} />
+              <IoMdHeartEmpty
+                title="favorites"
+                className="w-[25px] h-[25px] md:w-[22px] md:h-[22px]"
+              />
             </button>
           )}
         </li>
@@ -69,7 +78,10 @@ function Navigation({ setIsShowAuthCta }) {
         <li className="font-semibold flex items-center">
           {user ? (
             <Link href="/profile">
-              <HiOutlineUser title="profile" size={22} />
+              <HiOutlineUser
+                title="profile"
+                className="w-[25px] h-[25px] md:w-[22px] md:h-[22px]"
+              />
             </Link>
           ) : (
             <button
@@ -85,13 +97,16 @@ function Navigation({ setIsShowAuthCta }) {
               }}
               aria-label="Open auth modal"
             >
-              <HiOutlineUser title="profile" size={22} />
+              <HiOutlineUser
+                title="profile"
+                className="w-[25px] h-[25px] md:w-[22px] md:h-[22px]"
+              />
             </button>
           )}
         </li>
 
         {!user && !isLoginPage && (
-          <li className="font-semibold">
+          <li className="font-semibold md:text-sm">
             <button
               className="bg-black text-white px-4 py-2 hover:bg-gray-800"
               onClick={() => {
@@ -104,7 +119,7 @@ function Navigation({ setIsShowAuthCta }) {
         )}
 
         {user && (
-          <li className="font-semibold">
+          <li className="font-semibold ms:text-sm">
             <button
               onClick={handleSignOut}
               className="cursor-pointer bg-black text-white px-4 py-2 hover:bg-gray-800"
