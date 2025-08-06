@@ -17,20 +17,20 @@ function PhotoView({ displayPhoto, handleClose, handleFavorite }) {
         </div>
       )}
       <button
-        className={`absolute bottom-2 md:bottom-auto md:top-2 right-2 text-white bg-black rounded-full p-2 hover:bg-opacity-60 z-10 ${
+        className={`absolute bottom-2 md:bottom-auto md:top-2 right-4 text-white bg-black rounded-full p-2 hover:bg-opacity-60 z-10 ${
           displayPhoto.isFavorited ? "bg-opacity-10" : "bg-opacity-50"
         }`}
         aria-label="Favorite"
         onClick={() => handleFavorite(displayPhoto)}
       >
-        <FaHeart color={displayPhoto.isFavorited ? "red" : "white"} size={20} />
+        <FaHeart color={displayPhoto.isFavorited ? "red" : "white"} size={18} />
       </button>
       <button
         onClick={handleClose}
-        className="absolute bottom-2 md:bottom-auto md:top-2 left-4 text-3xl bg-black rounded-full bg-opacity-10 hover:bg-opacity-60 z-[10000]"
+        className="absolute bottom-2 md:bottom-auto md:top-2 left-4 text-3xl bg-black rounded-full bg-opacity-50 hover:bg-opacity-60 z-[10000]"
         aria-label="Close Modal"
       >
-        <IoCloseSharp size={30} />
+        <IoCloseSharp size={34} />
       </button>
       <Image
         src={displayPhoto.urlLarge2x}
