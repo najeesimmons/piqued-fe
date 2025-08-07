@@ -87,7 +87,7 @@ export default function Home({
     setIsError(false);
     setIsEmpty(false);
 
-    const response = await fetchPexels("curated", user?.id || null);
+    const response = await fetchPexels("curated", undefined, user?.id);
     const {
       next_page,
       page,
@@ -223,6 +223,7 @@ export default function Home({
       <Navigation setIsShowAuthCta={setIsShowAuthCta} />
       <Section>
         <SearchBar
+          getFirstPhotos={getFirstPhotos}
           getSearchPhotos={getFirstSearchPhotos}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
