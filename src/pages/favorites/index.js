@@ -95,7 +95,8 @@ function Favorites() {
 
   function renderContent() {
     if (isLoading) return <Loader />;
-    if (isError) return <ErrorView retry={getFirstFavorites} />;
+    if (isError)
+      return <ErrorView entity={"favorites"} retry={getFirstFavorites} />;
     if (isEmpty) return <NoResultsView type="favorites" />;
     return (
       <DynamicPhotoMasonry

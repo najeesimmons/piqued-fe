@@ -1,4 +1,4 @@
-function ErrorView({ retry }) {
+function ErrorView({ retry, entity }) {
   const handleRetry = () => {
     retry();
   };
@@ -6,7 +6,7 @@ function ErrorView({ retry }) {
     <div className="flex flex-col p-4 h-auto">
       <h1 className="mx-auto text-xl font-bold">Oops! 🙈</h1>
       <h2 className="mt-2 text-center">
-        We ran into a little trouble loading your photo(s). Please click the
+        We ran into a little trouble loading your {entity}. Please click the
         button to try again.
       </h2>
       <button

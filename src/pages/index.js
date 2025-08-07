@@ -205,7 +205,7 @@ export default function Home({
 
   function renderContent() {
     if (isLoading) return <Loader />;
-    if (isError) return <ErrorView retry={getFirstPhotos} />;
+    if (isError) return <ErrorView entity={"photos"} retry={getFirstPhotos} />;
     if (isEmpty) return <NoResultsView />;
     return (
       <DynamicPhotoMasonry

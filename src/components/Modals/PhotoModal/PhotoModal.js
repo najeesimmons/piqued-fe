@@ -118,7 +118,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   } else if (isError) {
     content = (
       <div className="w-full h-full flex justify-center items-center mt-1">
-        <ErrorView retry={getPhoto} />
+        <ErrorView entity={"photo"} retry={getPhoto} />
       </div>
     );
   } else if (photoIsValid) {

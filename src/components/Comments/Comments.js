@@ -1,3 +1,4 @@
+import ErrorView from "../Views/SearchResults/ErrorView";
 import Loader from "@/components/Loader/Loader";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -88,7 +89,7 @@ export default function Comments({
   }, [commentText, disableComment, handleComment, pexels_id]);
 
   if (isLoading) return <Loader />;
-  if (isError) return <div>Error</div>;
+  if (isError) return <ErrorView retry={getComments} entity={"commets"} />;
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
       <div
