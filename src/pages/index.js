@@ -82,8 +82,8 @@ export default function Home({
   const { user } = useAuth();
 
   const getFirstPhotos = useCallback(async () => {
-    setIsLoading(true);
     setIsError(false);
+    setIsLoading(true);
     setFetchMode("curated");
     setIsEmpty(false);
 
