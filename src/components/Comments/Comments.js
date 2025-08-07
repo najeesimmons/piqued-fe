@@ -27,6 +27,7 @@ export default function Comments({
   const { user } = useAuth();
 
   const getComments = useCallback(async () => {
+    setIsError(false);
     setIsLoading(true);
     const result = await getCommentsByPexelsId(pexels_id);
     if (!result) {
