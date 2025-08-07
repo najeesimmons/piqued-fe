@@ -2,7 +2,7 @@
 import { IoChevronBackSharp } from "react-icons/io5";
 import { IoIosSearch } from "react-icons/io";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 
 function SearchBar({
   getFirstPhotos,
@@ -23,16 +23,21 @@ function SearchBar({
   }, [getSearchPhotos, isDisabled, searchTerm]);
 
   const router = useRouter();
+  const { search } = router.query;
 
   return (
     <div className="flex h-8 mb-4">
-      {searchTerm && (
+      {searchTerm !== "" && (
         <button
-          className="w-1/12 flex py-4 items-center justify-center border-2 border-r-0"
+          className="w-1/12 flex items-center justify-center transition-all duration-300"
           onClick={async () => {
-            router.push("/");
-            console.log("now how do I get curated photos back?");
+            if (!search) {
+              setSearchTerm("");
+              return;
+            }
+            setSearchTerm("");
             await getFirstPhotos();
+            router.push("/");
           }}
         >
           <IoChevronBackSharp size={25} />
@@ -40,7 +45,9 @@ function SearchBar({
       )}
 
       <input
-        className="mb-4 border-2 p-4 flex-grow bg-inherit"
+        className={`p-4 mb-4 border-2 bg-inherit transition-all duration-300 ${
+          searchTerm !== "" ? "w-11/12" : "w-full"
+        }`}
         placeholder="Search..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value.trimStart())}
