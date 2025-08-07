@@ -56,6 +56,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   };
 
   const getPhoto = useCallback(async () => {
+    setIsError(false);
     setIsLoading(true);
     const fetchedPhoto = await fetchPexels("show", { id }, user?.id);
     if (!fetchedPhoto) {
