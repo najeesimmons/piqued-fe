@@ -10,7 +10,7 @@ function PhotoView({ displayPhoto, handleClose, handleFavorite }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       {!isReadyToRender && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black bg-opacity-70">
+        <div className="absolute inset-0 z-10 flex items-center justify-center">
           <span>
             <Loader />
           </span>
