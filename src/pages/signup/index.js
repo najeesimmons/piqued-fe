@@ -81,7 +81,7 @@ function Signup() {
             >
               <div className="text-base md:text-sm mt-4">
                 <input
-                  className="w-full h-8 border"
+                  className="w-full h-10 border"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
                   value={email}
@@ -92,7 +92,7 @@ function Signup() {
               </div>
               <div className="text-base md:text-sm">
                 <input
-                  className="w-full h-8 border"
+                  className="w-full h-10 border"
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="username"
                   value={username}
@@ -103,7 +103,7 @@ function Signup() {
               </div>
               <div className="text-base md:text-sm relative">
                 <input
-                  className="w-full h-8 border"
+                  className="w-full h-10 border"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
                   value={password}

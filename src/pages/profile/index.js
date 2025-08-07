@@ -78,7 +78,7 @@ export default function Me() {
               first name
             </label>
             <input
-              className="w-full h-8 border"
+              className="w-full h-10 border"
               name="first_name"
               value={profileForm?.first_name}
               onChange={handleChange}
@@ -91,7 +91,7 @@ export default function Me() {
               last name
             </label>
             <input
-              className="w-full h-8 border"
+              className="w-full h-10 border"
               name="last_name"
               value={profileForm?.last_name}
               onChange={handleChange}
@@ -104,7 +104,7 @@ export default function Me() {
               username
             </label>
             <input
-              className="w-full h-8 border"
+              className="w-full h-10 border"
               name="username"
               value={profileForm?.username}
               onChange={handleChange}

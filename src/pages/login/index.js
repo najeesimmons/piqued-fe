@@ -64,7 +64,7 @@ function Login() {
             >
               <div className="text-base md:text-sm mt-4">
                 <input
-                  className="w-full h-8 border"
+                  className="w-full h-10 border"
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="email"
                   value={email}
@@ -75,7 +75,7 @@ function Login() {
               </div>
               <div className="text-base md:text-sm relative">
                 <input
-                  className="w-full h-8 border"
+                  className="w-full h-10 border"
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="password"
                   value={password}

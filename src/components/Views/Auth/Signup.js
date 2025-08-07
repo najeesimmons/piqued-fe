@@ -93,7 +93,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
           >
             <div className="text-base md:text-sm mt-4">
               <input
-                className="w-full h-8 border"
+                className="w-full h-10 border"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email"
                 value={email}
@@ -104,7 +104,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
             </div>
             <div className="text-base md:text-sm">
               <input
-                className="w-full h-8 border"
+                className="w-full h-10 border"
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="username"
                 value={username}
@@ -115,7 +115,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
             </div>
             <div className="text-base md:text-sm relative">
               <input
-                className="w-full h-8 border"
+                className="w-full h-10 border"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="password"
                 value={password}
