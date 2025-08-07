@@ -83,8 +83,8 @@ export default function Home({
 
   const getFirstPhotos = useCallback(async () => {
     setIsLoading(true);
-    setFetchMode("curated");
     setIsError(false);
+    setFetchMode("curated");
     setIsEmpty(false);
 
     const response = await fetchPexels("curated", undefined, user?.id);

@@ -1,7 +1,6 @@
 "use client";
 import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import Loader from "@/components/Loader/Loader";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
