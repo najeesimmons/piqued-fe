@@ -30,7 +30,7 @@ function PhotoView({ displayPhoto, handleClose, handleFavorite }) {
         className="absolute bottom-2 md:bottom-auto md:top-2 left-4 text-3xl bg-black rounded-full bg-opacity-50 hover:bg-opacity-60 z-[10000]"
         aria-label="Close Modal"
       >
-        <IoCloseSharp size={34} />
+        <IoCloseSharp color="white" size={34} />
       </button>
       <Image
         src={displayPhoto.urlLarge2x}
