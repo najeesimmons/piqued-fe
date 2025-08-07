@@ -78,6 +78,7 @@ export default function Comments({
     const handleKeyDown = async (e) => {
       if (disableComment === true) return;
       if (e.key === "Enter" && commentText !== "") {
+        e.preventDefault();
         await handleComment(pexels_id, commentText);
       }
     };
