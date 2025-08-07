@@ -8,7 +8,6 @@ import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
 import { fetchPexels } from "../../../../utils.js/api";
-import { IoCloseSharp } from "react-icons/io5";
 import { toggleFavorite } from "../../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
@@ -56,8 +55,8 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   };
 
   const getPhoto = useCallback(async () => {
-    setIsLoading(true);
     setIsError(false);
+    setIsLoading(true);
 
     const fetchedPhoto = await fetchPexels("show", { id }, user?.id);
     if (!fetchedPhoto) {
