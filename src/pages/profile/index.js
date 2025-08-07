@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ErrorView from "@/components/Views/SearchResults/ErrorView";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
@@ -20,6 +20,7 @@ export default function Me() {
 
   useEffect(() => {
     if (!isAuthLoading && user) {
+      setIsError(false);
       setIsLoading(true);
       const getMyProfile = async () => {
         const result = await getOwnProfile(user.id);
@@ -58,8 +59,8 @@ export default function Me() {
     }));
   };
 
-  if (isError) return <div>Error</div>;
-  if (isLoading || isAuthLoading) return <div>Loading</div>;
+  if (isError) return <ErrorView entity={"profile"} retry={getMyProfile} />;
+  if (isLoading || isAuthLoading) return <div>Loading...</div>;
   return (
     <>
       <Navigation setIsShowAuthCta={setIsShowAuthCta} />
