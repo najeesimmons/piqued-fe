@@ -89,7 +89,7 @@ export default function Comments({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [commentText, disableComment, handleComment, pexels_id]);
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <></>;
   if (isError) return <ErrorView retry={getComments} entity={"commets"} />;
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
