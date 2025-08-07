@@ -1,5 +1,4 @@
 import ErrorView from "../Views/SearchResults/ErrorView";
-import Loader from "@/components/Loader/Loader";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
@@ -27,8 +26,8 @@ export default function Comments({
   const { user } = useAuth();
 
   const getComments = useCallback(async () => {
-    setIsLoading(true);
     setIsError(false);
+    setIsLoading(true);
     const result = await getCommentsByPexelsId(pexels_id);
     if (!result) {
       setIsError(true);
@@ -89,7 +88,7 @@ export default function Comments({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [commentText, disableComment, handleComment, pexels_id]);
 
-  if (isLoading) return <></>;
+  if (isLoading) return <>Loading...</>;
   if (isError) return <ErrorView retry={getComments} entity={"commets"} />;
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
