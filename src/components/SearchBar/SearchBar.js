@@ -45,7 +45,7 @@ function SearchBar({
       )}
 
       <input
-        className={`p-4 mb-4 border-2 bg-inherit transition-all duration-300 ${
+        className={`p-4 mb-4 border-2 border-r-0 bg-inherit transition-all duration-300 ${
           searchTerm !== "" ? "w-11/12" : "w-full"
         }`}
         placeholder="Search..."
