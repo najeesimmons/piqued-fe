@@ -144,7 +144,7 @@ export default function Comments({
       </div>
       {isCommentError && (
         <p className="mt-3 text-red-500 font-center text-xs">
-          There was an submitting your comment. Please try again.
+          There was a problem submitting your comment. Please try again.
         </p>
       )}
       <button
