@@ -2,6 +2,7 @@
 "use client";
 import dynamic from "next/dynamic";
 import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import Link from "next/link";
 import Loader from "@/components/Loader/Loader";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
@@ -14,6 +15,7 @@ import { fetchPexels } from "../../utils.js/api";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useState } from "react";
+import Image from "next/image";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
@@ -230,6 +232,17 @@ export default function Home({
           isDisabled={show || isShowAuthCta}
         />
       </Section>
+
+      <Link href="https://www.pexels.com" className="flex items-center mb-3">
+        <span className="font-semibold">Photos provided by</span>
+        <Image
+          src="https://images.pexels.com/lib/api/pexels.png"
+          alt="pexels logo"
+          width={100} // ✅ use numbers (in pixels)
+          height={100}
+          style={{ objectFit: "contain", marginLeft: 10 }} // ✅ objectFit goes inside `style`
+        />
+      </Link>
       <Section>{renderContent()}</Section>
       {show && (
         <PhotoModal
