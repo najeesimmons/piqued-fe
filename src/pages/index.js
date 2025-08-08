@@ -240,6 +240,15 @@ export default function Home({
           alt="pexels logo"
           width={100} // ✅ use numbers (in pixels)
           height={100}
+          className=""
+          style={{ objectFit: "contain", marginLeft: 10 }} // ✅ objectFit goes inside `style`
+        />
+        <Image
+          src="https://images.pexels.com/lib/api/pexels-white.png"
+          alt="pexels logo"
+          width={100} // ✅ use numbers (in pixels)
+          height={100}
+          className=""
           style={{ objectFit: "contain", marginLeft: 10 }} // ✅ objectFit goes inside `style`
         />
       </Link>
