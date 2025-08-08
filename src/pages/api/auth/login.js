@@ -21,6 +21,5 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: error.message });
   }
 
-  console.log("login succeded 🙆🏾‍♂️", user);
   return res.status(200).json({ user });
 }
