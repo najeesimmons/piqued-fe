@@ -238,6 +238,8 @@ export default function Home({
           <span className="font-base text-sm">Photos provided by</span>
           <Link
             href="https://www.pexels.com"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center ml-2"
           >
             <SiPexels size={30} color="#01a081" />
