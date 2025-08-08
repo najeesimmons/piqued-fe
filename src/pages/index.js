@@ -240,7 +240,7 @@ export default function Home({
             href="https://www.pexels.com"
             className="flex items-center ml-2"
           >
-            <SiPexels size={30} color="green" />
+            <SiPexels size={30} color="#01a081" />
             <span className="font-semibold ml-2">Pexels</span>
           </Link>
         </div>
