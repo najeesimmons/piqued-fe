@@ -3,6 +3,7 @@ import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSi
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
+import { HiOutlineUser } from "react-icons/hi2";
 import { useAuth } from "@/context/AuthContext";
 import { useEffect, useState } from "react";
 
@@ -65,71 +66,78 @@ export default function Me() {
     <>
       <Navigation setIsShowAuthCta={setIsShowAuthCta} />
       {user ? (
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 max-w-md mx-auto mt-16 text-black"
-        >
-          {user.email === guestEmail && (
-            <p className="mt-3 text-red-500 font-center">
-              Guest profiles may not be edited.
-            </p>
-          )}
-          <div>
-            <label className="block" style={{ textIndent: "8px" }}>
-              first name
-            </label>
-            <input
-              className="w-full h-10 border"
-              name="first_name"
-              value={profileForm?.first_name}
-              onChange={handleChange}
-              style={{ textIndent: "8px" }}
-              disabled={user && user.email === guestEmail}
-            />
-          </div>
-          <div>
-            <label className="block" style={{ textIndent: "8px" }}>
-              last name
-            </label>
-            <input
-              className="w-full h-10 border"
-              name="last_name"
-              value={profileForm?.last_name}
-              onChange={handleChange}
-              style={{ textIndent: "8px" }}
-              disabled={user && user.email === guestEmail}
-            />
-          </div>
-          <div>
-            <label className="block" style={{ textIndent: "8px" }}>
-              username
-            </label>
-            <input
-              className="w-full h-10 border"
-              name="username"
-              value={profileForm?.username}
-              onChange={handleChange}
-              style={{ textIndent: "8px" }}
-              disabled={user && user.email === guestEmail}
-            />
-          </div>
-          {isUpdateError && (
-            <p className="mt-3 text-red-500 font-center">
-              There was an error updating your profile. Please try again.
-            </p>
-          )}
-          {isUpdateSuccess && (
-            <p className="mt-3 text-green-500 font-center">
-              Your profile was successfully updated.
-            </p>
-          )}
-          <button
-            type="submit"
-            className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
+        <Section>
+          <div
+            className="flex h-screen items-center justify-center overflow-y-auto"
+            style={{ height: "calc(100vh - 50px)" }}
           >
-            Update Profile
-          </button>
-        </form>
+            <div className="flex flex-col bg-gray-200 p-6 w-3/4 text-black">
+              <h1 className="font-bold text-center text-2xl flex items-center justify-center gap-2">
+                <HiOutlineUser size={25} />
+                profile
+              </h1>
+              <form
+                onSubmit={handleSubmit}
+                className="mt-0 mx-auto space-y-2 w-3/4 md:w-1/2"
+              >
+                {user.email === guestEmail && (
+                  <p className="mt-3 text-red-500 font-center">
+                    Guest profiles may not be edited.
+                  </p>
+                )}
+                <div className="text-base md:text-sm mt-4">
+                  <label className="block text-sm">first name</label>
+                  <input
+                    className="w-full h-10 border"
+                    name="first_name"
+                    value={profileForm?.first_name}
+                    onChange={handleChange}
+                    style={{ textIndent: "8px" }}
+                    disabled={user && user.email === guestEmail}
+                  />
+                </div>
+                <div className="text-base md:text-sm">
+                  <label className="block text-sm">last name</label>
+                  <input
+                    className="w-full h-10 border"
+                    name="last_name"
+                    value={profileForm?.last_name}
+                    onChange={handleChange}
+                    style={{ textIndent: "8px" }}
+                    disabled={user && user.email === guestEmail}
+                  />
+                </div>
+                <div className="text-base md:text-sm">
+                  <label className="block text-sm">username</label>
+                  <input
+                    className="w-full h-10 border mb-4"
+                    name="username"
+                    value={profileForm?.username}
+                    onChange={handleChange}
+                    style={{ textIndent: "8px" }}
+                    disabled={user && user.email === guestEmail}
+                  />
+                </div>
+                {isUpdateError && (
+                  <p className="mt-3 text-red-500 font-center">
+                    There was an error updating your profile. Please try again.
+                  </p>
+                )}
+                {isUpdateSuccess && (
+                  <p className="mt-3 text-green-500 font-center">
+                    Your profile was successfully updated.
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="bg-black font-semibold mx-auto p-2 text-white w-full"
+                >
+                  Update Profile
+                </button>
+              </form>
+            </div>
+          </div>
+        </Section>
       ) : (
         <Section>
           <p className="text-center mt-32">
