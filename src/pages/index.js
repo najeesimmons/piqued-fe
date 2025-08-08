@@ -12,6 +12,7 @@ import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
 import { fetchPexels } from "../../utils.js/api";
+import { SiPexels } from "react-icons/si";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useState } from "react";
@@ -232,26 +233,18 @@ export default function Home({
           isDisabled={show || isShowAuthCta}
         />
       </Section>
-
-      <Link href="https://www.pexels.com" className="flex items-center mb-3">
-        <span className="font-semibold">Photos provided by</span>
-        <Image
-          src="https://images.pexels.com/lib/api/pexels.png"
-          alt="pexels logo"
-          width={100} // ✅ use numbers (in pixels)
-          height={100}
-          className=""
-          style={{ objectFit: "contain", marginLeft: 10 }} // ✅ objectFit goes inside `style`
-        />
-        <Image
-          src="https://images.pexels.com/lib/api/pexels-white.png"
-          alt="pexels logo"
-          width={100} // ✅ use numbers (in pixels)
-          height={100}
-          className=""
-          style={{ objectFit: "contain", marginLeft: 10 }} // ✅ objectFit goes inside `style`
-        />
-      </Link>
+      <Section>
+        <div className="flex items-center mb-3">
+          <span className="font-base text-sm">Photos provided by</span>
+          <Link
+            href="https://www.pexels.com"
+            className="flex items-center ml-2"
+          >
+            <SiPexels size={30} color="green" />
+            <span className="font-semibold ml-2">Pexels</span>
+          </Link>
+        </div>
+      </Section>
       <Section>{renderContent()}</Section>
       {show && (
         <PhotoModal
