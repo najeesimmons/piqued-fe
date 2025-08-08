@@ -76,65 +76,64 @@ export default function Me() {
                 <HiOutlineUser size={25} />
                 profile
               </h1>
-              <form
-                onSubmit={handleSubmit}
-                className="mt-0 mx-auto space-y-2 w-3/4 md:w-1/2"
-              >
-                {user.email === guestEmail && (
-                  <p className="mt-3 text-red-500 font-center">
-                    Guest profiles may not be edited.
-                  </p>
-                )}
-                <div className="text-base md:text-sm mt-4">
-                  <label className="block text-sm">first name</label>
-                  <input
-                    className="w-full h-10 border"
-                    name="first_name"
-                    value={profileForm?.first_name}
-                    onChange={handleChange}
-                    style={{ textIndent: "8px" }}
-                    disabled={user && user.email === guestEmail}
-                  />
-                </div>
-                <div className="text-base md:text-sm">
-                  <label className="block text-sm">last name</label>
-                  <input
-                    className="w-full h-10 border"
-                    name="last_name"
-                    value={profileForm?.last_name}
-                    onChange={handleChange}
-                    style={{ textIndent: "8px" }}
-                    disabled={user && user.email === guestEmail}
-                  />
-                </div>
-                <div className="text-base md:text-sm">
-                  <label className="block text-sm">username</label>
-                  <input
-                    className="w-full h-10 border mb-4"
-                    name="username"
-                    value={profileForm?.username}
-                    onChange={handleChange}
-                    style={{ textIndent: "8px" }}
-                    disabled={user && user.email === guestEmail}
-                  />
-                </div>
-                {isUpdateError && (
-                  <p className="mt-3 text-red-500 font-center">
-                    There was an error updating your profile. Please try again.
-                  </p>
-                )}
-                {isUpdateSuccess && (
-                  <p className="mt-3 text-green-500 font-center">
-                    Your profile was successfully updated.
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  className="bg-black font-semibold mx-auto p-2 text-white w-full"
+              {user.email === guestEmail ? (
+                <p className="mt-3 text-red-500 text-center">
+                  Guest profiles may not be edited.
+                </p>
+              ) : (
+                <form
+                  onSubmit={handleSubmit}
+                  className="mt-0 mx-auto space-y-2 w-3/4 md:w-1/2"
                 >
-                  Update Profile
-                </button>
-              </form>
+                  <div className="text-base md:text-sm mt-4">
+                    <label className="block text-sm">first name</label>
+                    <input
+                      className="w-full h-10 border"
+                      name="first_name"
+                      value={profileForm?.first_name}
+                      onChange={handleChange}
+                      style={{ textIndent: "8px" }}
+                    />
+                  </div>
+                  <div className="text-base md:text-sm">
+                    <label className="block text-sm">last name</label>
+                    <input
+                      className="w-full h-10 border"
+                      name="last_name"
+                      value={profileForm?.last_name}
+                      onChange={handleChange}
+                      style={{ textIndent: "8px" }}
+                    />
+                  </div>
+                  <div className="text-base md:text-sm">
+                    <label className="block text-sm">username</label>
+                    <input
+                      className="w-full h-10 border mb-4"
+                      name="username"
+                      value={profileForm?.username}
+                      onChange={handleChange}
+                      style={{ textIndent: "8px" }}
+                    />
+                  </div>
+                  {isUpdateError && (
+                    <p className="mt-3 text-red-500 font-center">
+                      There was an error updating your profile. Please try
+                      again.
+                    </p>
+                  )}
+                  {isUpdateSuccess && (
+                    <p className="mt-3 text-green-500 font-center">
+                      Your profile was successfully updated.
+                    </p>
+                  )}
+                  <button
+                    type="submit"
+                    className="bg-black font-semibold mx-auto p-2 text-white w-full"
+                  >
+                    Update Profile
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </Section>
