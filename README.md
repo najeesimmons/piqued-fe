@@ -45,3 +45,71 @@ A modern, full-stack **photo gallery** built with **Next.js** — featuring infi
 ---
 
 ## 📂 Project Structure
+
+src/
+components/ # UI components (Gallery, PhotoCard, etc.)
+hooks/ # Custom React hooks
+lib/ # API utilities, Supabase client
+pages/ # Next.js pages
+styles/ # Tailwind styles
+
+---
+
+## ⚙️ Getting Started
+
+<details>
+<summary><strong>1️⃣ Clone the Repository</strong></summary>
+
+```bash
+git clone https://github.com/yourusername/nextjs-photo-gallery.git
+cd nextjs-photo-gallery
+```
+
+</details>
+
+<details>
+<summary><strong>2️⃣ Install Dependencies</strong></summary>
+
+```bash
+npm install
+```
+
+</details>
+
+<details>
+<summary><strong>3️⃣ Set Environment Variables</strong></summary>
+
+```bash
+NEXT_PUBLIC_PEXELS_API_KEY=your_pexels_api_key
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+</details>
+
+<details>
+<summary><strong>4️⃣ Run the Development Server</strong></summary>
+
+```bash
+npm run dev
+```
+
+Visit http://localhost:3000.
+
+## </details>
+
+## 🌐 Deployment
+
+This project is **Vercel-ready**:
+
+```bash
+vercel
+```
+
+---
+
+## 📸 Screenshots
+
+## 📜 License
+
+MIT License — feel free to fork and modify.
