@@ -44,7 +44,6 @@ function PhotoView({ displayPhoto, handleClose, handleFavorite }) {
           objectFit: "contain",
           opacity: isReadyToRender ? 1 : 0,
           transition: "opacity 0.4s ease-in-out",
-          marginTop: 5,
         }}
         onLoad={() => setIsReadyToRender(true)}
       />
