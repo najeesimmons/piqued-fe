@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { HiOutlineUser } from "react-icons/hi2";
 import { IoHomeOutline } from "react-icons/io5";
+import { IoIosInformationCircleOutline } from "react-icons/io";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../lib/supabase/supabase";
@@ -105,10 +106,22 @@ function Navigation({ setIsShowAuthCta }) {
           )}
         </li>
 
+        <li className="font-semibold flex items-center">
+          <a
+            href="https://najeesimmons.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 hover:underline"
+          >
+            <IoIosInformationCircleOutline className="inline md:hidden w-[25px] h-[25px] md:w-[22px] md:h-[22px]" />
+            <span className="hidden md:inline">portfolio</span>
+          </a>
+        </li>
+
         {!user && !isLoginPage && (
           <li className="font-semibold md:text-sm">
             <button
-              className="ml-2 bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
+              className="ml-2 md:ml-1 bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
               onClick={() => {
                 setIsShowAuthCta(true);
               }}
@@ -122,7 +135,7 @@ function Navigation({ setIsShowAuthCta }) {
           <li className="font-semibold md:text-sm">
             <button
               onClick={handleSignOut}
-              className="ml-2 cursor-pointer bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
+              className="ml-2 md:ml-1 cursor-pointer bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
             >
               sign out
             </button>
