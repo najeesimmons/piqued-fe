@@ -153,7 +153,7 @@ export default function Comments({
         </p>
       )}
       <button
-        className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
+        className="p-2 border mb-4 mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
         onClick={handleComment}
         ref={commentButtonRef}
       >
