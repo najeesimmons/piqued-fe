@@ -108,8 +108,6 @@ vercel
 
 ---
 
-## 📸 Screenshots
-
 ## 📜 License
 
 MIT License — feel free to fork and modify.
