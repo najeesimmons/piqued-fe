@@ -8,7 +8,7 @@ import {
   insertComment,
 } from "../../../lib/comment/comment";
 import { useAuth } from "@/context/AuthContext";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Comments({
   disableComment,
@@ -24,6 +24,8 @@ export default function Comments({
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
+
+  const commentButtonRef = useRef();
 
   const getComments = useCallback(async () => {
     setIsError(false);
@@ -139,6 +141,9 @@ export default function Comments({
           placeholder="Add a comment..."
           className="w-full p-2 border text-sm bg-inherit"
           value={commentText}
+          onBlur={() => {
+            commentButtonRef.current?.scrollIntoView({ behavior: "smooth" });
+          }}
           onChange={(e) => setCommentText(e.target.value)}
         />
       </div>
@@ -150,6 +155,7 @@ export default function Comments({
       <button
         className="p-2 border mt-2 bg-black text-white hover:bg-gray-700 font-semibold text-sm"
         onClick={handleComment}
+        ref={commentButtonRef}
       >
         Comment
       </button>
