@@ -1,40 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 📸 Next.js Photo Gallery
 
-## Getting Started
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-3-blue?style=for-the-badge&logo=tailwind-css" />
+  <img src="https://img.shields.io/badge/Supabase-Fullstack-green?style=for-the-badge&logo=supabase" />
+</p>
 
-First, run the development server:
+A modern, full-stack **photo gallery** built with **Next.js** — featuring infinite scrolling, image favoriting, modal previews, and a comment system backed by **Supabase**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📑 Table of Contents
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Deployment](#-deployment)
+- [Screenshots](#-screenshots)
+- [License](#-license)
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+---
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- 🔄 **Infinite Scroll** — Browse photos without reloads.
+- ❤️ **Favorites** — Save images you love.
+- 💬 **Comments** — Discuss any image.
+- 📱 **Responsive UI** — Works on mobile, tablet, and desktop.
+- 🖼 **Modal Previews** — View full-size images instantly.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+| Layer        | Technology                                                               |
+| ------------ | ------------------------------------------------------------------------ |
+| **Frontend** | [Next.js](https://nextjs.org/), [Tailwind CSS](https://tailwindcss.com/) |
+| **Backend**  | [Supabase](https://supabase.com/)                                        |
+| **Images**   | [Pexels API](https://www.pexels.com/api/)                                |
+| **State**    | React hooks, custom hooks                                                |
+| **Deploy**   | [Vercel](https://vercel.com/)                                            |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## 📂 Project Structure
