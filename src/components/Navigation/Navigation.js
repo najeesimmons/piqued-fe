@@ -113,7 +113,10 @@ function Navigation({ setIsShowAuthCta }) {
             rel="noopener noreferrer"
             className="flex items-center gap-2 hover:underline"
           >
-            <IoIosInformationCircleOutline className="inline md:hidden w-[25px] h-[25px] md:w-[22px] md:h-[22px]" />
+            <IoIosInformationCircleOutline
+              className="inline md:hidden w-[25px] h-[25px] md:w-[22px] md:h-[22px]"
+              title="portfolio"
+            />
             <span className="hidden md:inline">portfolio</span>
           </a>
         </li>
