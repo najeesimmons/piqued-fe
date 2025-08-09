@@ -145,7 +145,7 @@ export default function Comments({
         <textarea
           type="text"
           placeholder="Add a comment..."
-          className="w-full p-2 border text-sm bg-inherit"
+          className="w-full p-2 border text-base bg-inherit"
           value={commentText}
           onBlur={() => {
             commentButtonRef.current?.scrollIntoView({ behavior: "smooth" });
