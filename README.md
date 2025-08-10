@@ -1,4 +1,4 @@
-# 📸 Next.js Photo Gallery
+# 📸 piqued - social media site
 
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" />
@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/Supabase-Fullstack-green?style=for-the-badge&logo=supabase" />
 </p>
 
-A modern, full-stack **photo gallery** built with **Next.js** — featuring infinite scrolling, image favoriting, modal previews, and a comment system backed by **Supabase**.
+[Piqued](https://piqued.vercel.app/) is a modern, full-stack **social media site** built with **Next.js** — featuring infinite scrolling, image favoriting, modal previews, and a comment system backed by **Supabase**.
 
 ---
 
@@ -61,8 +61,8 @@ styles/ # Tailwind styles
 <summary><strong>1️⃣ Clone the Repository</strong></summary>
 
 ```bash
-git clone https://github.com/yourusername/nextjs-photo-gallery.git
-cd nextjs-photo-gallery
+git clone https://github.com/najeesimmons/piqued-fe.git
+cd piqued-fe
 ```
 
 </details>
