@@ -11,7 +11,7 @@ import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
-import { fetchPexels } from "../../utils.js/api";
+import { pexelsList } from "../../utils.js/api";
 import { SiPexels } from "react-icons/si";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
@@ -28,7 +28,7 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  const response = await fetchPexels("curated");
+  const response = await pexelsList("curated");
   const {
     next_page,
     page,
@@ -90,7 +90,7 @@ export default function Home({
     setFetchMode("curated");
     setIsEmpty(false);
 
-    const response = await fetchPexels("curated", undefined, user?.id);
+    const response = await pexelsList("curated", undefined, user?.id);
     const {
       next_page,
       page,
@@ -121,7 +121,7 @@ export default function Home({
     setIsEmpty(false);
     setNextPage(1);
 
-    const response = await fetchPexels(
+    const response = await pexelsList(
       "search",
       { query: searchTerm },
       user?.id || null
@@ -152,7 +152,7 @@ export default function Home({
   }, [router, searchTerm, user]);
 
   const getNextPhotos = useCallback(async () => {
-    const response = await fetchPexels(
+    const response = await pexelsList(
       fetchMode,
       {
         ...(nextPage && { page: nextPage }),
