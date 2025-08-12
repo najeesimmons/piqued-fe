@@ -75,11 +75,6 @@ export type TransformedPhotoList = {
   prev_page?: string;
 };
 
-export type TransformedPhotoListFromSupabase = {
-  photos: TransformedPhotoGet[];
-  count: number;
-};
-
 export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId?: number) {
   const page = params.page || 1;
 
