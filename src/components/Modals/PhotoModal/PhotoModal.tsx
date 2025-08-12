@@ -12,6 +12,19 @@ import { toggleFavorite } from "../../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import type { Dispatch, SetStateAction } from "react";
+
+interface Photo {
+  pexels_id: number;
+  url?: string;
+  isFavorited?: boolean;
+}
+
+interface PhotoModalProps {
+  displayPhoto: Photo | null;
+  setDisplayPhoto: Dispatch<SetStateAction<Photo | null>>;
+  setMasonryPhotos: Dispatch<SetStateAction<Photo[]>>;
+}
 
 function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   const [disableComment, setDisableComment] = useState(false);
