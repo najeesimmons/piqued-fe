@@ -31,7 +31,7 @@ export const pexelsGetSchema = z.object({
   alt: z.string(),
 });
 
-export const pexelsListSchema = z.array(pexelsPhotoSchema);
+export const pexelsListSchema = z.array(pexelsGetSchema);
 
 function handleApiError(response, endpoint) {
   if (response.error) {
@@ -121,7 +121,7 @@ export async function pexelsGet(params = {}, userId) {
 
     handleApiError(response, "show");
 
-    const parsed = pexelsPhotoSchema.safeParse(response);
+    const parsed = pexelsGetSchema.safeParse(response);
     if (!parsed.success) {
       throw new ZodError(parsed.error.errors);
     }
