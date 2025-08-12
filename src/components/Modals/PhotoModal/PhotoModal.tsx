@@ -13,25 +13,21 @@ import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
+import type { TransformedPhotoGet } from "../../../../utils.js/api";
 
-interface Photo {
-  pexels_id: number;
-  url?: string;
-  isFavorited?: boolean;
-}
 
 interface PhotoModalProps {
-  displayPhoto: Photo | null;
-  setDisplayPhoto: Dispatch<SetStateAction<Photo | null>>;
-  setMasonryPhotos: Dispatch<SetStateAction<Photo[]>>;
+  displayPhoto: TransformedPhotoGet | null;
+  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet | null>>;
+  setMasonryPhotos: Dispatch<SetStateAction<TransformedPhotoGet[]>>;
 }
 
-function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
-  const [disableComment, setDisableComment] = useState(false);
+function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoModalProps) {
+  const [disableComment, setDisableComment] = useState<boolean>(false);
 
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowAuthCta, setIsShowAuthCta] = useState<boolean>(false);
 
   const { user, isAuthLoading } = useAuth();
 
