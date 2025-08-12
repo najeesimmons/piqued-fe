@@ -4,11 +4,11 @@ import {
   checkFavoriteSingle,
 } from "../lib/favorite/utils";
 import { transformPhotoArray, transformPhotoSingle } from "./helpers";
-import z from "zod";
+import z, { ZodError } from "zod";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
 
-export const pexelsPhotoSchema = z.object({
+export const pexelsGetSchema = z.object({
   id: z.number(),
   width: z.number(),
   height: z.number(),
@@ -31,7 +31,7 @@ export const pexelsPhotoSchema = z.object({
   alt: z.string(),
 });
 
-export const pexelsPhotoArraySchema = z.array(pexelsPhotoSchema);
+export const pexelsListSchema = z.array(pexelsPhotoSchema);
 
 function handleApiError(response, endpoint) {
   if (response.error) {
@@ -79,7 +79,12 @@ export async function pexelsList(endpoint, params = {}, userId) {
 
     handleApiError(response, endpoint);
 
-    let transformedPhotos = transformPhotoArray(response.photos);
+    const parsed = pexelsListSchema.safeParse(response.photos);
+    if (!parsed.success) {
+      throw new ZodError(parsed.error.errors);
+    }
+
+    let transformedPhotos = transformPhotoArray(parsed.data);
 
     if (userId) {
       transformedPhotos = await checkFavoritesArray(transformedPhotos, userId);
@@ -90,11 +95,18 @@ export async function pexelsList(endpoint, params = {}, userId) {
       photos: transformedPhotos,
     };
   } catch (error) {
-    console.error(
-      error.message
-        ? `❌ Error occurred fetching data from Pexels: ${error.message}`
-        : `❌ Unexpected error fetching from Pexels: ${error}`
-    );
+    if (error instanceof ZodError) {
+      console.error(
+        `❌ Zod validation error validating photos array:`,
+        error.errors
+      );
+    } else {
+      console.error(
+        error.message
+          ? `❌ Error occurred fetching data from Pexels: ${error.message}`
+          : `❌ Unexpected error fetching from Pexels: ${error}`
+      );
+    }
     return null;
   }
 }
@@ -109,7 +121,12 @@ export async function pexelsGet(params = {}, userId) {
 
     handleApiError(response, "show");
 
-    let transformedPhoto = transformPhotoSingle(response);
+    const parsed = pexelsPhotoSchema.safeParse(response);
+    if (!parsed.success) {
+      throw new ZodError(parsed.error.errors);
+    }
+
+    let transformedPhoto = transformPhotoSingle(parsed.data);
 
     if (userId) {
       transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);
@@ -117,11 +134,18 @@ export async function pexelsGet(params = {}, userId) {
 
     return transformedPhoto;
   } catch (error) {
-    console.error(
-      error.message
-        ? `❌ Error occurred fetching data from Pexels: ${error.message}`
-        : `❌ Unexpected error fetching from Pexels: ${error}`
-    );
+    if (error instanceof ZodError) {
+      console.error(
+        `❌ Zod validation error validating single photo:`,
+        error.errors
+      );
+    } else {
+      console.error(
+        error.message
+          ? `❌ Error occurred fetching data from Pexels: ${error.message}`
+          : `❌ Unexpected error fetching from Pexels: ${error}`
+      );
+    }
     return null;
   }
 }
