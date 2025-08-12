@@ -54,7 +54,7 @@ function handleApiError(response, endpoint) {
   }
 }
 
-export async function fetchPexels(endpoint, params = {}, userId) {
+export async function pexelsList(endpoint, params = {}, userId) {
   const page = params.page || 1;
 
   try {
@@ -73,40 +73,49 @@ export async function fetchPexels(endpoint, params = {}, userId) {
           page,
         });
         break;
-      case "show":
-        response = await client.photos.show({ id: params.id });
-        break;
       default:
-        throw new Error(`Unsupported endpoint: ${endpoint}`);
+        throw new Error(`Unsupported endpoint for LIST photos: ${endpoint}`);
     }
 
     handleApiError(response, endpoint);
 
-    if (endpoint === "curated" || endpoint === "search") {
-      let transformedPhotos = transformPhotoArray(response.photos);
+    let transformedPhotos = transformPhotoArray(response.photos);
 
-      if (userId) {
-        transformedPhotos = await checkFavoritesArray(
-          transformedPhotos,
-          userId
-        );
-      }
-
-      return {
-        ...response,
-        photos: transformedPhotos,
-      };
+    if (userId) {
+      transformedPhotos = await checkFavoritesArray(transformedPhotos, userId);
     }
 
-    if (endpoint === "show") {
-      let transformedPhoto = transformPhotoSingle(response);
+    return {
+      ...response,
+      photos: transformedPhotos,
+    };
+  } catch (error) {
+    console.error(
+      error.message
+        ? `❌ Error occurred fetching data from Pexels: ${error.message}`
+        : `❌ Unexpected error fetching from Pexels: ${error}`
+    );
+    return null;
+  }
+}
 
-      if (userId) {
-        transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);
-      }
+export async function pexelsGet(params = {}, userId) {
+  if (!params.id) {
+    throw new Error("Missing photo ID for 'show' endpoint");
+  }
 
-      return transformedPhoto;
+  try {
+    const response = await client.photos.show({ id: params.id });
+
+    handleApiError(response, "show");
+
+    let transformedPhoto = transformPhotoSingle(response);
+
+    if (userId) {
+      transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);
     }
+
+    return transformedPhoto;
   } catch (error) {
     console.error(
       error.message
