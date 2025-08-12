@@ -40,62 +40,83 @@ export const pexelsListSchema = z.object({
 });
 
 export type Endpoint = "curated" | "search" | "show";
-export type PexelsGetType = z.infer<typeof pexelsGetSchema>;
-export type PexelsListType = z.infer<typeof pexelsListSchema>;
-export type PexelsResponse = PexelsListType | PexelsGetType | { error: string };
+export type PexelsGet = z.infer<typeof pexelsGetSchema>;
+export type PexelsList = z.infer<typeof pexelsListSchema>;
+export type PexelsResponse = PexelsList | PexelsGet | { error: string };
+export type TransformedPhotoGet = {
+  pexels_id: number;
+  width: number;
+  height: number;
+  url: string;
+  urlLarge2x: string;
+  photographer: string;
+  photographer_url: string;
+  photographer_id: number;
+  avg_color: string;
+  src: {
+    original: string;
+    large2x: string;
+    large: string;
+    medium: string;
+    small: string;
+    portrait: string;
+    landscape: string;
+    tiny: string;
+  };
+  alt: string;
+  isFavorited?: boolean; // Added by checkFavoritesArray
+};
+export type TransformedPhotoList = {
+  photos: TransformedPhotoGet[];
+  page?: number;
+  per_page?: number;
+  total_results?: number;
+  next_page?: string;
+  prev_page?: string;
+};
 
-function handleApiError(response: PexelsResponse, endpoint: Endpoint) {
-  if ("error" in response) {
-    throw new Error(`Pexels API Error [${endpoint}]: ${response.error}`);
-  }
+export type TransformedPhotoListFromSupabase = {
+  photos: TransformedPhotoGet[];
+  count: number;
+};
 
-  if (
-    (endpoint === "curated" || endpoint === "search") &&
-    (!('photos' in response) || !Array.isArray(response.photos))
-  ) {
-    throw new Error(
-      `Pexels API Error [${endpoint}]: Invalid response for this endpoint.`
-    );
-  }
-
-  if (endpoint === "show" && !('id' in response)) {
-    throw new Error(
-      `Pexels API Error [${endpoint}]: Invalid response for this endpoint.`
-    );
-  }
-}
-
-export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId: string) {
+export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId?: number) {
   const page = params.page || 1;
 
   try {
-    let response;
+    let response: PexelsList;
     switch (endpoint) {
       case "curated":
-        response = await client.photos.curated({
+        const rawCuratedResponse = await client.photos.curated({
           per_page: 40,
           page,
         });
+
+        const parsedCurated = pexelsListSchema.safeParse(rawCuratedResponse);
+        if (!parsedCurated.success) {
+          throw new ZodError(parsedCurated.error.issues);
+        }
+        response = parsedCurated.data;
         break;
       case "search":
-        response = await client.photos.search({
+        const rawSearchResponse = await client.photos.search({
           query: params.query,
           per_page: 40,
           page,
         });
+
+        const parsedSearch = pexelsListSchema.safeParse(rawSearchResponse);
+        if (!parsedSearch.success) {
+          throw new ZodError(parsedSearch.error.issues);
+        }
+        response = parsedSearch.data;
         break;
+
       default:
         throw new Error(`Unsupported endpoint for LIST photos: ${endpoint}`);
     }
 
-    handleApiError(response, endpoint);
-
-    const parsed = pexelsListSchema.safeParse(response);
-    if (!parsed.success) {
-      throw new ZodError(parsed.error.errors);
-    }
-
-    let transformedPhotos = transformPhotoArray(parsed.data.photos);
+    let transformedPhotos: TransformedPhotoGet[] = transformPhotoArray(response.photos);
 
     if (userId) {
       transformedPhotos = await checkFavoritesArray(transformedPhotos, userId);
@@ -105,11 +126,12 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
       ...response,
       photos: transformedPhotos,
     };
+
   } catch (error) {
     if (error instanceof ZodError) {
       console.error(
         `❌ Zod validation error validating photos array:`,
-        error.errors
+        error.issues
       );
     } else {
       console.error(
@@ -122,7 +144,7 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
   }
 }
 
-export async function pexelsGet(params = {}, userId) {
+export async function pexelsGet(params: { id: number }, userId?: number) {
   if (!params.id) {
     throw new Error("Missing photo ID for 'show' endpoint");
   }
@@ -130,11 +152,10 @@ export async function pexelsGet(params = {}, userId) {
   try {
     const response = await client.photos.show({ id: params.id });
 
-    handleApiError(response, "show");
 
     const parsed = pexelsGetSchema.safeParse(response);
     if (!parsed.success) {
-      throw new ZodError(parsed.error.errors);
+      throw new ZodError(parsed.error.issues);
     }
 
     let transformedPhoto = transformPhotoSingle(parsed.data);
@@ -148,7 +169,7 @@ export async function pexelsGet(params = {}, userId) {
     if (error instanceof ZodError) {
       console.error(
         `❌ Zod validation error validating single photo:`,
-        error.errors
+        error.issues
       );
     } else {
       console.error(
