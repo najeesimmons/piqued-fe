@@ -8,9 +8,9 @@ import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
 interface LoginProps {
-  setAuthMode: Dispatch<SetStateAction<"login" | "signup">>
-  setDisableComment: Dispatch<SetStateAction<boolean>>
-  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>
+  setAuthMode: Dispatch<SetStateAction<"login" | "signup">>;
+  setDisableComment: Dispatch<SetStateAction<boolean>>;
+  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>;
 }
 export default function Login({
   setAuthMode,
@@ -38,7 +38,7 @@ export default function Login({
       email: isGuest ? "piquedguest@gmail.com" : email,
       password: isGuest
         ? process.env.NEXT_PUBLIC_PUBLIC_DEMO_PASSWORD || ""
-        : "",
+        : password,
     });
 
     if (error) {
@@ -71,7 +71,9 @@ export default function Login({
               setIsShowAuthCta(false);
               setDisableComment?.(false);
               const { redirect, ...rest } = router.query;
-              const newQuery = new URLSearchParams(rest as Record<string, string>).toString();
+              const newQuery = new URLSearchParams(
+                rest as Record<string, string>
+              ).toString();
               const newUrl = `${router.pathname}${
                 newQuery ? `?${newQuery}` : ""
               }`;
