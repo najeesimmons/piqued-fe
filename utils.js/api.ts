@@ -30,33 +30,42 @@ export const pexelsGetSchema = z.object({
   liked: z.boolean(),
   alt: z.string(),
 });
+export const pexelsListSchema = z.object({
+  photos: z.array(pexelsGetSchema),
+  page: z.number().optional(),
+  per_page: z.number().optional(),
+  total_results: z.number().optional(),
+  next_page: z.string().optional(),
+  prev_page: z.string().optional(),
+});
+
+export type Endpoint = "curated" | "search" | "show";
 export type PexelsGetType = z.infer<typeof pexelsGetSchema>;
-
-export const pexelsListSchema = z.array(pexelsGetSchema);
 export type PexelsListType = z.infer<typeof pexelsListSchema>;
+export type PexelsResponse = PexelsListType | PexelsGetType | { error: string };
 
-function handleApiError(response, endpoint: string) {
-  if (response.error) {
+function handleApiError(response: PexelsResponse, endpoint: Endpoint) {
+  if ("error" in response) {
     throw new Error(`Pexels API Error [${endpoint}]: ${response.error}`);
   }
 
   if (
     (endpoint === "curated" || endpoint === "search") &&
-    !Array.isArray(response.photos)
+    (!('photos' in response) || !Array.isArray(response.photos))
   ) {
     throw new Error(
       `Pexels API Error [${endpoint}]: Invalid response for this endpoint.`
     );
   }
 
-  if (endpoint === "show" && !response.id) {
+  if (endpoint === "show" && !('id' in response)) {
     throw new Error(
       `Pexels API Error [${endpoint}]: Invalid response for this endpoint.`
     );
   }
 }
 
-export async function pexelsList(endpoint, params = {}, userId) {
+export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId: string) {
   const page = params.page || 1;
 
   try {
@@ -81,12 +90,12 @@ export async function pexelsList(endpoint, params = {}, userId) {
 
     handleApiError(response, endpoint);
 
-    const parsed = pexelsListSchema.safeParse(response.photos);
+    const parsed = pexelsListSchema.safeParse(response);
     if (!parsed.success) {
       throw new ZodError(parsed.error.errors);
     }
 
-    let transformedPhotos = transformPhotoArray(parsed.data);
+    let transformedPhotos = transformPhotoArray(parsed.data.photos);
 
     if (userId) {
       transformedPhotos = await checkFavoritesArray(transformedPhotos, userId);
