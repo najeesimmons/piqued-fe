@@ -2,7 +2,6 @@ import Section from "@/components/Section/Section";
 import { IoCloseSharp } from "react-icons/io5";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
-import { AuthError, Session, User } from '@supabase/supabase-js';
 import { useRouter } from "next/router";
 import { type Dispatch, SetStateAction, useState } from "react";
 
