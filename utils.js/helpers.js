@@ -3,7 +3,7 @@ export function transformPhotoSingle(photo) {
     pexels_id: photo.id,
     width: photo.width,
     height: photo.height,
-    url: photo.src.original, //largest, highest quality
+    url: photo.src.original,
     urlLarge2x: photo.src.large2x,
     photographer: photo.photographer,
     photographer_url: photo.photographer_url,

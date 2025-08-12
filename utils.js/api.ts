@@ -30,10 +30,12 @@ export const pexelsGetSchema = z.object({
   liked: z.boolean(),
   alt: z.string(),
 });
+export type PexelsGetType = z.infer<typeof pexelsGetSchema>;
 
 export const pexelsListSchema = z.array(pexelsGetSchema);
+export type PexelsListType = z.infer<typeof pexelsListSchema>;
 
-function handleApiError(response, endpoint) {
+function handleApiError(response, endpoint: string) {
   if (response.error) {
     throw new Error(`Pexels API Error [${endpoint}]: ${response.error}`);
   }
