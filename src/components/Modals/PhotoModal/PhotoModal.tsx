@@ -18,7 +18,7 @@ import type { TransformedPhotoGet } from "../../../../utils.js/api";
 
 interface PhotoModalProps {
   displayPhoto: TransformedPhotoGet | null;
-  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet>>;
+  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet | null>>;
   setMasonryPhotos: Dispatch<SetStateAction<TransformedPhotoGet[]>>;
 }
 
@@ -55,7 +55,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoMo
     if (!success) return;
     const isFavorited = action === "insert";
 
-    setDisplayPhoto((prev) => ({ ...prev, isFavorited: isFavorited }));
+    setDisplayPhoto((prev) => prev ? { ...prev, isFavorited: isFavorited } : null);
 
     setMasonryPhotos((prev) =>
       prev.map((p) =>

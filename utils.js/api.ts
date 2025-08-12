@@ -75,7 +75,7 @@ export type TransformedPhotoList = {
   prev_page?: string;
 };
 
-export async function pexelsList(endpoint: Endpoint, params: { page?: number, query: string }, userId?: string) {
+export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId?: string) {
   const page = params.page || 1;
 
   try {
@@ -94,6 +94,9 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
         response = parsedCurated.data;
         break;
       case "search":
+        if (!params.query) {
+          throw new Error("Query parameter is required for search endpoint");
+        }
         const rawSearchResponse = await client.photos.search({
           query: params.query,
           per_page: 40,
