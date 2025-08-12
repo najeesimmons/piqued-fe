@@ -5,11 +5,17 @@ import Signup from "@/components/Views/Auth/Signup";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
+interface LoginOrSignupModalProps {
+  isOverflowRestoreDelayed?: boolean;
+  setIsShowAuthCta: (show: boolean) => void;
+  setDisableComment?: (disable: boolean) => void;
+}
+
 export default function LoginOrSignupModal({
-  isOverflowRestoreDelayed,
+  isOverflowRestoreDelayed = false,
   setIsShowAuthCta,
   setDisableComment,
-}) {
+}: LoginOrSignupModalProps) {
   const [authMode, setAuthMode] = useState("login");
 
   const router = useRouter();
@@ -24,13 +30,13 @@ export default function LoginOrSignupModal({
   }, [isOverflowRestoreDelayed]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsShowAuthCta(false);
-        setDisableComment?.(false);
+        if (setDisableComment) setDisableComment(false);
 
         const { redirect, ...rest } = router.query;
-        const newQuery = new URLSearchParams(rest).toString();
+        const newQuery = new URLSearchParams(rest as Record<string, string>).toString();
         const newUrl = `${router.pathname}${newQuery ? `?${newQuery}` : ""}`;
 
         router.replace(newUrl, undefined, { shallow: true });
@@ -61,6 +67,6 @@ export default function LoginOrSignupModal({
         </div>
       </div>
     </Section>,
-    document.getElementById("modal-root")
+    document.getElementById("modal-root")!
   );
 }
