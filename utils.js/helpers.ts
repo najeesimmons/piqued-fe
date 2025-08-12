@@ -1,4 +1,6 @@
-export function transformPhotoSingle(photo) {
+import type { PexelsGet, TransformedPhotoGet } from "./api";
+
+export function transformPhoto(photo: PexelsGet): TransformedPhotoGet {
   return {
     pexels_id: photo.id,
     width: photo.width,
@@ -12,8 +14,4 @@ export function transformPhotoSingle(photo) {
     src: photo.src,
     alt: photo.alt,
   };
-}
-
-export function transformPhotoArray(photos) {
-  return photos.map(transformPhotoSingle);
 }

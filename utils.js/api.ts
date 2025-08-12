@@ -3,7 +3,7 @@ import {
   checkFavoritesArray,
   checkFavoriteSingle,
 } from "../lib/favorite/utils";
-import { transformPhotoArray, transformPhotoSingle } from "./helpers";
+import { transformPhoto } from "./helpers";
 import z, { ZodError } from "zod";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
@@ -116,7 +116,7 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
         throw new Error(`Unsupported endpoint for LIST photos: ${endpoint}`);
     }
 
-    let transformedPhotos: TransformedPhotoGet[] = transformPhotoArray(response.photos);
+    let transformedPhotos: TransformedPhotoGet[] = response.photos.map(transformPhoto);
 
     if (userId) {
       transformedPhotos = await checkFavoritesArray(transformedPhotos, userId);
@@ -158,7 +158,7 @@ export async function pexelsGet(params: { id: number }, userId?: number) {
       throw new ZodError(parsed.error.issues);
     }
 
-    let transformedPhoto = transformPhotoSingle(parsed.data);
+    let transformedPhoto = transformPhoto(parsed.data);
 
     if (userId) {
       transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);
