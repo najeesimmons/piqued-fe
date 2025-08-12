@@ -6,7 +6,7 @@ import {
 import { transformPhoto } from "./helpers";
 import z, { ZodError } from "zod";
 
-const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
+const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY as string);
 
 export const pexelsGetSchema = z.object({
   id: z.number(),
@@ -75,7 +75,7 @@ export type TransformedPhotoList = {
   prev_page?: string;
 };
 
-export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId?: number) {
+export async function pexelsList(endpoint: Endpoint, params: { page?: number, query: string }, userId?: string) {
   const page = params.page || 1;
 
   try {
@@ -124,22 +124,21 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
 
   } catch (error) {
     if (error instanceof ZodError) {
-      console.error(
-        `❌ Zod validation error validating photos array:`,
-        error.issues
-      );
-    } else {
+      console.error(`❌ Zod validation error validating photos array:`, error.issues);
+    } else if (error instanceof Error) {
       console.error(
         error.message
           ? `❌ Error occurred fetching data from Pexels: ${error.message}`
           : `❌ Unexpected error fetching from Pexels: ${error}`
       );
+    } else {
+      console.error(`❌ Unexpected error: ${String(error)}`);
     }
     return null;
   }
 }
 
-export async function pexelsGet(params: { id: number }, userId?: number) {
+export async function pexelsGet(params: { id: number }, userId?: string) {
   if (!params.id) {
     throw new Error("Missing photo ID for 'show' endpoint");
   }
@@ -166,12 +165,14 @@ export async function pexelsGet(params: { id: number }, userId?: number) {
         `❌ Zod validation error validating single photo:`,
         error.issues
       );
-    } else {
+    } else if ( error instanceof Error ) {
       console.error(
         error.message
           ? `❌ Error occurred fetching data from Pexels: ${error.message}`
           : `❌ Unexpected error fetching from Pexels: ${error}`
       );
+    } else {
+      console.error(`❌ Unexpected error: ${String(error)}`);
     }
     return null;
   }

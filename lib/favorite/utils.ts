@@ -1,6 +1,7 @@
 import { supabase } from "../supabase/supabase";
+import type { TransformedPhotoGet } from "../../utils.js/api";
 
-export async function checkFavoritesArray(photos, userId) {
+export async function checkFavoritesArray(photos: TransformedPhotoGet[], userId: string) {
   if (!userId) return photos;
 
   const photoIds = photos.map((p) => p.pexels_id); //array of pexel ids
@@ -18,7 +19,7 @@ export async function checkFavoritesArray(photos, userId) {
   }));
 }
 
-export async function checkFavoriteSingle(photo, userId) {
+export async function checkFavoriteSingle(photo: TransformedPhotoGet, userId: string) {
   if (!userId) return { ...photo, isFavorited: false };
 
   const { data } = await supabase
@@ -32,7 +33,7 @@ export async function checkFavoriteSingle(photo, userId) {
   return { ...photo, isFavorited: !!data };
 }
 
-export async function toggleFavorite(photo) {
+export async function toggleFavorite(photo: TransformedPhotoGet) {
   const {
     pexels_id,
     width,

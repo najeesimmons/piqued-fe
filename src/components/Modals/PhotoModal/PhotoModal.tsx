@@ -18,7 +18,7 @@ import type { TransformedPhotoGet } from "../../../../utils.js/api";
 
 interface PhotoModalProps {
   displayPhoto: TransformedPhotoGet | null;
-  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet | null>>;
+  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet>>;
   setMasonryPhotos: Dispatch<SetStateAction<TransformedPhotoGet[]>>;
 }
 
@@ -41,13 +41,16 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoMo
     });
   }, [router]);
 
-  const handleFavorite = async (displayPhoto) => {
+  const handleFavorite = async (displayPhoto: TransformedPhotoGet) => {
     if (!user) {
       setIsShowAuthCta(true);
       return;
     }
 
-    const { action, success } = await toggleFavorite(displayPhoto);
+    const result = await toggleFavorite(displayPhoto);
+    if (!result) return;
+    
+    const { action, success } = result;
 
     if (!success) return;
     const isFavorited = action === "insert";
@@ -67,10 +70,10 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoMo
     setIsError(false);
     setIsLoading(true);
 
-    const fetchedPhoto = await pexelsGet({ id }, user?.id);
+    const idAsNumber = Number(id);
+    const fetchedPhoto = await pexelsGet({ id: idAsNumber }, user?.id);
 
     if (!fetchedPhoto) {
-      console.log("returned nothing");
       setIsError(true);
       setIsLoading(false);
       return;
@@ -108,7 +111,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoMo
   }, [displayPhoto, setDisplayPhoto, user]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (isShowAuthCta) return;
       if (e.key === "Escape") {
         handleClose();
@@ -166,12 +169,11 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoMo
         <LoginOrSignupModal
           isOverflowRestoreDelayed={true}
           setIsShowAuthCta={setIsShowAuthCta}
-          disableComment={disableComment}
           setDisableComment={setDisableComment}
         />
       )}
     </>,
-    document.getElementById("modal-root")
+    document.getElementById("modal-root")!
   );
 }
 

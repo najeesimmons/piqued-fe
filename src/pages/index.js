@@ -28,7 +28,7 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 export async function getStaticProps() {
-  const response = await pexelsList("curated");
+  const response = await pexelsList("curated", {});
   const {
     next_page,
     page,
@@ -90,7 +90,7 @@ export default function Home({
     setFetchMode("curated");
     setIsEmpty(false);
 
-    const response = await pexelsList("curated", undefined, user?.id);
+    const response = await pexelsList("curated", {}, user?.id);
     const {
       next_page,
       page,
@@ -124,7 +124,7 @@ export default function Home({
     const response = await pexelsList(
       "search",
       { query: searchTerm },
-      user?.id || null
+      user?.id
     );
     const {
       next_page,
@@ -158,7 +158,7 @@ export default function Home({
         ...(nextPage && { page: nextPage }),
         ...(fetchMode === "search" && { query: searchTerm }),
       },
-      user?.id || null
+      user?.id
     );
 
     const {
