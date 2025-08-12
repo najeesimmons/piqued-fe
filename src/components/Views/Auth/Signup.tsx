@@ -2,24 +2,32 @@ import Section from "@/components/Section/Section";
 import { IoCloseSharp } from "react-icons/io5";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
+import { AuthError, Session, User } from '@supabase/supabase-js';
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { type Dispatch, SetStateAction, useState } from "react";
 
-export default function Signup({ setAuthMode, setIsShowAuthCta }) {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState(false);
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
+interface SignupProps {
+  setAuthMode: Dispatch<SetStateAction<"login" | "signup">>
+  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>
+  setDisableComment: Dispatch<SetStateAction<boolean>>
+}
 
-  const [isAuthError, setIsAuthError] = useState(false);
+export default function Signup({ setAuthMode, setIsShowAuthCta, setDisableComment }: SignupProps) {
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+
+  const [isAuthError, setIsAuthError] = useState<boolean>(false);
 
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsAuthError(false);
 
+    // Types are inferred from Supabase's TypeScript definitions
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -71,7 +79,7 @@ export default function Signup({ setAuthMode, setIsShowAuthCta }) {
               setIsShowAuthCta(false);
               setDisableComment?.(false);
               const { redirect, ...rest } = router.query;
-              const newQuery = new URLSearchParams(rest).toString();
+              const newQuery = new URLSearchParams(rest as Record<string, string>).toString();
               const newUrl = `${router.pathname}${
                 newQuery ? `?${newQuery}` : ""
               }`;

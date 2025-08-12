@@ -2,13 +2,13 @@ import Login from "@/components/Views/Auth/Login";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import Signup from "@/components/Views/Auth/Signup";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useRouter } from "next/router";
 
 interface LoginOrSignupModalProps {
   isOverflowRestoreDelayed?: boolean;
-  setIsShowAuthCta: (show: boolean) => void;
-  setDisableComment?: (disable: boolean) => void;
+  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>;
+  setDisableComment?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function LoginOrSignupModal({
@@ -16,7 +16,7 @@ export default function LoginOrSignupModal({
   setIsShowAuthCta,
   setDisableComment,
 }: LoginOrSignupModalProps) {
-  const [authMode, setAuthMode] = useState("login");
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
 
   const router = useRouter();
 
@@ -54,7 +54,7 @@ export default function LoginOrSignupModal({
             <>
               <Login
                 setAuthMode={setAuthMode}
-                setDisableComment={setDisableComment}
+                setDisableComment={setDisableComment!}
                 setIsShowAuthCta={setIsShowAuthCta}
               />
             </>

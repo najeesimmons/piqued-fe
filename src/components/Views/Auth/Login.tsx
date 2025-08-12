@@ -2,36 +2,44 @@ import Section from "@/components/Section/Section";
 import { IoCloseSharp } from "react-icons/io5";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../../lib/supabase/supabase";
+import { AuthError, Session, User } from '@supabase/supabase-js';
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
+interface LoginProps {
+  setAuthMode: Dispatch<SetStateAction<"login" | "signup">>
+  setDisableComment: Dispatch<SetStateAction<boolean>>
+  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>
+}
 export default function Login({
   setAuthMode,
   setDisableComment,
   setIsShowAuthCta,
-}) {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+}: LoginProps) {
+  const [email, setEmail] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const [isAuthError, setIsAuthError] = useState(false);
-  const [isGuest, setIsGuest] = useState(false);
+  const [isAuthError, setIsAuthError] = useState<boolean>(false);
+  const [isGuest, setIsGuest] = useState<boolean>(false);
 
   const router = useRouter();
   const { setUser } = useAuth();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsAuthError("");
+    setIsAuthError(false);
     setError("");
 
+    // Types are inferred from Supabase's TypeScript definitions
     const { data, error } = await supabase.auth.signInWithPassword({
       email: isGuest ? "piquedguest@gmail.com" : email,
       password: isGuest
-        ? process.env.NEXT_PUBLIC_PUBLIC_DEMO_PASSWORD
-        : password,
+        ? process.env.NEXT_PUBLIC_PUBLIC_DEMO_PASSWORD || ""
+        : "",
     });
 
     if (error) {
@@ -41,7 +49,9 @@ export default function Login({
     }
 
     setPassword("");
-    setUser(data.user);
+    if (data?.user) {
+      setUser(data.user);
+    }
     setDisableComment?.(false);
     setIsShowAuthCta(false);
 
@@ -62,7 +72,7 @@ export default function Login({
               setIsShowAuthCta(false);
               setDisableComment?.(false);
               const { redirect, ...rest } = router.query;
-              const newQuery = new URLSearchParams(rest).toString();
+              const newQuery = new URLSearchParams(rest as Record<string, string>).toString();
               const newUrl = `${router.pathname}${
                 newQuery ? `?${newQuery}` : ""
               }`;
