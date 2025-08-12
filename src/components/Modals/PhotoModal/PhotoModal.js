@@ -7,7 +7,7 @@ import PhotoView from "@/components/Views/PhotoView";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
 import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
-import { fetchPexels } from "../../../../utils.js/api";
+import { pexelsGet } from "../../../../utils.js/api";
 import { toggleFavorite } from "../../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
@@ -58,8 +58,10 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     setIsError(false);
     setIsLoading(true);
 
-    const fetchedPhoto = await fetchPexels("show", { id }, user?.id);
+    const fetchedPhoto = await pexelsGet({ id }, user?.id);
+
     if (!fetchedPhoto) {
+      console.log("returned nothing");
       setIsError(true);
       setIsLoading(false);
       return;
@@ -78,7 +80,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   }, []);
 
   useEffect(() => {
-    if (displayPhoto || isAuthLoading) return;
+    if (!id || displayPhoto || isAuthLoading) return;
 
     getPhoto();
   }, [id, isAuthLoading, getPhoto, displayPhoto]);
