@@ -4,8 +4,34 @@ import {
   checkFavoriteSingle,
 } from "../lib/favorite/utils";
 import { transformPhotoArray, transformPhotoSingle } from "./helpers";
+import z from "zod";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY);
+
+export const pexelsPhotoSchema = z.object({
+  id: z.number(),
+  width: z.number(),
+  height: z.number(),
+  url: z.url(),
+  photographer: z.string(),
+  photographer_url: z.url(),
+  photographer_id: z.number(),
+  avg_color: z.string().length(7),
+  src: z.object({
+    original: z.url(),
+    large2x: z.url(),
+    large: z.url(),
+    medium: z.url(),
+    small: z.url(),
+    portrait: z.url(),
+    landscape: z.url(),
+    tiny: z.url(),
+  }),
+  liked: z.boolean(),
+  alt: z.string(),
+});
+
+export const pexelsPhotoArraySchema = z.array(pexelsPhotoSchema);
 
 function handleApiError(response, endpoint) {
   if (response.error) {
