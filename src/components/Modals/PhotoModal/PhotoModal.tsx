@@ -1,6 +1,6 @@
 "use client";
 import Comments from "@/components/Comments/Comments";
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import ErrorView from "@/components/Views/ErrorView";
 import Loader from "@/components/Loader/Loader";
 import LoginOrSignupModal from "../LoginOrSignupModal/LoginOrSignupView";
 import PhotoView from "@/components/Views/PhotoView";

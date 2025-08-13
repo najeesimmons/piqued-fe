@@ -1,7 +1,7 @@
-import Login from "@/components/Views/Auth/Login";
+import Login from "@/components/Views/Login";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
-import Signup from "@/components/Views/Auth/Signup";
+import Signup from "@/components/Views/Signup";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useRouter } from "next/router";
 

@@ -1,57 +1,64 @@
 import Section from "@/components/Section/Section";
 import { IoCloseSharp } from "react-icons/io5";
 import { LiaMountainSolid } from "react-icons/lia";
-import { supabase } from "../../../../lib/supabase/supabase";
-import { useAuth } from "@/context/AuthContext";
+import { supabase } from "../../../lib/supabase/supabase";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, SetStateAction, useState } from "react";
 
-interface LoginProps {
-  setAuthMode: Dispatch<SetStateAction<"login" | "signup">>;
-  setDisableComment: Dispatch<SetStateAction<boolean>>;
-  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>;
+interface SignupProps {
+  setAuthMode: Dispatch<SetStateAction<"login" | "signup">>
+  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>
+  setDisableComment: Dispatch<SetStateAction<boolean>>
 }
-export default function Login({
-  setAuthMode,
-  setDisableComment,
-  setIsShowAuthCta,
-}: LoginProps) {
+
+export default function Signup({ setAuthMode, setIsShowAuthCta, setDisableComment }: SignupProps) {
   const [email, setEmail] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
 
   const [isAuthError, setIsAuthError] = useState<boolean>(false);
-  const [isGuest, setIsGuest] = useState<boolean>(false);
 
   const router = useRouter();
-  const { setUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsAuthError(false);
-    setError("");
 
     // Types are inferred from Supabase's TypeScript definitions
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: isGuest ? "piquedguest@gmail.com" : email,
-      password: isGuest
-        ? process.env.NEXT_PUBLIC_PUBLIC_DEMO_PASSWORD || ""
-        : password,
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
     });
 
     if (error) {
+      setIsAuthError(true);
       setError(error.message);
+      return;
+    }
+
+    const user = data?.user;
+
+    if (!user) {
+      setIsAuthError(true);
+      return;
+    }
+
+    const { error: profileError } = await supabase.from("profile").insert([
+      {
+        user_id: user.id,
+        username,
+      },
+    ]);
+
+    if (profileError) {
+      console.error("Profile creation failed:", profileError);
       setIsAuthError(true);
       return;
     }
 
     setPassword("");
-    if (data?.user) {
-      setUser(data.user);
-    }
-    setDisableComment?.(false);
     setIsShowAuthCta(false);
 
     const redirectPath = router.query.redirect;
@@ -71,9 +78,7 @@ export default function Login({
               setIsShowAuthCta(false);
               setDisableComment?.(false);
               const { redirect, ...rest } = router.query;
-              const newQuery = new URLSearchParams(
-                rest as Record<string, string>
-              ).toString();
+              const newQuery = new URLSearchParams(rest as Record<string, string>).toString();
               const newUrl = `${router.pathname}${
                 newQuery ? `?${newQuery}` : ""
               }`;
@@ -99,21 +104,31 @@ export default function Login({
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="email"
                 value={email}
-                required={!isGuest}
+                required
                 style={{ textIndent: "8px" }}
                 autoComplete="email"
               />
             </div>
+            <div className="text-base md:text-sm">
+              <input
+                className="w-full h-10 border"
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="username"
+                value={username}
+                required
+                style={{ textIndent: "8px" }}
+                autoComplete="username"
+              />
+            </div>
             <div className="text-base md:text-sm relative">
               <input
-                className="w-full h-10 border pr-12"
+                className="w-full h-10 border"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="password"
                 value={password}
-                required={!isGuest}
+                required
                 style={{ textIndent: "8px" }}
                 type={showPassword ? "text" : "password"}
-                autoComplete="current-password"
               />
               {password.length > 0 && (
                 <button
@@ -127,30 +142,23 @@ export default function Login({
             </div>
             {isAuthError && (
               <p className="mt-3 text-red-500 font-center">
-                `There was an error logging into your account: ${error}. Please
-                try again.`
+                `There was an error creating your account: ${error}. Please try
+                again.`
               </p>
             )}
             <button
               className="bg-black font-semibold !mt-6 mx-auto p-2 text-white w-full"
               type="submit"
             >
-              log in
-            </button>
-            <button
-              className="bg-black font-semibold mx-auto p-2 text-white w-full"
-              onClick={() => setIsGuest(true)}
-              type="submit"
-            >
-              explore as guest
+              sign up
             </button>
             <p className="text-sm mt-2 text-center">
-              New here?{" "}
+              Already have an account?{" "}
               <button
                 className="hover:underline font-semibold"
-                onClick={() => setAuthMode("signup")}
+                onClick={() => setAuthMode("login")}
               >
-                Sign Up.
+                Login.
               </button>
             </p>
           </form>

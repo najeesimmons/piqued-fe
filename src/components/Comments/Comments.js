@@ -1,4 +1,4 @@
-import ErrorView from "../Views/SearchResults/ErrorView";
+import ErrorView from "../Views/ErrorView";
 import PhotogCredit from "../PhotogCredit/PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";

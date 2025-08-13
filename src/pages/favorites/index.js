@@ -1,10 +1,10 @@
 "use client";
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import ErrorView from "@/components/Views/ErrorView";
 import dynamic from "next/dynamic";
 import Loader from "@/components/Loader/Loader";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
-import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
+import NoResultsView from "@/components/Views/NoResultsView";
 import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
 import Section from "@/components/Section/Section";
 import { getFavorites } from "../../../lib/favorite/favorite";
