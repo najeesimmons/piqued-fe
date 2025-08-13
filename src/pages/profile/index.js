@@ -1,4 +1,4 @@
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import ErrorView from "@/components/Views/ErrorView";
 import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
