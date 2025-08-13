@@ -3,7 +3,7 @@ import PhotogCredit from "../PhotogCredit/PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import {
-  deleteOwnCommnent,
+  deleteOwnComment,
   getCommentsByPexelsId,
   insertComment,
 } from "../../../lib/comment/comment";
@@ -63,7 +63,7 @@ export default function Comments({
   const handleDeleteComment = useCallback(
     async (id) => {
       if (!user) return;
-      const result = await deleteOwnCommnent(id);
+      const result = await deleteOwnComment(id);
       if (!result) {
         return;
       } else {
@@ -83,7 +83,7 @@ export default function Comments({
       if (disableComment === true) return;
       if (e.key === "Enter" && commentText !== "") {
         e.preventDefault();
-        await handleComment(pexels_id, commentText);
+        await handleComment();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -91,7 +91,7 @@ export default function Comments({
   }, [commentText, disableComment, handleComment, pexels_id]);
 
   if (isLoading) return <>Loading...</>;
-  if (isError) return <ErrorView retry={getComments} entity={"commets"} />;
+  if (isError) return <ErrorView retry={getComments} entity={"comments"} />;
   return (
     <div className="w-full h-[350px] md:h-full mx-auto flex flex-col md:border p-4">
       <div
