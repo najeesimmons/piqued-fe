@@ -2,18 +2,18 @@
 import Comments from "@/components/Comments/Comments";
 import ErrorView from "@/components/Views/ErrorView";
 import Loader from "@/components/Loader/Loader";
-import LoginOrSignupModal from "../LoginOrSignupModal/LoginOrSignupView";
+import LoginOrSignupModal from "./LoginOrSignupModal";
 import PhotoView from "@/components/Views/PhotoView";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
-import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
-import { pexelsGet } from "../../../../utils.js/api";
-import { toggleFavorite } from "../../../../lib/favorite/utils";
+import { checkFavoriteSingle } from "../../../lib/favorite/utils";
+import { pexelsGet } from "../../../utils.js/api";
+import { toggleFavorite } from "../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
-import type { TransformedPhotoGet } from "../../../../utils.js/api";
+import type { TransformedPhotoGet } from "../../../utils.js/api";
 
 
 interface PhotoModalProps {

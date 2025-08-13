@@ -1,5 +1,5 @@
 interface NoResultsViewProps {
-  type: "search" | "favorites";
+  type?: "search" | "favorites";
 }
 
 function NoResultsView({ type = "search" }: NoResultsViewProps) {

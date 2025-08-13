@@ -8,7 +8,7 @@ import { type Dispatch, SetStateAction, useState } from "react";
 interface SignupProps {
   setAuthMode: Dispatch<SetStateAction<"login" | "signup">>
   setIsShowAuthCta: Dispatch<SetStateAction<boolean>>
-  setDisableComment: Dispatch<SetStateAction<boolean>>
+  setDisableComment?: Dispatch<SetStateAction<boolean>>
 }
 
 export default function Signup({ setAuthMode, setIsShowAuthCta, setDisableComment }: SignupProps) {

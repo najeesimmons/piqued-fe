@@ -4,15 +4,23 @@ import { IoIosSearch } from "react-icons/io";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
+interface SearchBarProps {
+  getFirstPhotos: () => Promise<void>;
+  getSearchPhotos: () => Promise<void>;
+  isDisabled: boolean;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+}
+
 function SearchBar({
   getFirstPhotos,
   getSearchPhotos,
   isDisabled,
   searchTerm,
   setSearchTerm,
-}) {
+}: SearchBarProps) {
   useEffect(() => {
-    const handleKeyDown = async (e) => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
       if (isDisabled) return;
       if (e.key === "Enter" && searchTerm.trim() !== "") {
         await getSearchPhotos();
