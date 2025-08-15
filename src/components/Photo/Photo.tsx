@@ -1,8 +1,15 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { TransformedPhotoGet } from "utils.js/api";
 
-function Photo({ photo, priority, setDisplayPhoto }) {
+interface PhotoProps {
+  photo: TransformedPhotoGet;
+  priority: boolean;
+  setDisplayPhoto: (photo: TransformedPhotoGet) => void;
+}
+
+function Photo({ photo, priority, setDisplayPhoto }: PhotoProps) {
   const router = useRouter();
   const openPhotoModal = () => {
     const liveQuery = { ...router.query, show: "true", id: photo.pexels_id };

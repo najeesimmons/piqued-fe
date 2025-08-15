@@ -9,12 +9,16 @@ import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 
-function Navigation({ setIsShowAuthCta }) {
+interface NavigationProps {
+  setIsShowAuthCta?: (isShowAuthCta: boolean) => void;
+}
+
+function Navigation({ setIsShowAuthCta }: NavigationProps) {
   const { user, setUser } = useAuth();
 
   const router = useRouter();
 
-  const isLoginPage = router.asPath.includes("/login");
+  const isLoginPage: boolean = router.asPath.includes("/login");
 
   const handleSignOut = async () => {
     try {
@@ -57,6 +61,7 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
+                if (setIsShowAuthCta) {
                 if (router.pathname === "/") {
                   router.push("/?redirect=/favorites");
                   setIsShowAuthCta(true);
@@ -65,7 +70,7 @@ function Navigation({ setIsShowAuthCta }) {
                 } else {
                   router.push("/favorites");
                 }
-              }}
+              }}}
               aria-label="Open auth modal"
             >
               <IoMdHeartEmpty
@@ -87,13 +92,15 @@ function Navigation({ setIsShowAuthCta }) {
           ) : (
             <button
               onClick={() => {
+                if (setIsShowAuthCta) {
                 if (router.pathname === "/profile") {
                   setIsShowAuthCta(true);
                 } else if (router.pathname === "/") {
                   router.push("/?redirect=/profile");
                   setIsShowAuthCta(true);
                 } else {
-                  router.push("/profile");
+                    router.push("/profile");
+                  }
                 }
               }}
               aria-label="Open auth modal"
@@ -126,7 +133,11 @@ function Navigation({ setIsShowAuthCta }) {
             <button
               className="ml-2 md:ml-1 bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
               onClick={() => {
-                setIsShowAuthCta(true);
+                if (setIsShowAuthCta) {
+                  setIsShowAuthCta(true);
+                } else {
+                  router.push("/login");
+                }
               }}
             >
               log in

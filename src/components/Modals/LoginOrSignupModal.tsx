@@ -1,16 +1,22 @@
-import Login from "@/components/Views/Auth/Login";
+import Login from "@/components/Views/Login";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
-import Signup from "@/components/Views/Auth/Signup";
-import { useEffect, useState } from "react";
+import Signup from "@/components/Views/Signup";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useRouter } from "next/router";
 
+interface LoginOrSignupModalProps {
+  isOverflowRestoreDelayed?: boolean;
+  setIsShowAuthCta: Dispatch<SetStateAction<boolean>>;
+  setDisableComment?: Dispatch<SetStateAction<boolean>>;
+}
+
 export default function LoginOrSignupModal({
-  isOverflowRestoreDelayed,
+  isOverflowRestoreDelayed = false,
   setIsShowAuthCta,
   setDisableComment,
-}) {
-  const [authMode, setAuthMode] = useState("login");
+}: LoginOrSignupModalProps) {
+  const [authMode, setAuthMode] = useState<"login" | "signup">("login");
 
   const router = useRouter();
 
@@ -24,13 +30,13 @@ export default function LoginOrSignupModal({
   }, [isOverflowRestoreDelayed]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsShowAuthCta(false);
-        setDisableComment?.(false);
+        if (setDisableComment) setDisableComment(false);
 
         const { redirect, ...rest } = router.query;
-        const newQuery = new URLSearchParams(rest).toString();
+        const newQuery = new URLSearchParams(rest as Record<string, string>).toString();
         const newUrl = `${router.pathname}${newQuery ? `?${newQuery}` : ""}`;
 
         router.replace(newUrl, undefined, { shallow: true });
@@ -48,7 +54,7 @@ export default function LoginOrSignupModal({
             <>
               <Login
                 setAuthMode={setAuthMode}
-                setDisableComment={setDisableComment}
+                setDisableComment={setDisableComment!}
                 setIsShowAuthCta={setIsShowAuthCta}
               />
             </>
@@ -61,6 +67,6 @@ export default function LoginOrSignupModal({
         </div>
       </div>
     </Section>,
-    document.getElementById("modal-root")
+    document.getElementById("modal-root")!
   );
 }

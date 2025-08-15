@@ -1,22 +1,21 @@
-// @ts-nocheck
 "use client";
 import dynamic from "next/dynamic";
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import ErrorView from "@/components/Views/ErrorView";
 import Link from "next/link";
 import Loader from "@/components/Loader/Loader";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
+import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal";
 import Navigation from "@/components/Navigation/Navigation";
-import NoResultsView from "@/components/Views/SearchResults/NoResultsView";
-import PhotoModal from "@/components/Modals/PhotoModal/PhotoModal";
+import NoResultsView from "@/components/Views/NoResultsView";
+import PhotoModal from "@/components/Modals/PhotoModal";
 import SearchBar from "@/components/SearchBar/SearchBar";
 import Section from "@/components/Section/Section";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
-import { fetchPexels } from "../../utils.js/api";
+import { pexelsList } from "../../utils.js/api";
 import { SiPexels } from "react-icons/si";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useState } from "react";
-import Image from "next/image";
+import type { TransformedPhotoGet, TransformedPhotoList, Endpoint } from "../../utils.js/api";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
@@ -27,33 +26,35 @@ const DynamicPhotoMasonry = dynamic(
   }
 );
 
-export async function getStaticProps() {
-  const response = await fetchPexels("curated");
-  const {
-    next_page,
-    page,
-    per_page,
-    photos = [],
-    total_results,
-    error,
-  } = response;
+type ListEndpoint = Exclude<Endpoint, "show">;
 
+export async function getStaticProps() {
+  const response: TransformedPhotoList | null = await pexelsList("curated", {});
+  
   const props = {
-    initPhotos: [],
+    initPhotos: [] as TransformedPhotoGet[],
     initHasMore: false,
-    initNextPage: null,
+    initNextPage: null as number | null,
     initIsEmpty: false,
     initIsError: false,
   };
 
   if (!response) {
     props.initIsError = true;
-  } else if (photos.length > 0) {
-    props.initPhotos = photos;
-    props.initNextPage = page + 1;
-    props.initHasMore = !!next_page;
   } else {
-    props.isEmpty = true;
+    const {
+      next_page,
+      page,
+      photos = [],
+    } = response;
+
+    if (photos.length > 0) {
+      props.initPhotos = photos;
+      props.initNextPage = (page || 0) + 1;
+      props.initHasMore = !!next_page;
+    } else {
+      props.initIsEmpty = true;
+    }
   }
 
   return { props, revalidate: 3600 };
@@ -65,18 +66,24 @@ export default function Home({
   initNextPage,
   initIsError,
   initIsEmpty,
+}: {
+  initHasMore: boolean;
+  initPhotos: TransformedPhotoGet[];
+  initNextPage: number | null;
+  initIsError: boolean;
+  initIsEmpty: boolean;
 }) {
-  const [displayPhoto, setDisplayPhoto] = useState(null);
-  const [fetchMode, setFetchMode] = useState("curated");
-  const [hasMore, setHasMore] = useState(initHasMore);
-  const [masonryPhotos, setMasonryPhotos] = useState(initPhotos);
-  const [nextPage, setNextPage] = useState(initNextPage);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [displayPhoto, setDisplayPhoto] = useState<TransformedPhotoGet | null>(null);
+  const [fetchMode, setFetchMode] = useState<ListEndpoint>("curated");
+  const [hasMore, setHasMore] = useState<boolean>(initHasMore);
+  const [masonryPhotos, setMasonryPhotos] = useState<TransformedPhotoGet[] | []>(initPhotos);
+  const [nextPage, setNextPage] = useState<number | undefined>(initNextPage || undefined);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const [isEmpty, setIsEmpty] = useState(initIsEmpty);
-  const [isError, setIsError] = useState(initIsError);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(initIsEmpty);
+  const [isError, setIsError] = useState<boolean>(initIsError);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowAuthCta, setIsShowAuthCta] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -90,26 +97,25 @@ export default function Home({
     setFetchMode("curated");
     setIsEmpty(false);
 
-    const response = await fetchPexels("curated", undefined, user?.id);
-    const {
-      next_page,
-      page,
-      per_page,
-      photos = [],
-      total_results,
-      error,
-    } = response;
+    const response: TransformedPhotoList | null = await pexelsList("curated", {}, user?.id);
 
     if (!response) {
       setIsError(true);
-    } else if (photos.length > 0) {
-      setMasonryPhotos(photos);
-      setNextPage(2);
-      setHasMore(!!next_page);
     } else {
-      setMasonryPhotos(photos);
-      setHasMore(false);
-      setIsEmpty(true);
+      const {
+        next_page,
+        photos = [],
+      } = response;
+
+      if (photos.length > 0) {
+        setMasonryPhotos(photos);
+        setNextPage(2);
+        setHasMore(!!next_page);
+      } else {
+        setMasonryPhotos(photos);
+        setHasMore(false);
+        setIsEmpty(true);
+      }
     }
     setIsLoading(false);
   }, [user]);
@@ -121,63 +127,58 @@ export default function Home({
     setIsEmpty(false);
     setNextPage(1);
 
-    const response = await fetchPexels(
+    const response: TransformedPhotoList | null = await pexelsList(
       "search",
       { query: searchTerm },
-      user?.id || null
+      user?.id
     );
-    const {
-      next_page,
-      page,
-      per_page,
-      photos = [],
-      total_results,
-      error,
-    } = response;
 
     if (!response) {
       setIsError(true);
-    } else if (photos.length > 0) {
-      setMasonryPhotos(photos);
-      setNextPage(2);
-      setHasMore(!!next_page);
-      setIsEmpty(false);
-      router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
     } else {
-      setMasonryPhotos(photos);
-      setHasMore(false);
-      setIsEmpty(true);
+      const {
+        next_page,
+        photos = [],
+      } = response;
+
+      if (photos.length > 0) {
+        setMasonryPhotos(photos);
+        setNextPage(2);
+        setHasMore(!!next_page);
+        setIsEmpty(false);
+        router.push(`/?search=${searchTerm}`, undefined, { shallow: true });
+      } else {
+        setMasonryPhotos(photos);
+        setHasMore(false);
+        setIsEmpty(true);
+      }
     }
     setIsLoading(false);
   }, [router, searchTerm, user]);
 
   const getNextPhotos = useCallback(async () => {
-    const response = await fetchPexels(
+    const response: TransformedPhotoList | null = await pexelsList (
       fetchMode,
       {
         ...(nextPage && { page: nextPage }),
         ...(fetchMode === "search" && { query: searchTerm }),
       },
-      user?.id || null
+      user?.id
     );
 
-    const {
-      next_page,
-      page,
-      per_page,
-      photos = [],
-      total_results,
-      error,
-    } = response;
-
-    if (error) {
+    if (!response) {
       setIsError(true);
       return;
     }
 
+    const {
+      next_page,
+      photos = [],
+    } = response;
+
     if (photos.length > 0) {
       setMasonryPhotos((prevPhotos) => [...prevPhotos, ...photos]);
-      setNextPage((prevPage) => prevPage + 1);
+      setNextPage((prevPage) => (prevPage || 0) + 1);
       setHasMore(!!next_page);
     } else {
       setHasMore(false);
@@ -187,7 +188,7 @@ export default function Home({
   useEffect(() => {
     if (!user || !masonryPhotos || masonryPhotos.length === 0) return;
 
-    if (!Object.hasOwn(masonryPhotos[0], "isFavorited")) {
+    if (!Object.prototype.hasOwnProperty.call(masonryPhotos[0], "isFavorited")) {
       (async () => {
         const updatedPhotos = await checkFavoritesArray(masonryPhotos, user.id);
         setMasonryPhotos(updatedPhotos);
@@ -212,7 +213,6 @@ export default function Home({
     if (isEmpty) return <NoResultsView />;
     return (
       <DynamicPhotoMasonry
-        getFirstPhotos={getFirstPhotos}
         getNextPhotos={getNextPhotos}
         hasMore={hasMore}
         masonryPhotos={masonryPhotos}
@@ -230,7 +230,7 @@ export default function Home({
           getSearchPhotos={getFirstSearchPhotos}
           setSearchTerm={setSearchTerm}
           searchTerm={searchTerm}
-          isDisabled={show || isShowAuthCta}
+          isDisabled={!!show || isShowAuthCta}
         />
       </Section>
       <Section>
@@ -252,12 +252,13 @@ export default function Home({
         <PhotoModal
           displayPhoto={displayPhoto}
           setDisplayPhoto={setDisplayPhoto}
-          masonryPhotos={masonryPhotos}
           setMasonryPhotos={setMasonryPhotos}
         />
       )}
       {isShowAuthCta && (
-        <LoginOrSignupModal setIsShowAuthCta={setIsShowAuthCta} />
+        <LoginOrSignupModal 
+          setIsShowAuthCta={setIsShowAuthCta} 
+        />
       )}
     </>
   );

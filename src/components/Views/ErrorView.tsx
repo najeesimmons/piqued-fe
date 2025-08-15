@@ -1,4 +1,9 @@
-function ErrorView({ retry, entity }) {
+interface ErrorViewProps {
+  retry: () => Promise<void>;
+  entity: string;
+}
+
+function ErrorView({ retry, entity }: ErrorViewProps) {
   const handleRetry = () => {
     retry();
   };

@@ -3,8 +3,15 @@ import Loader from "../Loader/Loader";
 import { FaHeart } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { useState } from "react";
+import { TransformedPhotoGet } from "utils.js/api";
 
-function PhotoView({ displayPhoto, handleClose, handleFavorite }) {
+interface PhotoViewProps {
+  displayPhoto: TransformedPhotoGet
+  handleClose: () => void
+  handleFavorite: (photo: TransformedPhotoGet) => void
+}
+
+function PhotoView({ displayPhoto, handleClose, handleFavorite }: PhotoViewProps) {
   const [isReadyToRender, setIsReadyToRender] = useState(false);
 
   return (

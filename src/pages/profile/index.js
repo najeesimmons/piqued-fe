@@ -1,5 +1,5 @@
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal/LoginOrSignupView";
+import ErrorView from "@/components/Views/ErrorView";
+import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";

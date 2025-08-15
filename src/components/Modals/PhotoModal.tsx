@@ -1,24 +1,33 @@
 "use client";
 import Comments from "@/components/Comments/Comments";
-import ErrorView from "@/components/Views/SearchResults/ErrorView";
+import ErrorView from "@/components/Views/ErrorView";
 import Loader from "@/components/Loader/Loader";
-import LoginOrSignupModal from "../LoginOrSignupModal/LoginOrSignupView";
+import LoginOrSignupModal from "./LoginOrSignupModal";
 import PhotoView from "@/components/Views/PhotoView";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section/Section";
-import { checkFavoriteSingle } from "../../../../lib/favorite/utils";
-import { fetchPexels } from "../../../../utils.js/api";
-import { toggleFavorite } from "../../../../lib/favorite/utils";
+import { checkFavoriteSingle } from "../../../lib/favorite/utils";
+import { pexelsGet } from "../../../utils.js/api";
+import { toggleFavorite } from "../../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import type { Dispatch, SetStateAction } from "react";
+import type { TransformedPhotoGet } from "../../../utils.js/api";
 
-function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
-  const [disableComment, setDisableComment] = useState(false);
 
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isShowAuthCta, setIsShowAuthCta] = useState(false);
+interface PhotoModalProps {
+  displayPhoto: TransformedPhotoGet | null;
+  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet | null>>;
+  setMasonryPhotos: Dispatch<SetStateAction<TransformedPhotoGet[]>>;
+}
+
+function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoModalProps) {
+  const [disableComment, setDisableComment] = useState<boolean>(false);
+
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isShowAuthCta, setIsShowAuthCta] = useState<boolean>(false);
 
   const { user, isAuthLoading } = useAuth();
 
@@ -32,18 +41,21 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     });
   }, [router]);
 
-  const handleFavorite = async (displayPhoto) => {
+  const handleFavorite = async (displayPhoto: TransformedPhotoGet) => {
     if (!user) {
       setIsShowAuthCta(true);
       return;
     }
 
-    const { action, success } = await toggleFavorite(displayPhoto);
+    const result = await toggleFavorite(displayPhoto);
+    if (!result) return;
+    
+    const { action, success } = result;
 
     if (!success) return;
     const isFavorited = action === "insert";
 
-    setDisplayPhoto((prev) => ({ ...prev, isFavorited: isFavorited }));
+    setDisplayPhoto((prev) => prev ? { ...prev, isFavorited: isFavorited } : null);
 
     setMasonryPhotos((prev) =>
       prev.map((p) =>
@@ -58,7 +70,9 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
     setIsError(false);
     setIsLoading(true);
 
-    const fetchedPhoto = await fetchPexels("show", { id }, user?.id);
+    const idAsNumber = Number(id);
+    const fetchedPhoto = await pexelsGet({ id: idAsNumber }, user?.id);
+
     if (!fetchedPhoto) {
       setIsError(true);
       setIsLoading(false);
@@ -78,7 +92,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   }, []);
 
   useEffect(() => {
-    if (displayPhoto || isAuthLoading) return;
+    if (!id || displayPhoto || isAuthLoading) return;
 
     getPhoto();
   }, [id, isAuthLoading, getPhoto, displayPhoto]);
@@ -97,7 +111,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
   }, [displayPhoto, setDisplayPhoto, user]);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (isShowAuthCta) return;
       if (e.key === "Escape") {
         handleClose();
@@ -155,12 +169,11 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }) {
         <LoginOrSignupModal
           isOverflowRestoreDelayed={true}
           setIsShowAuthCta={setIsShowAuthCta}
-          disableComment={disableComment}
           setDisableComment={setDisableComment}
         />
       )}
     </>,
-    document.getElementById("modal-root")
+    document.getElementById("modal-root")!
   );
 }
 
