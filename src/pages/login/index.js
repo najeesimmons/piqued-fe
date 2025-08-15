@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import Navigation from "@/components/Navigation/Navigation";
-import Section from "@/components/Section/Section";
+import Navigation from "@/components/Navigation";
+import Section from "@/components/Section";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";

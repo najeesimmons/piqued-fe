@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Loader from "../Loader/Loader";
+import Loader from "../Loader";
 import { FaHeart } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { useState } from "react";

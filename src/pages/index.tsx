@@ -2,13 +2,13 @@
 import dynamic from "next/dynamic";
 import ErrorView from "@/components/Views/ErrorView";
 import Link from "next/link";
-import Loader from "@/components/Loader/Loader";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal";
-import Navigation from "@/components/Navigation/Navigation";
+import Loader from "@/components/Loader";
+import LoginOrSignupModal from "@/components/LoginOrSignupModal";
+import Navigation from "@/components/Navigation";
 import NoResultsView from "@/components/Views/NoResultsView";
-import PhotoModal from "@/components/Modals/PhotoModal";
-import SearchBar from "@/components/SearchBar/SearchBar";
-import Section from "@/components/Section/Section";
+import PhotoModal from "@/components/PhotoModal";
+import SearchBar from "@/components/SearchBar";
+import Section from "@/components/Section";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
 import { pexelsList } from "../../utils.js/api";
 import { SiPexels } from "react-icons/si";
@@ -19,7 +19,7 @@ import type { TransformedPhotoGet, TransformedPhotoList, Endpoint } from "../../
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
-  () => import("@/components/Masonry/PhotoMasonry"),
+  () => import("@/components/PhotoMasonry"),
   {
     ssr: false,
     //component relies on uses browser-only APIs

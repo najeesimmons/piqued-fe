@@ -1,7 +1,7 @@
 import ErrorView from "@/components/Views/ErrorView";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal";
-import Navigation from "@/components/Navigation/Navigation";
-import Section from "@/components/Section/Section";
+import LoginOrSignupModal from "@/components/LoginOrSignupModal";
+import Navigation from "@/components/Navigation";
+import Section from "@/components/Section";
 import { getOwnProfile, updateOwnProfile } from "../../../lib/profile/profile";
 import { HiOutlineUser } from "react-icons/hi2";
 import { useAuth } from "@/context/AuthContext";

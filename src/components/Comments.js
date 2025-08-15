@@ -1,12 +1,12 @@
-import ErrorView from "../Views/ErrorView";
-import PhotogCredit from "../PhotogCredit/PhotogCredit";
+import ErrorView from "./Views/ErrorView";
+import PhotogCredit from "./PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import {
   deleteOwnComment,
   getCommentsByPexelsId,
   insertComment,
-} from "../../../lib/comment/comment";
+} from "../../lib/comment/comment";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 

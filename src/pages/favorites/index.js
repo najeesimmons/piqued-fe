@@ -1,19 +1,19 @@
 "use client";
 import ErrorView from "@/components/Views/ErrorView";
 import dynamic from "next/dynamic";
-import Loader from "@/components/Loader/Loader";
-import LoginOrSignupModal from "@/components/Modals/LoginOrSignupModal";
-import Navigation from "@/components/Navigation/Navigation";
+import Loader from "@/components/Loader";
+import LoginOrSignupModal from "@/components/LoginOrSignupModal";
+import Navigation from "@/components/Navigation";
 import NoResultsView from "@/components/Views/NoResultsView";
-import PhotoModal from "@/components/Modals/PhotoModal";
-import Section from "@/components/Section/Section";
+import PhotoModal from "@/components/PhotoModal";
+import Section from "@/components/Section";
 import { getFavorites } from "../../../lib/favorite/favorite";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const DynamicPhotoMasonry = dynamic(
-  () => import("@/components/Masonry/PhotoMasonry"),
+  () => import("@/components/PhotoMasonry"),
   {
     ssr: false,
     //component relies on uses browser-only APIs

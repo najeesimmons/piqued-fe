@@ -1,4 +1,4 @@
-import Section from "@/components/Section/Section";
+import Section from "@/components/Section";
 import { IoCloseSharp } from "react-icons/io5";
 import { LiaMountainSolid } from "react-icons/lia";
 import { supabase } from "../../../lib/supabase/supabase";

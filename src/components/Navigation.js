@@ -5,7 +5,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { LiaMountainSolid } from "react-icons/lia";
-import { supabase } from "../../../lib/supabase/supabase";
+import { supabase } from "../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 

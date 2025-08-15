@@ -1,9 +1,9 @@
-import Loader from "../Loader/Loader";
+import Loader from "./Loader";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import Photo from "../Photo/Photo";
-import EndOfResultsView from "../Views/EndOfResultsView";
-import { type TransformedPhotoGet } from "../../../utils.js/api";
+import Photo from "./Photo";
+import EndOfResultsView from "./Views/EndOfResultsView";
+import { type TransformedPhotoGet } from "../../utils.js/api";
 
 interface PhotoMasonryProps {
   getNextPhotos: () => void;
