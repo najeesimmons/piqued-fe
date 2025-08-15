@@ -3,13 +3,21 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Photo from "../Photo/Photo";
 import EndOfResultsView from "../Views/EndOfResultsView";
+import { type TransformedPhotoGet } from "../../../utils.js/api";
+
+interface PhotoMasonryProps {
+  getNextPhotos: () => void;
+  hasMore: boolean;
+  masonryPhotos: TransformedPhotoGet[];
+  setDisplayPhoto: (displayPhoto: TransformedPhotoGet) => void;
+}
 
 export default function PhotoMasonry({
   getNextPhotos,
   hasMore,
   masonryPhotos,
   setDisplayPhoto,
-}) {
+}: PhotoMasonryProps) {
   return (
     <>
       <InfiniteScroll
@@ -25,9 +33,9 @@ export default function PhotoMasonry({
               const isPriority = index >= 0 && index <= 6;
               return (
                 <Photo
-                  key={photo.id}
+                  key={`${index}-${photo.pexels_id}`}
                   photo={photo}
-                  priority={isPriority ? true : undefined}
+                  priority={isPriority}
                   setDisplayPhoto={setDisplayPhoto}
                 />
               );

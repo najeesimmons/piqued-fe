@@ -3,9 +3,7 @@ import Link from "next/link";
 import Navigation from "@/components/Navigation/Navigation";
 import Section from "@/components/Section/Section";
 import { LiaMountainSolid } from "react-icons/lia";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { supabase } from "../../../lib/supabase/supabase";
 
 function Signup() {
