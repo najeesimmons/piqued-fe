@@ -3,10 +3,10 @@ import PhotogCredit from "./PhotogCredit";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import {
-  deleteOwnComment,
   getCommentsByPexelsId,
-  insertComment,
-} from "../../lib/comment/comment";
+  addComment,
+  deleteComment,
+} from "../../lib/comment/api";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -48,7 +48,7 @@ export default function Comments({
 
     if (commentText !== "") {
       setIsCommentError(false);
-      const result = await insertComment({ pexels_id, commentText });
+      const result = await addComment({ pexels_id, commentText });
       if (!result) {
         setIsCommentError(true);
         return;
@@ -63,7 +63,7 @@ export default function Comments({
   const handleDeleteComment = useCallback(
     async (id) => {
       if (!user) return;
-      const result = await deleteOwnComment(id);
+      const result = await deleteComment(id);
       if (!result) {
         return;
       } else {

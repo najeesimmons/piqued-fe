@@ -7,7 +7,7 @@ import Navigation from "@/components/Navigation";
 import NoResultsView from "@/components/Views/NoResultsView";
 import PhotoModal from "@/components/PhotoModal";
 import Section from "@/components/Section";
-import { getFavorites } from "../../../lib/favorite/favorite";
+import { getFavorites } from "../../../lib/favorite/api";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";

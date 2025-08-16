@@ -2,19 +2,20 @@ import { createClient } from "pexels";
 import {
   checkFavoritesArray,
   checkFavoriteSingle,
-} from "../favorite/utils";
-import { normalizePexelsPhoto } from "./helpers";
+} from "../normalizers";
+import { normalizePexelsPhoto } from "../normalizers";
 import { ZodError } from "zod";
 import {
   Endpoint,
   PexelsPhotoList,
   pexelsListSchema,
   pexelsGetSchema,
+  NormalizedPhotoList,
 } from "./types";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY as string);
 
-export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId?: string) {
+export async function pexelsList(endpoint: Endpoint, params: { page?: number, query?: string }, userId?: string): Promise<NormalizedPhotoList | null> {
   const page = params.page || 1;
 
   try {

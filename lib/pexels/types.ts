@@ -61,7 +61,7 @@ export type NormalizedPhotoGet = {
   isFavorited?: boolean; // Added by checkFavoritesArray
 };
 
-export type TransformedPhotoList = {
+export type NormalizedPhotoList = {
   photos: NormalizedPhotoGet[];
   page?: number;
   per_page?: number;

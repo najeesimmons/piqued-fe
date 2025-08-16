@@ -9,13 +9,13 @@ import NoResultsView from "@/components/Views/NoResultsView";
 import PhotoModal from "@/components/PhotoModal";
 import SearchBar from "@/components/SearchBar";
 import Section from "@/components/Section";
-import { checkFavoritesArray } from "../../lib/favorite/utils";
+import { checkFavoritesArray } from "../../lib/normalizers";
 import { pexelsList } from "../../lib/pexels/api";
 import { SiPexels } from "react-icons/si";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useState } from "react";
-import type { NormalizedPhotoGet, TransformedPhotoList, Endpoint } from "../../lib/pexels/types";
+import type { NormalizedPhotoGet, NormalizedPhotoList, Endpoint } from "../../lib/pexels/types";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
@@ -29,7 +29,7 @@ const DynamicPhotoMasonry = dynamic(
 type ListEndpoint = Exclude<Endpoint, "show">;
 
 export async function getStaticProps() {
-  const response: TransformedPhotoList | null = await pexelsList("curated", {});
+  const response: NormalizedPhotoList | null = await pexelsList("curated", {});
   
   const props = {
     initPhotos: [] as NormalizedPhotoGet[],
@@ -97,7 +97,7 @@ export default function Home({
     setFetchMode("curated");
     setIsEmpty(false);
 
-    const response: TransformedPhotoList | null = await pexelsList("curated", {}, user?.id);
+    const response: NormalizedPhotoList | null = await pexelsList("curated", {}, user?.id);
 
     if (!response) {
       setIsError(true);
@@ -127,7 +127,7 @@ export default function Home({
     setIsEmpty(false);
     setNextPage(1);
 
-    const response: TransformedPhotoList | null = await pexelsList(
+    const response: NormalizedPhotoList | null = await pexelsList(
       "search",
       { query: searchTerm },
       user?.id
@@ -157,7 +157,7 @@ export default function Home({
   }, [router, searchTerm, user]);
 
   const getNextPhotos = useCallback(async () => {
-    const response: TransformedPhotoList | null = await pexelsList (
+    const response: NormalizedPhotoList | null = await pexelsList (
       fetchMode,
       {
         ...(nextPage && { page: nextPage }),

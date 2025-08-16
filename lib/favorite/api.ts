@@ -4,7 +4,7 @@ import {
   ToggleFavoriteResponseSchema,
 } from "./types";
 import { ZodError } from "zod";
-import { normalizeFavoritePhoto } from "../pexels/helpers";
+import { normalizeFavoritePhoto } from "../normalizers";
 import { NormalizedPhotoGet } from "../pexels/types";
 
 export async function getFavorites(start: number, end: number) {

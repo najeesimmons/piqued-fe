@@ -1,6 +1,6 @@
 import { supabase } from "../supabase/supabase";
 
-export async function getOwnProfile(user_id) {
+export async function getOwnProfile(user_id: string) {
   const { data: profile, error } = await supabase
     .from("profile")
     .select("*")
@@ -15,7 +15,7 @@ export async function getOwnProfile(user_id) {
   return profile;
 }
 
-export async function updateOwnProfile(profileForm, user_id) {
+export async function updateOwnProfile(profileForm: { first_name: string, last_name: string, username: string }, user_id: string) {
   const { data: updatedProfile, error } = await supabase
     .from("profile")
     .update({
