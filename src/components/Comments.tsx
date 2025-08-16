@@ -4,28 +4,37 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import {
   getCommentsByPexelsId,
-  addComment,
-  deleteComment,
+  insertComment,
+  deleteOwnComment,
 } from "../../lib/comment/api";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useRef, useState } from "react";
+import type { CommentWithProfile } from "../../lib/comment/types";
+import type { NormalizedPhotoGet } from "../../lib/pexels/types";
+
+interface CommentsProps {
+  disableComment: boolean;
+  setDisableComment: (disable: boolean) => void;
+  displayPhoto: NormalizedPhotoGet;
+  setIsShowAuthCta: (show: boolean) => void;
+}
 
 export default function Comments({
   disableComment,
   setDisableComment,
   displayPhoto,
   setIsShowAuthCta,
-}) {
-  const [comments, setComments] = useState([]);
-  const [commentText, setCommentText] = useState("");
+}: CommentsProps) {
+  const [comments, setComments] = useState<CommentWithProfile[]>([]);
+  const [commentText, setCommentText] = useState<string>("");
   const { pexels_id } = displayPhoto;
-  const [isCommentError, setIsCommentError] = useState(false);
-  const [isOpen, setIsOpen] = useState(true);
-  const [isError, setIsError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCommentError, setIsCommentError] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { user } = useAuth();
 
-  const commentButtonRef = useRef();
+  const commentButtonRef = useRef<HTMLButtonElement>(null);
 
   const getComments = useCallback(async () => {
     setIsError(false);
@@ -48,7 +57,7 @@ export default function Comments({
 
     if (commentText !== "") {
       setIsCommentError(false);
-      const result = await addComment({ pexels_id, commentText });
+      const result = await insertComment({ pexels_id, commentText });
       if (!result) {
         setIsCommentError(true);
         return;
@@ -61,9 +70,9 @@ export default function Comments({
   }, [commentText, pexels_id, setDisableComment, setIsShowAuthCta, user]);
 
   const handleDeleteComment = useCallback(
-    async (id) => {
+    async (id: number) => {
       if (!user) return;
-      const result = await deleteComment(id);
+      const result = await deleteOwnComment(id);
       if (!result) {
         return;
       } else {
@@ -79,7 +88,7 @@ export default function Comments({
   }, [displayPhoto, getComments]);
 
   useEffect(() => {
-    const handleKeyDown = async (e) => {
+    const handleKeyDown = async (e: KeyboardEvent) => {
       if (disableComment === true) return;
       if (e.key === "Enter" && commentText !== "") {
         e.preventDefault();
@@ -121,7 +130,7 @@ export default function Comments({
             comments.map((comment, index) => (
               <div key={index} className="group border-b pb-1">
                 <div className="flex justify-between font-semibold text-xs">
-                  <p>{comment.profile.username || comment.display_name}</p>
+                  <p>{comment.profile?.username || comment.display_name}</p>
                   <button
                     aria-label="delete comment"
                     className={`${
@@ -143,14 +152,13 @@ export default function Comments({
 
       <div className="mt-2">
         <textarea
-          type="text"
           placeholder="Add a comment..."
           className="w-full p-2 border text-base bg-inherit"
           value={commentText}
           onBlur={() => {
             commentButtonRef.current?.scrollIntoView({ behavior: "smooth" });
           }}
-          onChange={(e) => setCommentText(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCommentText(e.target.value)}
         />
       </div>
       {isCommentError && (
