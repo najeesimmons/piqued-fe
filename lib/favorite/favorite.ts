@@ -1,12 +1,13 @@
 import { supabase } from "../supabase/supabase";
 import { 
   favoritesListSchema, 
-  ToggleFavoriteResponseSchema 
+  ToggleFavoriteResponseSchema,
 } from "./types";
 import { ZodError } from "zod";
-import { normalizeFavoritePhoto } from "../../utils.js/helpers";
+import { normalizeFavoritePhoto } from "../pexels/helpers";
+import { NormalizedPhotoGet } from "../pexels/types";
 
-export async function getFavorites(start, end) {
+export async function getFavorites(start: number, end: number) {
   try {
     const {
       data,
@@ -17,12 +18,14 @@ export async function getFavorites(start, end) {
       .order("created_at", { ascending: false })
       .range(start, end);
 
-    const normalizedFavorites = data.map(normalizeFavoritePhoto);
+    // Validate the raw data against favoritesListSchema
+    const rawResult = { favorites: data || [], count: count || 0 };
+    favoritesListSchema.parse(rawResult);
+
+    const normalizedFavorites: NormalizedPhotoGet[] = data?.map(normalizeFavoritePhoto) || [];
     
-    const result = { favorites: normalizedFavorites, count };
-    
-    favoritesListSchema.parse(result);
-    return result;
+    // Return the normalized structure that matches what the UI expects
+    return { favorites: normalizedFavorites, count };
   } catch (error) {
     if (error instanceof ZodError) {
       console.error("❌ Zod validation error in getFavorites:", error.issues);
@@ -35,7 +38,7 @@ export async function getFavorites(start, end) {
   }
 }
 
-export async function toggleFavorite(photo) {
+export async function toggleFavorite(photo: NormalizedPhotoGet) {
   try {
     const {
       pexels_id,
@@ -56,7 +59,7 @@ export async function toggleFavorite(photo) {
       .select("id")
       .eq("pexels_id", pexels_id);
 
-    if (existingFavorite.length > 0) {
+    if (existingFavorite && existingFavorite.length > 0) {
       await supabase
         .from("favorite")
         .delete()

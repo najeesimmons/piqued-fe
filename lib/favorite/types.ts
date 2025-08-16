@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const favoriteGetSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   user_id: z.string(),
   pexels_id: z.number(),
   width: z.number(),
@@ -24,7 +24,6 @@ export const favoriteGetSchema = z.object({
   }),
   alt: z.string(),
   created_at: z.string(),
-  isFavorited: z.boolean(),
 });
 
 export const favoritesListSchema = z.object({

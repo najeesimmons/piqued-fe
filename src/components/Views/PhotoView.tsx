@@ -3,12 +3,12 @@ import Loader from "../Loader";
 import { FaHeart } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { useState } from "react";
-import { TransformedPhotoGet } from "utils.js/api";
+import { NormalizedPhotoGet } from "../../../lib/pexels/types";
 
 interface PhotoViewProps {
-  displayPhoto: TransformedPhotoGet
+  displayPhoto: NormalizedPhotoGet
   handleClose: () => void
-  handleFavorite: (photo: TransformedPhotoGet) => void
+  handleFavorite: (photo: NormalizedPhotoGet) => void
 }
 
 function PhotoView({ displayPhoto, handleClose, handleFavorite }: PhotoViewProps) {

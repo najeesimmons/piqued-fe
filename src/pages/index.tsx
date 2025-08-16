@@ -10,12 +10,12 @@ import PhotoModal from "@/components/PhotoModal";
 import SearchBar from "@/components/SearchBar";
 import Section from "@/components/Section";
 import { checkFavoritesArray } from "../../lib/favorite/utils";
-import { pexelsList } from "../../utils.js/api";
+import { pexelsList } from "../../lib/pexels/api";
 import { SiPexels } from "react-icons/si";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { useEffect, useCallback, useState } from "react";
-import type { TransformedPhotoGet, TransformedPhotoList, Endpoint } from "../../utils.js/api";
+import type { NormalizedPhotoGet, TransformedPhotoList, Endpoint } from "../../lib/pexels/types";
 require("dotenv").config();
 
 const DynamicPhotoMasonry = dynamic(
@@ -32,7 +32,7 @@ export async function getStaticProps() {
   const response: TransformedPhotoList | null = await pexelsList("curated", {});
   
   const props = {
-    initPhotos: [] as TransformedPhotoGet[],
+    initPhotos: [] as NormalizedPhotoGet[],
     initHasMore: false,
     initNextPage: null as number | null,
     initIsEmpty: false,
@@ -68,15 +68,15 @@ export default function Home({
   initIsEmpty,
 }: {
   initHasMore: boolean;
-  initPhotos: TransformedPhotoGet[];
+  initPhotos: NormalizedPhotoGet[];
   initNextPage: number | null;
   initIsError: boolean;
   initIsEmpty: boolean;
 }) {
-  const [displayPhoto, setDisplayPhoto] = useState<TransformedPhotoGet | null>(null);
+  const [displayPhoto, setDisplayPhoto] = useState<NormalizedPhotoGet | null>(null);
   const [fetchMode, setFetchMode] = useState<ListEndpoint>("curated");
   const [hasMore, setHasMore] = useState<boolean>(initHasMore);
-  const [masonryPhotos, setMasonryPhotos] = useState<TransformedPhotoGet[] | []>(initPhotos);
+  const [masonryPhotos, setMasonryPhotos] = useState<NormalizedPhotoGet[] | []>(initPhotos);
   const [nextPage, setNextPage] = useState<number | undefined>(initNextPage || undefined);
   const [searchTerm, setSearchTerm] = useState<string>("");
 

@@ -11,6 +11,7 @@ import { getFavorites } from "../../../lib/favorite/favorite";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { NormalizedPhotoGet } from "../../../lib/pexels/types";
 
 const DynamicPhotoMasonry = dynamic(
   () => import("@/components/PhotoMasonry"),
@@ -21,14 +22,14 @@ const DynamicPhotoMasonry = dynamic(
 );
 
 function Favorites() {
-  const [displayPhoto, setDisplayPhoto] = useState();
-  const [hasMore, setHasMore] = useState(false);
-  const [masonryPhotos, setMasonryPhotos] = useState([]);
-  const [start, setStart] = useState(0);
+  const [displayPhoto, setDisplayPhoto] = useState<NormalizedPhotoGet | null>(null);
+  const [hasMore, setHasMore] = useState<boolean>(false);
+  const [masonryPhotos, setMasonryPhotos] = useState<NormalizedPhotoGet[]>([]);
+  const [start, setStart] = useState<number>(0);
 
-  const [isEmpty, setIsEmpty] = useState();
-  const [isError, setIsError] = useState();
-  const [isLoading, setIsLoading] = useState();
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isShowAuthCta, setIsShowAuthCta] = useState(false);
 
   const { user } = useAuth();
@@ -37,7 +38,6 @@ function Favorites() {
   const { show } = router.query || {};
 
   const LIMIT = 12;
-  const end = start + LIMIT - 1;
 
   const getFirstFavorites = useCallback(async () => {
     setIsLoading(true);
@@ -48,16 +48,18 @@ function Favorites() {
     setStart(0);
 
     const result = await getFavorites(0, LIMIT - 1);
-    const { favorites, count } = result;
 
     if (!result) {
       setIsError(true);
-    } else if (favorites.length === 0) {
-      setIsEmpty(true);
     } else {
-      setMasonryPhotos(favorites);
-      setHasMore(LIMIT < count);
-      setStart(LIMIT);
+      const { favorites, count } = result;
+      if (favorites.length === 0) {
+        setIsEmpty(true);
+      } else {
+        setMasonryPhotos(favorites);
+        setHasMore(LIMIT < count!);
+        setStart(LIMIT);
+      }
     }
 
     setIsLoading(false);
@@ -84,7 +86,7 @@ function Favorites() {
     });
 
     setStart(end + 1);
-    setHasMore(end + 1 < count);
+    setHasMore(end + 1 < count!);
   }, [start]);
 
   useEffect(() => {
@@ -120,7 +122,6 @@ function Favorites() {
             <PhotoModal
               displayPhoto={displayPhoto}
               setDisplayPhoto={setDisplayPhoto}
-              masonryPhotos={masonryPhotos}
               setMasonryPhotos={setMasonryPhotos}
             />
           )}

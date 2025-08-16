@@ -1,5 +1,5 @@
-import type { PexelsPhotoGet, NormalizedPhotoGet } from "./api";
-import type { FavoritePhotoGet } from "../lib/favorite/types";
+import type { PexelsPhotoGet, NormalizedPhotoGet } from "./types";
+import type { FavoritePhotoGet } from "../favorite/types";
 
 export function normalizePexelsPhoto(photo: PexelsPhotoGet): NormalizedPhotoGet {
   return {

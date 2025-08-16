@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { TransformedPhotoGet } from "utils.js/api";
+import { NormalizedPhotoGet } from "../../lib/pexels/types";
 
 interface PhotoProps {
-  photo: TransformedPhotoGet;
+  photo: NormalizedPhotoGet;
   priority: boolean;
-  setDisplayPhoto: (photo: TransformedPhotoGet) => void;
+  setDisplayPhoto: (photo: NormalizedPhotoGet) => void;
 }
 
 function Photo({ photo, priority, setDisplayPhoto }: PhotoProps) {

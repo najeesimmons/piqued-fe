@@ -7,19 +7,19 @@ import PhotoView from "@/components/Views/PhotoView";
 import ReactDOM from "react-dom";
 import Section from "@/components/Section";
 import { checkFavoriteSingle } from "../../lib/favorite/utils";
-import { pexelsGet } from "../../utils.js/api";
+import { pexelsGet } from "../../lib/pexels/api";
 import { toggleFavorite } from "../../lib/favorite/utils";
 import { useAuth } from "@/context/AuthContext";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { Dispatch, SetStateAction } from "react";
-import type { TransformedPhotoGet } from "../../utils.js/api";
+import type { NormalizedPhotoGet } from "../../lib/pexels/types";
 
 
 interface PhotoModalProps {
-  displayPhoto: TransformedPhotoGet | null;
-  setDisplayPhoto: Dispatch<SetStateAction<TransformedPhotoGet | null>>;
-  setMasonryPhotos: Dispatch<SetStateAction<TransformedPhotoGet[]>>;
+  displayPhoto: NormalizedPhotoGet | null;
+  setDisplayPhoto: Dispatch<SetStateAction<NormalizedPhotoGet | null>>;
+  setMasonryPhotos: Dispatch<SetStateAction<NormalizedPhotoGet[]>>;
 }
 
 function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoModalProps) {
@@ -41,7 +41,7 @@ function PhotoModal({ displayPhoto, setDisplayPhoto, setMasonryPhotos }: PhotoMo
     });
   }, [router]);
 
-  const handleFavorite = async (displayPhoto: TransformedPhotoGet) => {
+  const handleFavorite = async (displayPhoto: NormalizedPhotoGet) => {
     if (!user) {
       setIsShowAuthCta(true);
       return;

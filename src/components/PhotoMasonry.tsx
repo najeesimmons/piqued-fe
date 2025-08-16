@@ -3,7 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Photo from "./Photo";
 import EndOfResultsView from "./Views/EndOfResultsView";
-import { type NormalizedPhotoGet } from "../../utils.js/api";
+import { type NormalizedPhotoGet } from "../../lib/pexels/types";
 
 interface PhotoMasonryProps {
   getFirstPhotos?: () => void;
