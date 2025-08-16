@@ -7,19 +7,19 @@ import { useState } from "react";
 import { supabase } from "../../../lib/supabase/supabase";
 
 function Signup() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState <string>("");
+  const [error, setError] = useState <string>("");
+  const [password, setPassword] = useState <string>("");
+  const [showPassword, setShowPassword] = useState <boolean>(false);
+  const [username, setUsername] = useState <string>("");
 
-  const [isAuthError, setIsAuthError] = useState(false);
-  const [isAuthSuccess, setIsAuthSuccess] = useState(false);
+  const [isAuthError, setIsAuthError] = useState <boolean>(false);
+  const [isAuthSuccess, setIsAuthSuccess] = useState <boolean>(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsAuthError(false);
-    setError(false);
+    setError("");
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -104,7 +104,7 @@ function Signup() {
                   required
                   style={{ textIndent: "8px" }}
                   type={showPassword ? "text" : "password"}
-                  a
+                  autoComplete="new-password"
                 />
                 {password.length > 0 && (
                   <button
