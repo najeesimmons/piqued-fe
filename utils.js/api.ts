@@ -3,7 +3,7 @@ import {
   checkFavoritesArray,
   checkFavoriteSingle,
 } from "../lib/favorite/utils";
-import { transformPhoto } from "./helpers";
+import { normalizePexelsPhoto } from "./helpers";
 import z, { ZodError } from "zod";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY as string);
@@ -40,10 +40,10 @@ export const pexelsListSchema = z.object({
 });
 
 export type Endpoint = "curated" | "search" | "show";
-export type PexelsGet = z.infer<typeof pexelsGetSchema>;
-export type PexelsList = z.infer<typeof pexelsListSchema>;
-export type PexelsResponse = PexelsList | PexelsGet | { error: string };
-export type TransformedPhotoGet = {
+export type PexelsPhotoGet = z.infer<typeof pexelsGetSchema>;
+export type PexelsPhotoList = z.infer<typeof pexelsListSchema>;
+export type PexelsResponse = PexelsPhotoList | PexelsPhotoGet | { error: string };
+export type NormalizedPhotoGet = {
   pexels_id: number;
   width: number;
   height: number;
@@ -67,7 +67,7 @@ export type TransformedPhotoGet = {
   isFavorited?: boolean; // Added by checkFavoritesArray
 };
 export type TransformedPhotoList = {
-  photos: TransformedPhotoGet[];
+  photos: NormalizedPhotoGet[];
   page?: number;
   per_page?: number;
   total_results?: number;
@@ -79,7 +79,7 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
   const page = params.page || 1;
 
   try {
-    let response: PexelsList;
+    let response: PexelsPhotoList;
     switch (endpoint) {
       case "curated":
         const rawCuratedResponse = await client.photos.curated({
@@ -114,7 +114,7 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
         throw new Error(`Unsupported endpoint for LIST photos: ${endpoint}`);
     }
 
-    let transformedPhotos: TransformedPhotoGet[] = response.photos.map(transformPhoto);
+    let transformedPhotos: NormalizedPhotoGet[] = response.photos.map(normalizePexelsPhoto);
 
     if (userId) {
       transformedPhotos = await checkFavoritesArray(transformedPhotos, userId);
@@ -155,7 +155,7 @@ export async function pexelsGet(params: { id: number }, userId?: string) {
       throw new ZodError(parsed.error.issues);
     }
 
-    let transformedPhoto = transformPhoto(parsed.data);
+    let transformedPhoto = normalizePexelsPhoto(parsed.data);
 
     if (userId) {
       transformedPhoto = await checkFavoriteSingle(transformedPhoto, userId);

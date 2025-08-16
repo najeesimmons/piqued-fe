@@ -1,6 +1,7 @@
-import type { PexelsGet, TransformedPhotoGet } from "./api";
+import type { PexelsPhotoGet, NormalizedPhotoGet } from "./api";
+import type { FavoritePhotoGet } from "../lib/favorite/types";
 
-export function transformPhoto(photo: PexelsGet): TransformedPhotoGet {
+export function normalizePexelsPhoto(photo: PexelsPhotoGet): NormalizedPhotoGet {
   return {
     pexels_id: photo.id,
     width: photo.width,
@@ -13,5 +14,22 @@ export function transformPhoto(photo: PexelsGet): TransformedPhotoGet {
     avg_color: photo.avg_color,
     src: photo.src,
     alt: photo.alt,
+  };
+}
+
+export function normalizeFavoritePhoto(favorite: FavoritePhotoGet): NormalizedPhotoGet {
+  return {
+    pexels_id: favorite.pexels_id,
+    width: favorite.width,
+    height: favorite.height,
+    url: favorite.url,
+    urlLarge2x: favorite.urlLarge2x,
+    photographer: favorite.photographer,
+    photographer_url: favorite.photographer_url,
+    photographer_id: favorite.photographer_id,
+    avg_color: favorite.avg_color,
+    src: favorite.src,
+    alt: favorite.alt,
+    isFavorited: true, // always true for favorites
   };
 }

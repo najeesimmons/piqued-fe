@@ -49,7 +49,7 @@ export const ToggleFavoriteResponseSchema = z.union([
   ToggleFavoriteErrorSchema,
 ]);
 
-export type FavoritePhoto = z.infer<typeof favoriteGetSchema>;
+export type FavoritePhotoGet = z.infer<typeof favoriteGetSchema>;
 export type ListFavoritesResponse = z.infer<typeof favoritesListSchema>;
 export type ToggleFavoriteSuccess = z.infer<typeof ToggleFavoriteSuccessSchema>;
 export type ToggleFavoriteError = z.infer<typeof ToggleFavoriteErrorSchema>;
