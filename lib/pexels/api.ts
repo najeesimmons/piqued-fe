@@ -11,6 +11,7 @@ import {
   pexelsListSchema,
   pexelsGetSchema,
   NormalizedPhotoList,
+  NormalizedPhotoGet,
 } from "./types";
 
 const client = createClient(process.env.NEXT_PUBLIC_PEXELS_API_KEY as string);
@@ -54,7 +55,7 @@ export async function pexelsList(endpoint: Endpoint, params: { page?: number, qu
         throw new Error(`Unsupported endpoint for LIST photos: ${endpoint}`);
     }
 
-    let normalizedPhotos = response.photos.map(normalizePexelsPhoto);
+    let normalizedPhotos: NormalizedPhotoGet[]|[]= response.photos.map(normalizePexelsPhoto);
 
     if (userId) {
       normalizedPhotos = await checkFavoritesArray(normalizedPhotos, userId);
@@ -94,7 +95,7 @@ export async function pexelsGet(params: { id: number }, userId?: string) {
       throw new ZodError(parsed.error.issues);
     }
 
-    let normalizedPhoto = normalizePexelsPhoto(parsed.data);
+    let normalizedPhoto: NormalizedPhotoGet = normalizePexelsPhoto(parsed.data);
 
     if (userId) {
       normalizedPhoto = await checkFavoriteSingle(normalizedPhoto, userId);
