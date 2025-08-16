@@ -56,10 +56,6 @@ function Signup() {
     setIsAuthSuccess(true);
   };
 
-  // useEffect(() => {
-  //   if (user) router.push("/");
-  // }, [user, router]);
-
   return (
     <>
       <Navigation />

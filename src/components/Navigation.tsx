@@ -9,13 +9,32 @@ import { supabase } from "../../lib/supabase/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/router";
 
-function Navigation({ setIsShowAuthCta }) {
+interface NavigationProps {
+  setIsShowAuthCta?: (isShow: boolean) => void;
+}
+
+function Navigation({ setIsShowAuthCta }: NavigationProps) {
   const { user, setUser } = useAuth();
 
   const router = useRouter();
 
   const isLoginPage = router.asPath.includes("/login");
 
+  const handleClick = (path: string) => {
+    if (!setIsShowAuthCta) {
+      router.push(path);
+      return;
+    }
+  
+    if (router.pathname === "/") {
+      router.push("/?redirect=/favorites");
+    }
+  
+    if (router.pathname === "/" || router.pathname === "/favorites") {
+      setIsShowAuthCta(true);
+    }
+  };
+  
   const handleSignOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -56,16 +75,7 @@ function Navigation({ setIsShowAuthCta }) {
             </Link>
           ) : (
             <button
-              onClick={() => {
-                if (router.pathname === "/") {
-                  router.push("/?redirect=/favorites");
-                  setIsShowAuthCta(true);
-                } else if (router.pathname === "/favorites") {
-                  setIsShowAuthCta(true);
-                } else {
-                  router.push("/favorites");
-                }
-              }}
+              onClick={() => handleClick("/favorites")}
               aria-label="Open auth modal"
             >
               <IoMdHeartEmpty
@@ -86,16 +96,7 @@ function Navigation({ setIsShowAuthCta }) {
             </Link>
           ) : (
             <button
-              onClick={() => {
-                if (router.pathname === "/profile") {
-                  setIsShowAuthCta(true);
-                } else if (router.pathname === "/") {
-                  router.push("/?redirect=/profile");
-                  setIsShowAuthCta(true);
-                } else {
-                  router.push("/profile");
-                }
-              }}
+              onClick={() => handleClick("/profile")}
               aria-label="Open auth modal"
             >
               <HiOutlineUser
@@ -125,9 +126,7 @@ function Navigation({ setIsShowAuthCta }) {
           <li className="font-semibold md:text-sm">
             <button
               className="ml-2 md:ml-1 bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
-              onClick={() => {
-                setIsShowAuthCta(true);
-              }}
+              onClick={() => handleClick("/login")}
             >
               log in
             </button>
