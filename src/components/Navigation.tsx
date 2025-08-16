@@ -22,16 +22,15 @@ function Navigation({ setIsShowAuthCta }: NavigationProps) {
 
   const handleClick = (path: string) => {
     if (!setIsShowAuthCta) {
-      router.push(path);
+      router.push(`/${path}`);
       return;
     }
   
     if (router.pathname === "/") {
-      router.push("/?redirect=/favorites");
-    }
-  
-    if (router.pathname === "/" || router.pathname === "/favorites") {
       setIsShowAuthCta(true);
+      router.push(`/?redirect=/${path}`);
+    } else {
+      router.push(`/${path}`);
     }
   };
   
@@ -75,7 +74,7 @@ function Navigation({ setIsShowAuthCta }: NavigationProps) {
             </Link>
           ) : (
             <button
-              onClick={() => handleClick("/favorites")}
+              onClick={() => handleClick("favorites")}
               aria-label="Open auth modal"
             >
               <IoMdHeartEmpty
@@ -96,7 +95,7 @@ function Navigation({ setIsShowAuthCta }: NavigationProps) {
             </Link>
           ) : (
             <button
-              onClick={() => handleClick("/profile")}
+              onClick={() => handleClick("profile")}
               aria-label="Open auth modal"
             >
               <HiOutlineUser
@@ -126,7 +125,13 @@ function Navigation({ setIsShowAuthCta }: NavigationProps) {
           <li className="font-semibold md:text-sm">
             <button
               className="ml-2 md:ml-1 bg-black text-white px-2 py-1 hover:bg-gray-800 border border-black dark:border-white"
-              onClick={() => handleClick("/login")}
+              onClick={() => {
+                if (setIsShowAuthCta) {
+                  setIsShowAuthCta(true);
+                } else {
+                  router.push("/login");
+                }
+              }}
             >
               log in
             </button>
