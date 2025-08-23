@@ -1,5 +1,5 @@
 import { supabase } from "../supabase/supabase";
-import { z, ZodError } from "zod";
+import { z } from "zod";
 import type { 
   CommentsResponse, 
   CommentResponse, 
@@ -8,7 +8,7 @@ import type {
   Comment,
   CommentWithProfile 
 } from "./types";
-import { commentWithProfileSchema, commentSchema } from "./types";
+import { commentWithProfileRawSchema, commentWithFullProfileRawSchema, commentSchema } from "./types";
 
 export async function getCommentsByPexelsId(pexels_id: number): Promise<CommentsResponse> {
   try {
@@ -17,14 +17,12 @@ export async function getCommentsByPexelsId(pexels_id: number): Promise<Comments
       .select("*, profile(username)")
       .eq("pexels_id", pexels_id)
       .order("created_at", { ascending: false });
-    console.log(comments);
     if (error) {
       throw new Error(`Error fetching comments: ${error.message}`);
     }
 
-    const parsedComments = z.array(commentWithProfileSchema).safeParse(comments);
+    const parsedComments = z.array(commentWithProfileRawSchema).safeParse(comments);
     if (!parsedComments.success) {
-      // console.log(parsedComments.error.issues);
       throw new z.ZodError(parsedComments.error.issues);
     }
 
@@ -119,7 +117,7 @@ export async function insertComment({ pexels_id, commentText }: CreateCommentInp
       throw new Error(`Error inserting comment: ${error.message}`);
     }
 
-    const parsedComment = commentWithProfileSchema.safeParse(comment);
+    const parsedComment = commentWithFullProfileRawSchema.safeParse(comment);
     if (!parsedComment.success) {
       throw new z.ZodError(parsedComment.error.issues);
     }
