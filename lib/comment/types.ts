@@ -2,10 +2,10 @@ import z from "zod";
 
 
 export const commentSchema = z.object({
-  id: z.number(),
+  id: z.string().uuid(),
   text: z.string(),
   pexels_id: z.number(),
-  user_id: z.string(),
+  user_id: z.string().uuid(),
   created_at: z.string(),
   updated_at: z.string().optional(),
 });
@@ -28,7 +28,7 @@ export const createCommentSchema = z.object({
 });
 
 export const deleteCommentSchema = z.object({
-  id: z.number(),
+  id: z.string().uuid(),
 });
 
 export type Comment = z.infer<typeof commentSchema>;

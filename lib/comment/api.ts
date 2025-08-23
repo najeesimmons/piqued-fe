@@ -1,5 +1,5 @@
 import { supabase } from "../supabase/supabase";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import type { 
   CommentsResponse, 
   CommentResponse, 
@@ -17,13 +17,14 @@ export async function getCommentsByPexelsId(pexels_id: number): Promise<Comments
       .select("*, profile(username)")
       .eq("pexels_id", pexels_id)
       .order("created_at", { ascending: false });
-
+    console.log(comments);
     if (error) {
       throw new Error(`Error fetching comments: ${error.message}`);
     }
 
     const parsedComments = z.array(commentWithProfileSchema).safeParse(comments);
     if (!parsedComments.success) {
+      // console.log(parsedComments.error.issues);
       throw new z.ZodError(parsedComments.error.issues);
     }
 
@@ -75,7 +76,7 @@ export async function getOwnComments(user_id: string): Promise<Comment[] | null>
   }
 }
 
-export async function deleteOwnComment(id: number): Promise<DeleteCommentResponse> {
+export async function deleteOwnComment(id: string): Promise<DeleteCommentResponse> {
   try {
     const { data, error } = await supabase
       .from("comment")

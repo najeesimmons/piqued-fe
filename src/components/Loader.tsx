@@ -9,7 +9,7 @@ export default function LoaderWithTheme() {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     setIsDark(mediaQuery.matches);
 
-    const handleChange = (e) => {
+    const handleChange = (e: MediaQueryListEvent) => {
       setIsDark(e.matches);
     };
 

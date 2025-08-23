@@ -70,7 +70,7 @@ export default function Comments({
   }, [commentText, pexels_id, setDisableComment, setIsShowAuthCta, user]);
 
   const handleDeleteComment = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       if (!user) return;
       const result = await deleteOwnComment(id);
       if (!result) {
